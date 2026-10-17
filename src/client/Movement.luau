@@ -337,6 +337,12 @@ function Movement.update(deltaTime: number)
 
 	-- Jumping only from standing (Space from crouch/prone stands you up instead)
 	humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, state.stance == "Stand" and not jumpBlocked)
+	-- Without Roblox's controls nothing presses Jump for us, so do it here
+	if not getControls() and state.stance == "Stand" and not jumpBlocked then
+		if UserInputService:IsKeyDown(Enum.KeyCode.Space) and not UserInputService:GetFocusedTextBox() then
+			humanoid.Jump = true
+		end
+	end
 
 	-- Smoothly move the gun to/from the sights, and zoom the camera to match
 	state.aimAmount = moveToward(state.aimAmount, if state.aiming then 1 else 0, deltaTime / Config.Ads.TransitionTime)
