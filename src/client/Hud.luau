@@ -162,10 +162,12 @@ function Hud.showHitmarker(headshot: boolean, killed: boolean)
 end
 
 -- state: the client weapon state (activeSlot, equippedAt, lastFired, now)
-function Hud.update(camera: Camera, humanoid: Humanoid?, state)
+-- aimAmount: 0 = hip fire, 1 = fully aimed (the ring shrinks to the ADS spread)
+function Hud.update(camera: Camera, humanoid: Humanoid?, state, aimAmount: number)
 	-- Spread ring: how big the pellet cone looks on screen at this field of view
 	local viewport = camera.ViewportSize
-	local spreadTan = math.tan(math.rad(Config.Weapon.SpreadAngle))
+	local spreadMultiplier = 1 + (Config.Ads.SpreadMultiplier - 1) * aimAmount
+	local spreadTan = math.tan(math.rad(Config.Weapon.SpreadAngle * spreadMultiplier))
 	local fovTan = math.tan(math.rad(camera.FieldOfView / 2))
 	local diameter = spreadTan / fovTan * viewport.Y
 	spreadRing.Size = UDim2.fromOffset(diameter, diameter)

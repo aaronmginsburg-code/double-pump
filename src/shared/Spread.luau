@@ -1,15 +1,21 @@
 -- Turns one aim direction into PelletCount pellet directions.
 -- The pattern comes from a seed, so the client and server get the exact same
--- pellets from the same (seed, direction) without sending every pellet.
+-- pellets from the same (seed, direction, aiming) without sending every pellet.
 
 local Config = require(script.Parent.Config)
 
 local Spread = {}
 
-function Spread.getPelletDirections(seed: number, aim: Vector3): { Vector3 }
+-- The spread angle in degrees, tighter when aiming down sights
+function Spread.getSpreadAngle(aiming: boolean): number
+	local multiplier = if aiming then Config.Ads.SpreadMultiplier else 1
+	return Config.Weapon.SpreadAngle * multiplier
+end
+
+function Spread.getPelletDirections(seed: number, aim: Vector3, aiming: boolean): { Vector3 }
 	local rng = Random.new(seed)
 	local count = Config.Weapon.PelletCount
-	local maxSpread = math.tan(math.rad(Config.Weapon.SpreadAngle))
+	local maxSpread = math.tan(math.rad(Spread.getSpreadAngle(aiming)))
 
 	-- A frame looking down the aim line, so we can offset sideways/up from it
 	local frame = CFrame.lookAt(Vector3.zero, aim.Unit)

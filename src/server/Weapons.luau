@@ -7,6 +7,7 @@
 --   3. Each claimed pellet hit lines up with that pellet's direction, is in
 --      range, and isn't behind a wall.
 -- Then damage = PelletDamage x range falloff x hit-zone multiplier.
+-- Aiming down sights uses a tighter spread and longer falloff (Config.Ads).
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -36,13 +37,13 @@ local function resetState(player: Player)
 	}
 end
 
--- 1.0 up close, sliding down to FalloffMinMultiplier at FalloffEnd and beyond
-local function falloff(distance: number): number
-	local alpha = math.clamp(
-		(distance - WeaponConfig.FalloffStart) / (WeaponConfig.FalloffEnd - WeaponConfig.FalloffStart),
-		0,
-		1
-	)
+-- 1.0 up close, sliding down to FalloffMinMultiplier at FalloffEnd and beyond.
+-- Aiming down sights stretches both distances, so aimed shots reach farther.
+local function falloff(distance: number, aiming: boolean): number
+	local stretch = if aiming then Config.Ads.FalloffRangeMultiplier else 1
+	local start = WeaponConfig.FalloffStart * stretch
+	local finish = WeaponConfig.FalloffEnd * stretch
+	local alpha = math.clamp((distance - start) / (finish - start), 0, 1)
 	return 1 + (WeaponConfig.FalloffMinMultiplier - 1) * alpha
 end
 
@@ -68,7 +69,13 @@ local function getAllCharacters(): { Instance }
 end
 
 -- Returns the damage one pellet does, or nil if the claimed hit doesn't check out
-local function checkPelletHit(origin: Vector3, direction: Vector3, part: BasePart, worldParams: RaycastParams): number?
+local function checkPelletHit(
+	origin: Vector3,
+	direction: Vector3,
+	part: BasePart,
+	worldParams: RaycastParams,
+	aiming: boolean
+): number?
 	-- How far along the pellet line the part is, and how far off to the side
 	local toPart = part.Position - origin
 	local distance = toPart:Dot(direction)
@@ -87,10 +94,10 @@ local function checkPelletHit(origin: Vector3, direction: Vector3, part: BasePar
 	end
 
 	local zone = Config.PartZones[part.Name] or "Limbs"
-	return WeaponConfig.PelletDamage * falloff(distance) * Config.HitZones[zone]
+	return WeaponConfig.PelletDamage * falloff(distance, aiming) * Config.HitZones[zone]
 end
 
-local function onFire(player: Player, slot: any, seed: any, origin: any, aim: any, hits: any)
+local function onFire(player: Player, slot: any, seed: any, origin: any, aim: any, hits: any, claimedAiming: any)
 	-- Never trust the types of anything a client sends
 	if (slot ~= 1 and slot ~= 2) or typeof(seed) ~= "number" or typeof(origin) ~= "Vector3"
 		or typeof(aim) ~= "Vector3" or typeof(hits) ~= "table" then
@@ -129,15 +136,20 @@ local function onFire(player: Player, slot: any, seed: any, origin: any, aim: an
 		return
 	end
 
+	-- Aiming down sights tightens the spread, so only believe it if the client
+	-- also told the Movement module it's aiming (which sets this attribute).
+	-- Claiming NOT to aim is never an advantage, so that's always accepted.
+	local aiming = claimedAiming == true and character:GetAttribute("Aiming") == true
+
 	-- Show the shot to everyone else
 	for _, other in Players:GetPlayers() do
 		if other ~= player then
-			Remotes.ShotFired:FireClient(other, character, seed, origin, aim)
+			Remotes.ShotFired:FireClient(other, character, seed, origin, aim, aiming)
 		end
 	end
 
 	-- 3. Check each claimed pellet hit and add up damage per target
-	local pellets = Spread.getPelletDirections(seed, aim)
+	local pellets = Spread.getPelletDirections(seed, aim, aiming)
 	local worldParams = RaycastParams.new()
 	worldParams.FilterType = Enum.RaycastFilterType.Exclude
 	worldParams.FilterDescendantsInstances = getAllCharacters()
@@ -163,7 +175,7 @@ local function onFire(player: Player, slot: any, seed: any, origin: any, aim: an
 			continue
 		end
 
-		local damage = checkPelletHit(origin, pellets[pelletIndex], part, worldParams)
+		local damage = checkPelletHit(origin, pellets[pelletIndex], part, worldParams, aiming)
 		if damage then
 			usedPellets[pelletIndex] = true
 			damageByTarget[target] = (damageByTarget[target] or 0) + damage
@@ -219,6 +231,7 @@ function Weapons.start()
 
 	local function onPlayerAdded(player: Player)
 		player.CameraMode = Enum.CameraMode.LockFirstPerson
+		player.DevEnableMouseLock = false -- Shift is sprint, not Shift Lock
 		player.CharacterAdded:Connect(function(character)
 			resetState(player)
 			ignoreAccessories(character)

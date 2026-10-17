@@ -73,6 +73,58 @@ Config.Round = {
 	MapVoteChoices = 3,
 }
 
+-- Aim down sights (hold right mouse)
+Config.Ads = {
+	SpreadMultiplier = 0.35, -- pellet cone is this fraction of the hip-fire cone
+	FalloffRangeMultiplier = 1.6, -- FalloffStart/End are stretched by this when aiming
+	MoveSpeedMultiplier = 0.6, -- walk speed while aiming
+	FovReduction = 12, -- degrees of zoom
+	TransitionTime = 0.12, -- seconds for the gun to move to the center
+}
+
+-- Crouch, sprint, slide
+Config.Movement = {
+	WalkSpeed = 16,
+	SprintSpeed = 24,
+	CrouchSpeed = 8,
+	CrouchToggle = false, -- true: press C/Ctrl to toggle crouch; false: hold it
+
+	BaseFov = 70,
+	SprintFovKick = 6, -- degrees wider while sprinting
+	SlideFovKick = 8,
+
+	-- Seconds to blend between standing, crouching and sliding poses
+	PoseTransitionTime = 0.12,
+	-- Crouch pose: how far the thighs swing forward and the knees bend (degrees).
+	-- The character is lowered to match, so a deeper crouch = smaller hitbox.
+	CrouchThighAngle = 80,
+	CrouchKneeAngle = 130,
+	CrouchLean = 25, -- upper body leans forward this much
+	SlideLean = 60, -- whole body leans back this much while sliding feet first
+	SlideHipHeight = 0.5, -- how high the hips ride above the floor while sliding
+
+	-- Slide: press crouch while moving
+	SlideMinStartSpeed = 8, -- studs/s you must be moving to slide instead of crouch
+	SlideBoost = 1.4, -- slide starts at your current speed x this
+	SlideFriction = 30, -- studs/s lost every second
+	SlideEndSpeed = 7, -- slide ends (into crouch/stand) below this speed
+	SlideMaxTime = 1.5,
+	SlideCooldown = 1.0, -- seconds from the start of one slide to the next
+	SlideCameraTilt = 6, -- degrees the camera rolls while sliding
+}
+
+-- Sounds. Asset IDs look like "rbxassetid://1234567890".
+Config.Audio = {
+	-- Played only for the killer when they get a kill (players and dummies).
+	-- Placeholder: a beep that ships with every Roblox client. To use your own,
+	-- upload a sound you have the rights to (Creator Hub > Audio) and paste its
+	-- ID here. Don't upload game rips (e.g. Battlefield sounds): Roblox removes
+	-- copyrighted audio and can moderate the account. Set to "" for no sound.
+	EliminationSound = "rbxasset://sounds/electronicpingshort.wav",
+	EliminationVolume = 0.8,
+	EliminationPitch = 1.3,
+}
+
 -- Target dummies in the feel-test room
 Config.Dummies = {
 	RespawnTime = 3,

@@ -8,6 +8,9 @@
       },
       "Remotes": {
         "$className": "Folder",
+        "Aim": {
+          "$className": "RemoteEvent"
+        },
         "Equip": {
           "$className": "RemoteEvent"
         },
@@ -15,6 +18,9 @@
           "$className": "RemoteEvent"
         },
         "HitConfirm": {
+          "$className": "RemoteEvent"
+        },
+        "Stance": {
           "$className": "RemoteEvent"
         },
         "ShotFired": {

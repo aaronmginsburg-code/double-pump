@@ -15,6 +15,8 @@ local Spread = require(ReplicatedStorage.Shared.Spread)
 local Effects = require(script.Parent.Effects)
 local Viewmodel = require(script.Parent.Viewmodel)
 local Hud = require(script.Parent.Hud)
+local Movement = require(script.Parent.Movement)
+local Sounds = require(script.Parent.Sounds)
 
 local Remotes = ReplicatedStorage.Remotes
 local WeaponConfig = Config.Weapon
@@ -71,7 +73,8 @@ local function fire()
 
 	local hits = {}
 	local muzzle = Viewmodel.getMuzzlePosition()
-	for index, direction in Spread.getPelletDirections(seed, aim) do
+	local aiming = Movement.state.aiming -- aimed shots have a tighter spread
+	for index, direction in Spread.getPelletDirections(seed, aim, aiming) do
 		local result = workspace:Raycast(origin, direction * WeaponConfig.MaxRange, params)
 		local endPoint = if result then result.Position else origin + direction * WeaponConfig.MaxRange
 		Effects.tracer(muzzle, endPoint)
@@ -87,7 +90,7 @@ local function fire()
 		end
 	end
 
-	Remotes.Fire:FireServer(slot, seed, origin, aim, hits)
+	Remotes.Fire:FireServer(slot, seed, origin, aim, hits, aiming)
 end
 
 local function tryFire()
@@ -128,11 +131,11 @@ function Weapons.update()
 end
 
 -- Show other players' shots (the server tells us seed + aim; we redo the rays)
-local function onShotFired(shooter: Model?, seed: number, origin: Vector3, aim: Vector3)
+local function onShotFired(shooter: Model?, seed: number, origin: Vector3, aim: Vector3, aiming: boolean)
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
 	params.FilterDescendantsInstances = if shooter then { shooter, Effects.folder } else { Effects.folder }
-	for _, direction in Spread.getPelletDirections(seed, aim) do
+	for _, direction in Spread.getPelletDirections(seed, aim, aiming) do
 		local result = workspace:Raycast(origin, direction * WeaponConfig.MaxRange, params)
 		local endPoint = if result then result.Position else origin + direction * WeaponConfig.MaxRange
 		Effects.tracer(origin + direction * 2, endPoint)
@@ -151,6 +154,9 @@ local function onHitConfirm(results)
 		anyKill = anyKill or result.killed
 	end
 	Hud.showHitmarker(anyHeadshot, anyKill)
+	if anyKill then
+		Sounds.playElimination() -- only we hear it: HitConfirm goes just to the shooter
+	end
 end
 
 function Weapons.start()

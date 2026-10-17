@@ -1,10 +1,11 @@
--- Client entry point: sets up the HUD and guns, then runs them every frame.
+-- Client entry point: sets up the HUD, movement and guns, then runs them every frame.
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
 
 local Hud = require(script.Hud)
+local Movement = require(script.Movement)
 local Viewmodel = require(script.Viewmodel)
 local Weapons = require(script.Weapons)
 
@@ -16,15 +17,20 @@ StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false)
 
 Hud.init()
 Viewmodel.init()
+Movement.start()
 Weapons.start()
 
-RunService.RenderStepped:Connect(function()
+-- Runs every frame after the camera has moved (and after the slide tilt),
+-- so the gun and HUD line up with what the camera sees this frame.
+RunService:BindToRenderStep("DoublePump", Enum.RenderPriority.Camera.Value + 2, function(deltaTime)
 	local camera = workspace.CurrentCamera
 	local _, humanoid = Weapons.getAliveCharacter()
 
+	Movement.update(deltaTime)
 	Weapons.update()
-	Viewmodel.update(camera, Weapons.state, humanoid ~= nil)
-	Hud.update(camera, humanoid, Weapons.state)
+	local aimAmount = Movement.state.aimAmount
+	Viewmodel.update(camera, Weapons.state, humanoid ~= nil, aimAmount)
+	Hud.update(camera, humanoid, Weapons.state, aimAmount)
 end)
 
 print(`Double Pump client started for {player.Name}`)

@@ -17,6 +17,8 @@ local Viewmodel = {}
 
 -- Where the gun sits relative to the camera (right, down, forward)
 local HOLD_OFFSET = CFrame.new(0.9, -0.85, -1.7)
+-- Aiming down sights: centered, with the top of the gun just under the crosshair
+local ADS_OFFSET = CFrame.new(0, -0.32, -1.5)
 -- Muzzle tip relative to the gun's center
 local MUZZLE_OFFSET = CFrame.new(0, 0.08, -2.25)
 
@@ -70,7 +72,9 @@ end
 
 -- state: { activeSlot, equippedAt, lastFired = {slot -> time}, now }
 -- All times are os.clock() values from the client weapon state.
-function Viewmodel.update(camera: Camera, state, alive: boolean)
+-- aimAmount: 0 = hip fire, 1 = fully aimed down sights
+function Viewmodel.update(camera: Camera, state, alive: boolean, aimAmount: number)
+	local holdOffset = HOLD_OFFSET:Lerp(ADS_OFFSET, aimAmount)
 	for slot, gun in guns do
 		local visible = alive and slot == state.activeSlot
 		-- Parts live in the camera so only this player sees them
@@ -101,7 +105,7 @@ function Viewmodel.update(camera: Camera, state, alive: boolean)
 		local raise = 1 - math.clamp(sinceSwap / Feel.SwapRaiseTime, 0, 1)
 		local swapDrop = CFrame.new(0, -Feel.SwapDropDistance * raise, 0)
 
-		local gunCFrame = camera.CFrame * HOLD_OFFSET * swapDrop * recoil * pumpTilt
+		local gunCFrame = camera.CFrame * holdOffset * swapDrop * recoil * pumpTilt
 		for name, part in gun.parts do
 			local offset = gun.offsets[name]
 			if name == "Pump" then
