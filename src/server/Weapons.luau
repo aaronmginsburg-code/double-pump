@@ -14,6 +14,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Config = require(ReplicatedStorage.Shared.Config)
 local Spread = require(ReplicatedStorage.Shared.Spread)
+local GunModel = require(ReplicatedStorage.Shared.GunModel)
+local Hitboxes = require(ReplicatedStorage.Shared.Hitboxes)
 local Health = require(script.Parent.Health)
 
 local Remotes = ReplicatedStorage.Remotes
@@ -74,7 +76,8 @@ local function checkPelletHit(
 	direction: Vector3,
 	part: BasePart,
 	worldParams: RaycastParams,
-	aiming: boolean
+	aiming: boolean,
+	headPosition: Vector3
 ): number?
 	-- How far along the pellet line the part is, and how far off to the side
 	local toPart = part.Position - origin
@@ -91,6 +94,17 @@ local function checkPelletHit(
 	local wallHit = workspace:Raycast(origin, direction * math.max(distance - 1, 0), worldParams)
 	if wallHit then
 		return nil
+	end
+
+	-- In third person the shot starts at the camera, which can peek past a
+	-- corner your body is hiding behind. So the shooter's head must also be
+	-- able to see the target; no shooting around corners.
+	local fromHead = part.Position - headPosition
+	if fromHead.Magnitude > 1 then
+		local blocked = workspace:Raycast(headPosition, fromHead - fromHead.Unit, worldParams)
+		if blocked then
+			return nil
+		end
 	end
 
 	local zone = Config.PartZones[part.Name] or "Limbs"
@@ -131,7 +145,8 @@ local function onFire(player: Player, slot: any, seed: any, origin: any, aim: an
 	end
 	state.lastFired[slot] = now
 
-	-- 2. The shot must start near the shooter's head (where the camera is)
+	-- 2. The shot starts at the camera: in the head in first person, or a few
+	-- studs behind the shoulder in third person. Either way it must be near the head.
 	if (origin - head.Position).Magnitude > WeaponConfig.MaxOriginOffset then
 		return
 	end
@@ -150,9 +165,7 @@ local function onFire(player: Player, slot: any, seed: any, origin: any, aim: an
 
 	-- 3. Check each claimed pellet hit and add up damage per target
 	local pellets = Spread.getPelletDirections(seed, aim, aiming)
-	local worldParams = RaycastParams.new()
-	worldParams.FilterType = Enum.RaycastFilterType.Exclude
-	worldParams.FilterDescendantsInstances = getAllCharacters()
+	local worldParams = Hitboxes.shotParams(getAllCharacters())
 
 	local damageByTarget: { [Humanoid]: number } = {}
 	local headshotTargets: { [Humanoid]: boolean } = {}
@@ -175,7 +188,7 @@ local function onFire(player: Player, slot: any, seed: any, origin: any, aim: an
 			continue
 		end
 
-		local damage = checkPelletHit(origin, pellets[pelletIndex], part, worldParams, aiming)
+		local damage = checkPelletHit(origin, pellets[pelletIndex], part, worldParams, aiming, head.Position)
 		if damage then
 			usedPellets[pelletIndex] = true
 			damageByTarget[target] = (damageByTarget[target] or 0) + damage
@@ -211,9 +224,17 @@ local function onEquip(player: Player, slot: any)
 	state.equippedAt = os.clock()
 end
 
--- Accessories (hats, hair) would block pellets and have no hit zone, so we
--- make rays pass straight through them.
-local function ignoreAccessories(character: Model)
+-- Gets a freshly spawned player character ready for combat
+local function setupCharacter(player: Player, character: Model)
+	resetState(player)
+	Health.setup(character:WaitForChild("Humanoid") :: Humanoid)
+
+	-- Shots skip the invisible upright root box (see Hitboxes.luau)
+	character:WaitForChild("HumanoidRootPart")
+	Hitboxes.ignoreRootPart(character)
+
+	-- Accessories (hats, hair) would block pellets and have no hit zone, so we
+	-- make rays pass straight through them.
 	local function check(descendant: Instance)
 		if descendant:IsA("BasePart") and descendant:FindFirstAncestorOfClass("Accessory") then
 			descendant.CanQuery = false
@@ -223,9 +244,13 @@ local function ignoreAccessories(character: Model)
 		check(descendant)
 	end
 	character.DescendantAdded:Connect(check)
+
+	-- The gun other players see in your hands (and you see in third person)
+	GunModel.attachToHand(character)
 end
 
 function Weapons.start()
+	Hitboxes.setupGroups()
 	Remotes.Fire.OnServerEvent:Connect(onFire)
 	Remotes.Equip.OnServerEvent:Connect(onEquip)
 
@@ -233,14 +258,10 @@ function Weapons.start()
 		player.CameraMode = Enum.CameraMode.LockFirstPerson
 		player.DevEnableMouseLock = false -- Shift is sprint, not Shift Lock
 		player.CharacterAdded:Connect(function(character)
-			resetState(player)
-			ignoreAccessories(character)
-			Health.setup(character:WaitForChild("Humanoid") :: Humanoid)
+			setupCharacter(player, character)
 		end)
 		if player.Character then
-			resetState(player)
-			ignoreAccessories(player.Character)
-			Health.setup(player.Character:WaitForChild("Humanoid") :: Humanoid)
+			task.spawn(setupCharacter, player, player.Character)
 		end
 	end
 

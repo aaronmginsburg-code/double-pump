@@ -4,6 +4,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
 
+local CameraController = require(script.CameraController)
 local Hud = require(script.Hud)
 local Movement = require(script.Movement)
 local Viewmodel = require(script.Viewmodel)
@@ -18,9 +19,10 @@ StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false)
 Hud.init()
 Viewmodel.init()
 Movement.start()
+CameraController.start()
 Weapons.start()
 
--- Runs every frame after the camera has moved (and after the slide tilt),
+-- Runs every frame after the camera has moved (and after CameraController),
 -- so the gun and HUD line up with what the camera sees this frame.
 RunService:BindToRenderStep("DoublePump", Enum.RenderPriority.Camera.Value + 2, function(deltaTime)
 	local camera = workspace.CurrentCamera
@@ -29,7 +31,9 @@ RunService:BindToRenderStep("DoublePump", Enum.RenderPriority.Camera.Value + 2, 
 	Movement.update(deltaTime)
 	Weapons.update()
 	local aimAmount = Movement.state.aimAmount
-	Viewmodel.update(camera, Weapons.state, humanoid ~= nil, aimAmount)
+	-- The first-person gun hides in third person (you see the one in your hands instead)
+	local showViewmodel = humanoid ~= nil and not CameraController.isThirdPerson()
+	Viewmodel.update(camera, Weapons.state, showViewmodel, aimAmount)
 	Hud.update(camera, humanoid, Weapons.state, aimAmount)
 end)
 

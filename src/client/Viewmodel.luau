@@ -8,9 +8,11 @@
 --             and the light on top is red until the gun can fire again
 --   - swap:   the incoming gun rises from below
 
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Config = require(ReplicatedStorage.Shared.Config)
+local GunModel = require(ReplicatedStorage.Shared.GunModel)
 local Feel = Config.Feel
 
 local Viewmodel = {}
@@ -19,22 +21,9 @@ local Viewmodel = {}
 local HOLD_OFFSET = CFrame.new(0.9, -0.85, -1.7)
 -- Aiming down sights: centered, with the top of the gun just under the crosshair
 local ADS_OFFSET = CFrame.new(0, -0.32, -1.5)
--- Muzzle tip relative to the gun's center
-local MUZZLE_OFFSET = CFrame.new(0, 0.08, -2.25)
 
 local READY_COLOR = Color3.fromRGB(80, 255, 120)
 local PUMPING_COLOR = Color3.fromRGB(255, 70, 50)
-
--- Each gun piece: name, size, offset from the gun's center, color.
--- -Z is forward (toward the muzzle).
-local PIECES = {
-	{ "Receiver", Vector3.new(0.26, 0.32, 1.0), CFrame.new(0, 0, 0), Color3.fromRGB(45, 45, 50) },
-	{ "Barrel", Vector3.new(0.13, 0.13, 1.7), CFrame.new(0, 0.08, -1.35), Color3.fromRGB(30, 30, 33) },
-	{ "Tube", Vector3.new(0.11, 0.11, 1.3), CFrame.new(0, -0.07, -1.15), Color3.fromRGB(35, 35, 38) },
-	{ "Pump", Vector3.new(0.22, 0.2, 0.55), CFrame.new(0, -0.08, -1.05), Color3.fromRGB(120, 75, 40) },
-	{ "Stock", Vector3.new(0.22, 0.36, 0.9), CFrame.new(0, -0.12, 0.9), Color3.fromRGB(120, 75, 40) },
-	{ "Light", Vector3.new(0.08, 0.04, 0.3), CFrame.new(0, 0.18, 0.15), READY_COLOR },
-}
 
 type Gun = { parts: { [string]: Part }, offsets: { [string]: CFrame } }
 
@@ -43,18 +32,10 @@ local muzzlePosition = Vector3.zero
 
 local function buildGun(): Gun
 	local gun: Gun = { parts = {}, offsets = {} }
-	for _, piece in PIECES do
+	for _, piece in GunModel.PIECES do
 		local name, size, offset, color = piece[1], piece[2], piece[3], piece[4]
-		local part = Instance.new("Part")
-		part.Name = name
-		part.Size = size
-		part.Color = color
-		part.Material = if name == "Light" then Enum.Material.Neon else Enum.Material.SmoothPlastic
-		part.Anchored = true
-		part.CanCollide = false
-		part.CanQuery = false -- our own raycasts must pass through the gun
-		part.CanTouch = false
-		part.CastShadow = false
+		local part = GunModel.makePart(name, size, color)
+		part.Anchored = true -- we move it ourselves every frame
 		gun.parts[name] = part
 		gun.offsets[name] = offset
 	end
@@ -115,7 +96,7 @@ function Viewmodel.update(camera: Camera, state, alive: boolean, aimAmount: numb
 		end
 		gun.parts.Light.Color = if cooldownAlpha < 1 then PUMPING_COLOR else READY_COLOR
 
-		muzzlePosition = (gunCFrame * MUZZLE_OFFSET).Position
+		muzzlePosition = (gunCFrame * GunModel.MUZZLE_OFFSET).Position
 	end
 end
 

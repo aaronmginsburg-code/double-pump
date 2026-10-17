@@ -12,6 +12,9 @@ local UserInputService = game:GetService("UserInputService")
 
 local Config = require(ReplicatedStorage.Shared.Config)
 local Spread = require(ReplicatedStorage.Shared.Spread)
+local GunModel = require(ReplicatedStorage.Shared.GunModel)
+local Hitboxes = require(ReplicatedStorage.Shared.Hitboxes)
+local CameraController = require(script.Parent.CameraController)
 local Effects = require(script.Parent.Effects)
 local Viewmodel = require(script.Parent.Viewmodel)
 local Hud = require(script.Parent.Hud)
@@ -62,17 +65,21 @@ local function fire()
 	local slot = state.activeSlot
 	state.lastFired[slot] = state.now
 
+	-- Shots go from the camera straight through the crosshair. In third person
+	-- that's behind your shoulder; the server checks your head can see the target too.
 	local origin = camera.CFrame.Position
 	local aim = camera.CFrame.LookVector
 	local seed = math.random(1, 2 ^ 30)
 
 	-- Our own raycasts ignore our character and our effects
-	local params = RaycastParams.new()
-	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = { character, Effects.folder }
+	local params = Hitboxes.shotParams({ character, Effects.folder })
 
 	local hits = {}
+	-- Tracers start at whichever gun you can see: the viewmodel or the one in your hands
 	local muzzle = Viewmodel.getMuzzlePosition()
+	if CameraController.isThirdPerson() then
+		muzzle = GunModel.getHeldMuzzle(character) or origin
+	end
 	local aiming = Movement.state.aiming -- aimed shots have a tighter spread
 	for index, direction in Spread.getPelletDirections(seed, aim, aiming) do
 		local result = workspace:Raycast(origin, direction * WeaponConfig.MaxRange, params)
@@ -132,13 +139,12 @@ end
 
 -- Show other players' shots (the server tells us seed + aim; we redo the rays)
 local function onShotFired(shooter: Model?, seed: number, origin: Vector3, aim: Vector3, aiming: boolean)
-	local params = RaycastParams.new()
-	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = if shooter then { shooter, Effects.folder } else { Effects.folder }
+	local params = Hitboxes.shotParams(if shooter then { shooter, Effects.folder } else { Effects.folder })
+	local muzzle = if shooter then GunModel.getHeldMuzzle(shooter) else nil
 	for _, direction in Spread.getPelletDirections(seed, aim, aiming) do
 		local result = workspace:Raycast(origin, direction * WeaponConfig.MaxRange, params)
 		local endPoint = if result then result.Position else origin + direction * WeaponConfig.MaxRange
-		Effects.tracer(origin + direction * 2, endPoint)
+		Effects.tracer(muzzle or origin + direction * 2, endPoint)
 		if result then
 			local model = result.Instance:FindFirstAncestorOfClass("Model")
 			Effects.impact(result.Position, model ~= nil and model:FindFirstChildOfClass("Humanoid") ~= nil)

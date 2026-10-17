@@ -8,6 +8,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Config = require(ReplicatedStorage.Shared.Config)
 local Health = require(script.Parent.Health)
 local Arena = require(script.Parent.Arena)
+local Hitboxes = require(ReplicatedStorage.Shared.Hitboxes)
 
 local Dummies = {}
 
@@ -92,6 +93,7 @@ local function spawnDummy(spec: DummySpec)
 		root.Anchored = true
 	end
 
+	Hitboxes.ignoreRootPart(rig)
 	rig.Parent = folder
 	Health.setup(humanoid)
 

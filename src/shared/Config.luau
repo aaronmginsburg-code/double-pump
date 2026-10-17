@@ -21,7 +21,7 @@ Config.Weapon = {
 
 	-- Server-side cheat checks (generous so laggy players aren't punished)
 	ServerTimingTolerance = 0.1, -- seconds of slack on cooldown/equip checks
-	MaxOriginOffset = 6, -- studs a shot's origin may be from the shooter's head
+	MaxOriginOffset = 12, -- studs a shot's origin may be from the shooter's head (third-person camera sits behind it)
 	HitTolerance = 4, -- studs a claimed hit may be off the server's pellet line
 }
 
@@ -82,35 +82,67 @@ Config.Ads = {
 	TransitionTime = 0.12, -- seconds for the gun to move to the center
 }
 
--- Crouch, sprint, slide
+-- Movement: stances (stand / crouch / prone), sprint, slide, dolphin dive, jumps
 Config.Movement = {
+	-- Ground speeds (studs/s) for moving forward
 	WalkSpeed = 16,
 	SprintSpeed = 24,
 	CrouchSpeed = 8,
-	CrouchToggle = false, -- true: press C/Ctrl to toggle crouch; false: hold it
+	ProneSpeed = 3, -- crawling
+	-- Sideways (A/D) is faster than forward, so strafing is a real dodge
+	StrafeMultiplier = 1.25,
+	-- How quickly you can change direction in the air (studs/s per second).
+	-- Low = jumps carry their momentum; on the ground direction changes are instant.
+	AirAcceleration = 25,
+
+	-- Jumping while sprinting keeps sprint speed and adds this forward push
+	SprintJumpBoost = 6,
 
 	BaseFov = 70,
 	SprintFovKick = 6, -- degrees wider while sprinting
 	SlideFovKick = 8,
 
-	-- Seconds to blend between standing, crouching and sliding poses
-	PoseTransitionTime = 0.12,
+	-- Seconds to blend between poses (no snapping)
+	PoseTransitionTime = 0.15,
+	ProneTransitionTime = 0.3, -- getting down / up from prone is slower
+
 	-- Crouch pose: how far the thighs swing forward and the knees bend (degrees).
 	-- The character is lowered to match, so a deeper crouch = smaller hitbox.
 	CrouchThighAngle = 80,
 	CrouchKneeAngle = 130,
 	CrouchLean = 25, -- upper body leans forward this much
+
+	-- Prone: lying on the belly
+	ProneHipHeight = 0, -- the invisible root box rests on the floor
+	ProneBodyDrop = 0.5, -- lowers the lying body so it touches the floor
+	ProneCameraDrop = 1.4, -- first-person camera moves down...
+	ProneCameraForward = 1.2, -- ...and forward, to where the head is
+
+	-- Slide: press crouch (C) while sprinting
 	SlideLean = 60, -- whole body leans back this much while sliding feet first
 	SlideHipHeight = 0.5, -- how high the hips ride above the floor while sliding
-
-	-- Slide: press crouch while moving
-	SlideMinStartSpeed = 8, -- studs/s you must be moving to slide instead of crouch
+	SlideMinStartSpeed = 8, -- studs/s you must be moving to slide
 	SlideBoost = 1.4, -- slide starts at your current speed x this
 	SlideFriction = 30, -- studs/s lost every second
-	SlideEndSpeed = 7, -- slide ends (into crouch/stand) below this speed
+	SlideEndSpeed = 7, -- slide ends (into crouch) below this speed
 	SlideMaxTime = 1.5,
 	SlideCooldown = 1.0, -- seconds from the start of one slide to the next
 	SlideCameraTilt = 6, -- degrees the camera rolls while sliding
+
+	-- Dolphin dive: press prone (Z) while sprinting
+	DiveMinStartSpeed = 8,
+	DiveBoost = 1.3, -- forward speed = current speed x this
+	DiveUpSpeed = 16, -- fixed upward launch (studs/s); higher = taller arc
+	DiveAirDrag = 4, -- forward speed lost per second in the air
+	DiveMaxTime = 2, -- safety: ends the dive if you never land
+	DiveCooldown = 1.5,
+}
+
+-- Third person (V toggles)
+Config.Camera = {
+	ShoulderOffset = Vector3.new(2, 0.8, 6), -- right, up, back from the head (studs)
+	ToggleTime = 0.2, -- seconds to swing between first and third person
+	WallPadding = 0.4, -- keeps the camera this far off walls it would clip into
 }
 
 -- Sounds. Asset IDs look like "rbxassetid://1234567890".
