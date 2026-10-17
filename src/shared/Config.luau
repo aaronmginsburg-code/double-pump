@@ -15,6 +15,14 @@ Config.Weapon = {
 	FalloffStart = 10, -- studs
 	FalloffEnd = 35, -- studs
 	FalloffMinMultiplier = 0.3,
+
+	SpreadAngle = 5, -- degrees from the aim line to the outer ring of pellets
+	MaxRange = 80, -- studs; pellets do nothing past this
+
+	-- Server-side cheat checks (generous so laggy players aren't punished)
+	ServerTimingTolerance = 0.1, -- seconds of slack on cooldown/equip checks
+	MaxOriginOffset = 6, -- studs a shot's origin may be from the shooter's head
+	HitTolerance = 4, -- studs a claimed hit may be off the server's pellet line
 }
 
 Config.HitZones = {
@@ -26,6 +34,7 @@ Config.HitZones = {
 -- R15 body part name -> hit zone
 Config.PartZones = {
 	Head = "Head",
+	HumanoidRootPart = "Torso", -- invisible box around the torso; rays can hit it first
 	UpperTorso = "Torso",
 	LowerTorso = "Torso",
 	LeftUpperArm = "Limbs",
@@ -45,6 +54,7 @@ Config.PartZones = {
 Config.Player = {
 	MaxHealth = 100,
 	MaxShield = 100,
+	StartingShield = 100, -- shield on spawn; shield absorbs damage before health
 	HealthRegenPerSecond = 5,
 	HealthRegenDelay = 5, -- seconds without damage before regen starts
 	ShieldOnKill = 50,
@@ -61,6 +71,27 @@ Config.Round = {
 	ResultsTime = 10,
 	MapVoteTime = 10,
 	MapVoteChoices = 3,
+}
+
+-- Target dummies in the feel-test room
+Config.Dummies = {
+	RespawnTime = 3,
+	StrafeDistance = 12, -- studs each side of the start point
+	StrafeSpeed = 14, -- WalkSpeed while strafing (players default to 16)
+	JumpInterval = 1.5, -- seconds between jumps for the jumping dummy
+}
+
+-- Client-only look and feel
+Config.Feel = {
+	TracerLifetime = 0.08, -- seconds a pellet tracer stays visible
+	ImpactLifetime = 0.4,
+	HitmarkerTime = 0.15,
+	DamageNumberTime = 0.8,
+	RecoilKickTime = 0.12, -- seconds the gun kicks back after a shot
+	RecoilAngle = 8, -- degrees the gun tips up on a shot
+	SwapDropDistance = 0.6, -- studs the incoming gun rises from on a swap
+	SwapRaiseTime = 0.12, -- seconds the raise animation takes (purely visual)
+	PumpTravel = 0.35, -- studs the pump slides back while cycling
 }
 
 return Config

@@ -1,0 +1,3 @@
+-- Intentionally empty. Roblox gives every character a script named "Health"
+-- that slowly regenerates health. Putting our own empty "Health" script in
+-- StarterCharacterScripts replaces it; the server's Health module does regen instead.

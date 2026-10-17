@@ -5,6 +5,21 @@
     "ReplicatedStorage": {
       "Shared": {
         "$path": "src/shared"
+      },
+      "Remotes": {
+        "$className": "Folder",
+        "Equip": {
+          "$className": "RemoteEvent"
+        },
+        "Fire": {
+          "$className": "RemoteEvent"
+        },
+        "HitConfirm": {
+          "$className": "RemoteEvent"
+        },
+        "ShotFired": {
+          "$className": "RemoteEvent"
+        }
       }
     },
     "ServerScriptService": {
@@ -16,6 +31,11 @@
       "StarterPlayerScripts": {
         "Client": {
           "$path": "src/client"
+        }
+      },
+      "StarterCharacterScripts": {
+        "Health": {
+          "$path": "src/character/Health.server.luau"
         }
       }
     }

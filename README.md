@@ -16,3 +16,12 @@ A 5v5 first-person Roblox shooter built around the double pump: two pump shotgun
 | `src/shared` | ReplicatedStorage.Shared | Code and config both sides use, including `Config.luau` (all tuning numbers) |
 | `src/server` | ServerScriptService.Server | Server code: damage, hit checks, rounds |
 | `src/client` | StarterPlayerScripts.Client | Client code: input, swapping, effects |
+
+## Feel test (milestone 1)
+
+1. Run `rojo serve`, open a Baseplate in Studio and click **Rojo > Connect**.
+2. Press **Play**. You spawn in a gray-box room with three target dummies (stationary, strafing, strafe-and-jump).
+3. Controls: **left click** fires, **1 / 2** pick a gun, **mouse wheel** or **Q** swaps.
+4. For a 1v1, use **Test > Clients and Servers** with 2 players, or publish and play with a friend.
+
+All tuning numbers (cooldowns, spread, damage, health, dummies, effects) are in `src/shared/Config.luau`.
