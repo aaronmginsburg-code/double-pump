@@ -1,0 +1,11 @@
+# Built place files
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+!assets/**
+
+# Editor and OS clutter
+.DS_Store
+Thumbs.db
+sourcemap.json
