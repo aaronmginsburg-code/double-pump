@@ -68,10 +68,57 @@ local function getHumanoidAndRoot(): (Humanoid?, BasePart?)
 	return nil, nil
 end
 
--- Roblox's built-in movement controls (WASD, arrows, jump)
+-- Roblox's built-in movement controls (WASD, arrows, jump). Some Studio
+-- versions don't put a PlayerModule in PlayerScripts, so never wait for it:
+-- if it's missing we read the keys ourselves (readMoveKeys below).
+local controls = nil
 local function getControls()
-	local playerModule = player:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")
-	return require(playerModule):GetControls()
+	if controls == nil then
+		local playerScripts = player:FindFirstChild("PlayerScripts")
+		local playerModule = playerScripts and playerScripts:FindFirstChild("PlayerModule")
+		if playerModule then
+			local ok, result = pcall(function()
+				return require(playerModule):GetControls()
+			end)
+			controls = if ok then result else false
+		end
+	end
+	return controls or nil
+end
+
+local function setControlsEnabled(enabled: boolean)
+	local found = getControls()
+	if found then
+		if enabled then
+			found:Enable()
+		else
+			found:Disable()
+		end
+	end
+end
+
+-- Same shape as the controls' move vector: X = right, Z = back (forward is negative)
+local function readMoveKeys(): Vector3
+	local function held(a: Enum.KeyCode, b: Enum.KeyCode): number
+		return if UserInputService:IsKeyDown(a) or UserInputService:IsKeyDown(b) then 1 else 0
+	end
+	if UserInputService:GetFocusedTextBox() then
+		return Vector3.zero
+	end
+	local x = held(Enum.KeyCode.D, Enum.KeyCode.Right) - held(Enum.KeyCode.A, Enum.KeyCode.Left)
+	local z = held(Enum.KeyCode.S, Enum.KeyCode.Down) - held(Enum.KeyCode.W, Enum.KeyCode.Up)
+	local move = Vector3.new(x, 0, z)
+	for _, input in UserInputService:GetGamepadState(Enum.UserInputType.Gamepad1) do
+		if input.KeyCode == Enum.KeyCode.Thumbstick1 and input.Position.Magnitude > 0.2 then
+			move += Vector3.new(input.Position.X, 0, -input.Position.Y)
+		end
+	end
+	return move
+end
+
+local function getMoveInput(): Vector3
+	local found = getControls()
+	return if found then found:GetMoveVector() else readMoveKeys()
 end
 
 local function setStance(stance: string)
@@ -112,7 +159,7 @@ local function beginMove(moveName: string, boost: number): Move?
 	state.sprinting = false
 	humanoid.AutoRotate = false
 	root.CFrame = CFrame.lookAt(root.Position, root.Position + direction)
-	getControls():Disable()
+	setControlsEnabled(false)
 	setStance(moveName)
 	return { direction = direction, speed = horizontal.Magnitude * boost, startedAt = os.clock() }
 end
@@ -124,7 +171,7 @@ local function finishMove(nextStance: string)
 	if humanoid then
 		humanoid.AutoRotate = true
 	end
-	getControls():Enable()
+	setControlsEnabled(true)
 	setStance(nextStance)
 end
 
@@ -216,7 +263,7 @@ end
 local function updateWalk(humanoid: Humanoid, root: BasePart, deltaTime: number)
 	-- Which way the player is pushing, from Roblox's controls:
 	-- X = right/left, Z = back/forward (forward is negative)
-	local input = getControls():GetMoveVector()
+	local input = getMoveInput()
 	if input.Magnitude > 1 then
 		input = input.Unit
 	end
@@ -308,7 +355,7 @@ local function onCharacterAdded(character: Model)
 	if slide or dive then
 		slide = nil
 		dive = nil
-		getControls():Enable()
+		setControlsEnabled(true)
 	end
 	state.stance = "Stand"
 	state.aiming = false
