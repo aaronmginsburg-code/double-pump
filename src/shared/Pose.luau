@@ -277,7 +277,12 @@ end
 --   onServer:    the server has no animations, so it poses from a neutral base
 --   aiming:      aiming down sights
 function Pose.step(character: Model, stance: string, deltaTime: number, isOwner: boolean, onServer: boolean, aiming: boolean)
-	local state = states[character] or setup(character)
+	local state = states[character]
+	if state and state.joints.Root.Parent == nil then
+		-- The joints were replaced (the server swaps physics joints for Motor6Ds)
+		state = nil
+	end
+	state = state or setup(character)
 	if not state then
 		return
 	end

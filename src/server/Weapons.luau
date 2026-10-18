@@ -17,6 +17,7 @@ local Spread = require(ReplicatedStorage.Shared.Spread)
 local GunModel = require(ReplicatedStorage.Shared.GunModel)
 local Hitboxes = require(ReplicatedStorage.Shared.Hitboxes)
 local Health = require(script.Parent.Health)
+local Rig = require(script.Parent.Rig)
 
 local Remotes = ReplicatedStorage.Remotes
 local WeaponConfig = Config.Weapon
@@ -230,6 +231,7 @@ end
 
 -- Gets a freshly spawned player character ready for combat
 local function setupCharacter(player: Player, character: Model)
+	Rig.useClassicJoints(character)
 	resetState(player)
 	Health.setup(character:WaitForChild("Humanoid") :: Humanoid)
 

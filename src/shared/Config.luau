@@ -113,9 +113,13 @@ Config.Movement = {
 	CrouchLean = 25, -- upper body leans forward this much
 
 	-- Prone: lying on the belly
-	ProneHipHeight = 0, -- the invisible root box rests on the floor
-	ProneBodyDrop = 0.5, -- lowers the lying body so it touches the floor
-	ProneCameraDrop = 1.4, -- first-person camera moves down...
+	-- The invisible root box hovers just above the floor. At 0 the Humanoid
+	-- loses track of the ground, thinks it's falling, and the body jitters.
+	ProneHipHeight = 0.5,
+	-- Lowers the lying body to rest on the floor. Too much sinks it into the
+	-- floor, and the physics shoving it back out makes the body jitter.
+	ProneBodyDrop = 0.4,
+	ProneCameraDrop = 1.9, -- first-person camera moves down...
 	ProneCameraForward = 1.2, -- ...and forward, to where the head is
 
 	-- Slide: press crouch (C) while sprinting
