@@ -222,6 +222,10 @@ local function onEquip(player: Player, slot: any)
 	end
 	state.equippedSlot = slot
 	state.equippedAt = os.clock()
+	-- Every client plays the swap animation when this changes
+	if player.Character then
+		player.Character:SetAttribute("EquippedSlot", slot)
+	end
 end
 
 -- Gets a freshly spawned player character ready for combat

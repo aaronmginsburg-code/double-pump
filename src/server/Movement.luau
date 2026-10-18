@@ -67,7 +67,8 @@ function Movement.start()
 		for _, player in Players:GetPlayers() do
 			local character = player.Character
 			if character then
-				Pose.step(character, character:GetAttribute("Stance") or "Stand", deltaTime, false, true)
+				local stance = character:GetAttribute("Stance") or "Stand"
+				Pose.step(character, stance, deltaTime, false, true, character:GetAttribute("Aiming") == true)
 			end
 		end
 	end)

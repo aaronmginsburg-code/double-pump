@@ -138,6 +138,33 @@ Config.Movement = {
 	DiveCooldown = 1.5,
 }
 
+-- Procedural body animations (what other players and your third-person view show).
+-- Angles are degrees. Arm pitch: 90 = pointing straight ahead.
+Config.Animation = {
+	-- Holding the gun at the hip, and aiming down sights
+	HoldArmPitch = 90,
+	AdsArmPitch = 100, -- arms lift the gun up to the eye
+	AdsArmInward = 20, -- right arm swings in so the stock sits at the shoulder
+	AdsElbowBend = 25,
+	AdsHeadTilt = 12, -- head leans down onto the sights
+
+	-- Swapping guns: the arms dip the gun down and bring the next one up
+	SwapTime = 0.25,
+	SwapDropAngle = 60,
+
+	-- Crouch walking
+	CrouchStepsPerStud = 0.35, -- step cycles per stud moved
+	CrouchLegSwing = 25, -- how far each thigh swings forward/back
+	CrouchKneeLift = 25, -- extra knee bend on the leg stepping forward
+
+	-- Prone crawling on the stomach
+	CrawlCyclesPerStud = 0.45,
+	CrawlArmReach = 25, -- arms alternate reaching forward
+	CrawlLegPull = 30, -- knees alternate pulling up to the side
+	CrawlTurnAngle = 75, -- body turns up to this far toward a sideways crawl
+	CrawlTurnTime = 0.25, -- seconds to turn the body
+}
+
 -- Third person (V toggles)
 Config.Camera = {
 	ShoulderOffset = Vector3.new(2, 0.8, 6), -- right, up, back from the head (studs)

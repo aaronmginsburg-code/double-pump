@@ -17,6 +17,7 @@
 
 local Config = require(script.Parent.Config)
 local Movement = Config.Movement
+local Anim = Config.Animation
 
 local Pose = {}
 
@@ -24,6 +25,7 @@ local Pose = {}
 local JOINTS = {
 	Root = "LowerTorso",
 	Waist = "UpperTorso",
+	Neck = "Head",
 	LeftHip = "LeftUpperLeg",
 	RightHip = "RightUpperLeg",
 	LeftKnee = "LeftLowerLeg",
@@ -32,6 +34,8 @@ local JOINTS = {
 	RightAnkle = "RightFoot",
 	LeftShoulder = "LeftUpperArm",
 	RightShoulder = "RightUpperArm",
+	LeftElbow = "LeftLowerArm",
+	RightElbow = "RightLowerArm",
 }
 
 -- Rotating a joint around X by a positive angle swings a limb forward
@@ -40,57 +44,89 @@ local function bend(degrees: number): CFrame
 	return CFrame.Angles(math.rad(degrees), 0, 0)
 end
 
--- Always on (for players): arms raised forward to hold the gun.
--- The left arm also swings in toward the middle to reach the pump.
-local HOLD_POSE = {
-	RightShoulder = CFrame.Angles(math.rad(90), 0, math.rad(-5)),
-	LeftShoulder = CFrame.Angles(math.rad(85), 0, math.rad(30)),
-}
+-- An arm raised by `pitch` (90 = straight ahead) and swung sideways by `inward`
+local function arm(pitch: number, inward: number): CFrame
+	return CFrame.Angles(math.rad(pitch), 0, math.rad(inward))
+end
+
+-- Always on (for players): arms holding the gun at the hip, blending to
+-- aiming down sights. The left arm swings in toward the middle to reach the pump.
+-- Right arm: negative inward swings it toward the middle; left arm: positive.
+local function holdPose(aim: number): { [string]: CFrame }
+	local pitch = Anim.HoldArmPitch + (Anim.AdsArmPitch - Anim.HoldArmPitch) * aim
+	return {
+		RightShoulder = arm(pitch, -5 - Anim.AdsArmInward * aim),
+		LeftShoulder = arm(pitch - 5, 30 + 10 * aim),
+		RightElbow = bend(Anim.AdsElbowBend * aim),
+		LeftElbow = bend(Anim.AdsElbowBend * 0.4 * aim),
+		Neck = CFrame.Angles(math.rad(-Anim.AdsHeadTilt * aim), 0, math.rad(-Anim.AdsHeadTilt * 0.5 * aim)),
+	}
+end
 
 local thigh, knee = Movement.CrouchThighAngle, Movement.CrouchKneeAngle
 
--- Stance poses. Joints a pose doesn't list stay at the hold pose / animation.
-local POSES = {
-	Crouch = {
+-- Crouch, with a walking step cycle. `phase` advances as you move; `amount`
+-- (0..1) is how much you're moving, so standing still is the plain crouch.
+local function crouchPose(phase: number, amount: number): { [string]: CFrame }
+	local swing = math.sin(phase) * Anim.CrouchLegSwing * amount
+	local leftHip, rightHip = thigh + swing, thigh - swing
+	-- The leg swinging forward lifts its foot by bending the knee more
+	local leftKnee = knee + Anim.CrouchKneeLift * amount * math.max(math.cos(phase), 0)
+	local rightKnee = knee + Anim.CrouchKneeLift * amount * math.max(-math.cos(phase), 0)
+	return {
 		Waist = bend(-Movement.CrouchLean),
-		LeftHip = bend(thigh),
-		RightHip = bend(thigh),
-		LeftKnee = bend(-knee),
-		RightKnee = bend(-knee),
-		LeftAnkle = bend(knee - thigh), -- keeps the feet flat on the floor
-		RightAnkle = bend(knee - thigh),
-	},
-	-- Feet-first slide: lean the body back, swing the legs forward until they
-	-- lie along the floor, tuck the right knee, and curl the head up to see.
-	Slide = {
-		Root = bend(Movement.SlideLean),
-		Waist = bend(-20),
-		LeftHip = bend(90 - Movement.SlideLean),
-		RightHip = bend(90 - Movement.SlideLean - 20),
-		LeftKnee = bend(-10),
-		RightKnee = bend(-70),
-	},
-	-- Belly down: tip the whole body forward 90 degrees and lower it to the
-	-- floor, lift the chest a little, stretch the arms out ahead.
-	Prone = {
-		Root = CFrame.new(0, -Movement.ProneBodyDrop, 0) * bend(-90),
+		LeftHip = bend(leftHip),
+		RightHip = bend(rightHip),
+		LeftKnee = bend(-leftKnee),
+		RightKnee = bend(-rightKnee),
+		LeftAnkle = bend(leftKnee - leftHip), -- keeps the feet flat on the floor
+		RightAnkle = bend(rightKnee - rightHip),
+	}
+end
+
+-- Belly down: tip the whole body forward 90 degrees and lower it to the floor,
+-- lift the chest a little, arms out ahead. While moving it's a commando crawl:
+-- the arms take turns reaching forward and the knees take turns pulling up to
+-- the side. `yaw` turns the body toward a sideways crawl.
+local function pronePose(phase: number, amount: number, yaw: number): { [string]: CFrame }
+	local s = math.sin(phase) * amount
+	local reach = Anim.CrawlArmReach * s
+	local pull = Anim.CrawlLegPull * amount
+	return {
+		Root = CFrame.new(0, -Movement.ProneBodyDrop, 0) * CFrame.Angles(0, yaw, 0) * bend(-90),
 		Waist = bend(25),
-		LeftHip = bend(-5),
-		RightHip = bend(-5),
-		LeftShoulder = CFrame.Angles(math.rad(165), 0, math.rad(15)),
-		RightShoulder = CFrame.Angles(math.rad(165), 0, math.rad(-5)),
-	},
-	-- Dolphin dive: nearly flat, chest first, legs trailing up behind
-	Dive = {
-		Root = bend(-75),
-		Waist = bend(15),
-		LeftHip = bend(-20),
-		RightHip = bend(-20),
-		LeftKnee = bend(-30),
-		RightKnee = bend(-30),
-		LeftShoulder = CFrame.Angles(math.rad(165), 0, math.rad(15)),
-		RightShoulder = CFrame.Angles(math.rad(165), 0, math.rad(-5)),
-	},
+		LeftHip = CFrame.Angles(math.rad(-5), 0, math.rad(-pull * math.max(s, 0))),
+		RightHip = CFrame.Angles(math.rad(-5), 0, math.rad(pull * math.max(-s, 0))),
+		LeftKnee = bend(-1.5 * pull * math.max(s, 0)),
+		RightKnee = bend(-1.5 * pull * math.max(-s, 0)),
+		LeftShoulder = arm(165 - reach, 15),
+		RightShoulder = arm(165 + reach, -5),
+		LeftElbow = bend(20 + reach),
+		RightElbow = bend(20 - reach),
+	}
+end
+
+-- Feet-first slide: lean the body back, swing the legs forward until they
+-- lie along the floor, tuck the right knee, and curl the head up to see.
+local SLIDE_POSE = {
+	Root = bend(Movement.SlideLean),
+	Waist = bend(-20),
+	LeftHip = bend(90 - Movement.SlideLean),
+	RightHip = bend(90 - Movement.SlideLean - 20),
+	LeftKnee = bend(-10),
+	RightKnee = bend(-70),
+}
+
+-- Dolphin dive: nearly flat, chest first, legs trailing up behind
+local DIVE_POSE = {
+	Root = bend(-75),
+	Waist = bend(15),
+	LeftHip = bend(-20),
+	RightHip = bend(-20),
+	LeftKnee = bend(-30),
+	RightKnee = bend(-30),
+	LeftShoulder = arm(165, 15),
+	RightShoulder = arm(165, -5),
 }
 
 local STANCE_NAMES = { "Crouch", "Slide", "Prone", "Dive" }
@@ -109,6 +145,12 @@ type State = {
 	posed: { [string]: boolean }, -- joints we overrode last frame
 	standHipHeight: number,
 	hipHeights: { [string]: number }, -- HipHeight for each stance
+	aim: number, -- 0..1 eases toward aiming down sights
+	moveAmount: number, -- 0..1 eases toward "moving"
+	phase: number, -- walk / crawl cycle, in radians
+	crawlYaw: number, -- radians the prone body is turned toward a sideways crawl
+	swapStartedAt: number, -- when the last swap animation began
+	slot: any, -- the equipped slot we last saw (EquippedSlot attribute)
 }
 
 -- Motor6D (older rigs) or AnimationConstraint (newer avatars); both have Transform
@@ -167,6 +209,12 @@ local function setup(character: Model): State?
 			Prone = Movement.ProneHipHeight,
 			Dive = Movement.ProneHipHeight,
 		},
+		aim = 0,
+		moveAmount = 0,
+		phase = 0,
+		crawlYaw = 0,
+		swapStartedAt = -math.huge,
+		slot = character:GetAttribute("EquippedSlot"),
 	}
 	states[character] = state
 	return state
@@ -179,12 +227,56 @@ local function moveToward(current: number, target: number, step: number): number
 	return math.max(current - step, target)
 end
 
+-- Walk / crawl cycle and the prone body's turn, from how the character is
+-- actually moving (works for every character, on every machine)
+local function updateMotion(state: State, character: Model, stance: string, deltaTime: number)
+	local root = character:FindFirstChild("HumanoidRootPart") :: BasePart?
+	local velocity = if root then root.CFrame:VectorToObjectSpace(root.AssemblyLinearVelocity) else Vector3.zero
+	local flat = Vector3.new(velocity.X, 0, velocity.Z)
+	local speed = flat.Magnitude
+	local moving = speed > 0.5
+	state.moveAmount = moveToward(state.moveAmount, if moving then 1 else 0, deltaTime / 0.15)
+
+	-- Moving backward plays the cycle in reverse
+	local backward = velocity.Z > 0.5 and math.abs(velocity.Z) >= math.abs(velocity.X)
+	local direction = if backward then -1 else 1
+	local cyclesPerStud = if stance == "Prone" then Anim.CrawlCyclesPerStud else Anim.CrouchStepsPerStud
+	state.phase = (state.phase + speed * cyclesPerStud * 2 * math.pi * deltaTime * direction) % (2 * math.pi)
+
+	-- Prone: turn the body toward a sideways crawl (head leads), never past
+	-- CrawlTurnAngle; crawling backward stays facing forward.
+	local targetYaw = 0
+	if stance == "Prone" and moving and not backward then
+		local yaw = math.atan2(-flat.X, -flat.Z)
+		local limit = math.rad(Anim.CrawlTurnAngle)
+		targetYaw = math.clamp(yaw, -limit, limit)
+	end
+	local turnStep = math.rad(Anim.CrawlTurnAngle) * deltaTime / Anim.CrawlTurnTime
+	state.crawlYaw = moveToward(state.crawlYaw, targetYaw, turnStep)
+end
+
+-- Starts the swap animation (the owning client calls this the moment you swap;
+-- everyone else sees it when the server's EquippedSlot attribute changes)
+function Pose.playSwap(character: Model)
+	local state = states[character]
+	if state then
+		state.swapStartedAt = os.clock()
+	end
+end
+
+-- 0..1..0 over a swap: the arms dip the gun down, then bring it back up
+local function swapAmount(state: State): number
+	local t = (os.clock() - state.swapStartedAt) / Anim.SwapTime
+	return if t >= 0 and t < 1 then math.sin(t * math.pi) else 0
+end
+
 -- Call every frame (RunService.Stepped) for each player character.
 --   stance:      "Stand", "Crouch", "Prone", "Slide" or "Dive"
 --   isOwner:     true only on the client that controls this character
 --                (it also moves HipHeight and the camera)
 --   onServer:    the server has no animations, so it poses from a neutral base
-function Pose.step(character: Model, stance: string, deltaTime: number, isOwner: boolean, onServer: boolean)
+--   aiming:      aiming down sights
+function Pose.step(character: Model, stance: string, deltaTime: number, isOwner: boolean, onServer: boolean, aiming: boolean)
 	local state = states[character] or setup(character)
 	if not state then
 		return
@@ -199,8 +291,29 @@ function Pose.step(character: Model, stance: string, deltaTime: number, isOwner:
 	end
 	local stanceWeight = math.min(total, 1)
 
+	state.aim = moveToward(state.aim, if aiming then 1 else 0, deltaTime / Config.Ads.TransitionTime)
+	updateMotion(state, character, stance, deltaTime)
+
+	-- Other players' swaps arrive as a change to the server's attribute
+	local slot = character:GetAttribute("EquippedSlot")
+	if slot ~= state.slot then
+		state.slot = slot
+		if not isOwner then
+			state.swapStartedAt = os.clock()
+		end
+	end
+	local swapDip = bend(-Anim.SwapDropAngle * swapAmount(state))
+
+	local hold = holdPose(state.aim)
+	local poses = {
+		Crouch = crouchPose(state.phase, state.moveAmount),
+		Slide = SLIDE_POSE,
+		Prone = pronePose(state.phase, state.moveAmount, state.crawlYaw),
+		Dive = DIVE_POSE,
+	}
+
 	for jointName, joint in state.joints do
-		local holdTarget = HOLD_POSE[jointName]
+		local holdTarget = hold[jointName]
 		local base = holdTarget or CFrame.identity
 
 		-- Weighted average of the active stance poses for this joint
@@ -211,7 +324,7 @@ function Pose.step(character: Model, stance: string, deltaTime: number, isOwner:
 			local weight = state.weights[name]
 			if weight > 0 then
 				accumulated += weight
-				target = target:Lerp(POSES[name][jointName] or base, weight / accumulated)
+				target = target:Lerp(poses[name][jointName] or base, weight / accumulated)
 			end
 		end
 
@@ -222,6 +335,11 @@ function Pose.step(character: Model, stance: string, deltaTime: number, isOwner:
 			influence = 1
 		else
 			influence = stanceWeight
+		end
+
+		-- Swapping dips both arms, whatever the stance
+		if jointName == "RightShoulder" or jointName == "LeftShoulder" then
+			target *= swapDip
 		end
 
 		if influence > 0 then

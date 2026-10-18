@@ -213,13 +213,43 @@ local function onProneKey()
 	end
 end
 
+-- We start jumps ourselves rather than leaving it to Roblox's controls, so
+-- they work the same whatever else is going on (sprinting, leaving a slide)
+local lastJumpAt = -math.huge
+local function jump()
+	local humanoid = getHumanoidAndRoot()
+	if not humanoid or isAirborne(humanoid) or humanoid.FloorMaterial == Enum.Material.Air then
+		return
+	end
+	if os.clock() - lastJumpAt < 0.2 then
+		return
+	end
+	lastJumpAt = os.clock()
+	humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+end
+
+-- Every jump (ours or Roblox's) gets the same launch: full jump speed up,
+-- keep the speed you had, plus a forward push if you were sprinting
+local function onJumped(humanoid: Humanoid)
+	local root = humanoid.RootPart
+	if not root then
+		return
+	end
+	local upSpeed = if humanoid.UseJumpPower
+		then humanoid.JumpPower
+		else math.sqrt(2 * workspace.Gravity * humanoid.JumpHeight)
+	local horizontal = root.AssemblyLinearVelocity * FLAT
+	if state.sprinting and horizontal.Magnitude > 0.1 then
+		horizontal += horizontal.Unit * MoveConfig.SprintJumpBoost
+	end
+	root.AssemblyLinearVelocity = horizontal + Vector3.yAxis * upSpeed
+end
+
 local function onJumpKey()
 	if slide then
 		finishMove("Stand")
-		local humanoid = getHumanoidAndRoot()
-		if humanoid then
-			humanoid.Jump = true
-		end
+		jump()
 	elseif state.stance == "Crouch" or state.stance == "Prone" then
 		setStance("Stand")
 		jumpBlocked = true -- stand up only; jump on the next press
@@ -337,10 +367,10 @@ function Movement.update(deltaTime: number)
 
 	-- Jumping only from standing (Space from crouch/prone stands you up instead)
 	humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, state.stance == "Stand" and not jumpBlocked)
-	-- Without Roblox's controls nothing presses Jump for us, so do it here
-	if not getControls() and state.stance == "Stand" and not jumpBlocked then
+	-- Holding Space keeps jumping each time you land (like Roblox's default)
+	if state.stance == "Stand" and not jumpBlocked then
 		if UserInputService:IsKeyDown(Enum.KeyCode.Space) and not UserInputService:GetFocusedTextBox() then
-			humanoid.Jump = true
+			jump()
 		end
 	end
 
@@ -367,15 +397,10 @@ local function onCharacterAdded(character: Model)
 	state.aiming = false
 	jumpBlocked = false
 
-	-- Sprint jump: keep sprint speed into the air and add a forward push
 	local humanoid = character:WaitForChild("Humanoid") :: Humanoid
 	humanoid.StateChanged:Connect(function(_, newState)
-		local root = humanoid.RootPart
-		if newState == Enum.HumanoidStateType.Jumping and state.sprinting and root then
-			local horizontal = root.AssemblyLinearVelocity * FLAT
-			if horizontal.Magnitude > 0.1 then
-				root.AssemblyLinearVelocity += horizontal.Unit * MoveConfig.SprintJumpBoost
-			end
+		if newState == Enum.HumanoidStateType.Jumping then
+			onJumped(humanoid)
 		end
 	end)
 end
@@ -425,7 +450,8 @@ function Movement.start()
 			if character then
 				local isMe = other == player
 				local stance = if isMe then state.stance else character:GetAttribute("Stance") or "Stand"
-				Pose.step(character, stance, deltaTime, isMe, false)
+				local aiming = if isMe then state.aiming else character:GetAttribute("Aiming") == true
+				Pose.step(character, stance, deltaTime, isMe, false, aiming)
 			end
 		end
 	end)

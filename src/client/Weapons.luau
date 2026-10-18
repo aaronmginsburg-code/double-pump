@@ -14,6 +14,7 @@ local Config = require(ReplicatedStorage.Shared.Config)
 local Spread = require(ReplicatedStorage.Shared.Spread)
 local GunModel = require(ReplicatedStorage.Shared.GunModel)
 local Hitboxes = require(ReplicatedStorage.Shared.Hitboxes)
+local Pose = require(ReplicatedStorage.Shared.Pose)
 local CameraController = require(script.Parent.CameraController)
 local Effects = require(script.Parent.Effects)
 local Viewmodel = require(script.Parent.Viewmodel)
@@ -118,6 +119,9 @@ local function equip(slot: number)
 	state.equippedAt = state.now
 	queuedFireAt = nil
 	Remotes.Equip:FireServer(slot)
+	if player.Character then
+		Pose.playSwap(player.Character) -- right away, without waiting for the server
+	end
 end
 
 local function swap()
