@@ -7,9 +7,10 @@
 -- copy of each body part, so a crouched or prone player really is smaller there too.
 --
 -- How it works: each R15 joint has a Transform, the rotation that animations
--- set. Older rigs use Motor6D joints; newer Studio avatars use
--- AnimationConstraint joints (with the same names), and both work here. Every frame we blend that toward our pose. The owning client
--- also lowers Humanoid.HipHeight (and the camera) so the body sits on the floor.
+-- set. Every frame we blend that toward our pose. Older rigs use Motor6D
+-- joints; newer Studio avatars use AnimationConstraint joints with the same
+-- names, and both work here. The owning client also lowers Humanoid.HipHeight
+-- (and the camera) so the body sits on the floor.
 --
 -- On top of the stance there is always a "hold" pose: both arms forward, as
 -- if holding the shotgun, so the gun in your hands points where you aim.
