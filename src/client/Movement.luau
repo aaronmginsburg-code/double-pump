@@ -253,6 +253,8 @@ local function onJumpKey()
 	elseif state.stance == "Crouch" or state.stance == "Prone" then
 		setStance("Stand")
 		jumpBlocked = true -- stand up only; jump on the next press
+	elseif state.stance == "Stand" then
+		jump() -- a quick tap can be over before the per-frame check sees it
 	end
 end
 
