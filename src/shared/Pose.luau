@@ -6,8 +6,9 @@
 -- Running it on the server matters: the server checks shots against its own
 -- copy of each body part, so a crouched or prone player really is smaller there too.
 --
--- How it works: each R15 joint (Motor6D) has a Transform, the rotation that
--- animations set. Every frame we blend that toward our pose. The owning client
+-- How it works: each R15 joint has a Transform, the rotation that animations
+-- set. Older rigs use Motor6D joints; newer Studio avatars use
+-- AnimationConstraint joints (with the same names), and both work here. Every frame we blend that toward our pose. The owning client
 -- also lowers Humanoid.HipHeight (and the camera) so the body sits on the floor.
 --
 -- On top of the stance there is always a "hold" pose: both arms forward, as
@@ -103,11 +104,27 @@ local TRANSITION_TIMES = {
 
 type State = {
 	weights: { [string]: number }, -- 0..1 how far into each stance pose
-	joints: { [string]: Motor6D },
+	joints: { [string]: Joint },
 	posed: { [string]: boolean }, -- joints we overrode last frame
 	standHipHeight: number,
 	hipHeights: { [string]: number }, -- HipHeight for each stance
 }
+
+-- Motor6D (older rigs) or AnimationConstraint (newer avatars); both have Transform
+type Joint = any
+
+local function isJoint(instance: Instance?): boolean
+	return instance ~= nil and (instance:IsA("Motor6D") or instance:IsA("AnimationConstraint"))
+end
+
+-- Where a joint sits in its parent part (C0) and in its child part (C1)
+local function jointOffsets(joint: Joint): (CFrame, CFrame)
+	if joint:IsA("Motor6D") then
+		return joint.C0, joint.C1
+	end
+	local a0, a1 = joint.Attachment0, joint.Attachment1
+	return if a0 then a0.CFrame else CFrame.identity, if a1 then a1.CFrame else CFrame.identity
+end
 
 -- character -> State. Weak keys: entries vanish when a character is destroyed.
 local states: { [Model]: State } = setmetatable({}, { __mode = "k" }) :: any
@@ -121,7 +138,7 @@ local function setup(character: Model): State?
 	for jointName, partName in JOINTS do
 		local part = character:FindFirstChild(partName)
 		local joint = part and part:FindFirstChild(jointName)
-		if not joint or not joint:IsA("Motor6D") then
+		if not isJoint(joint) then
 			return nil -- not an R15 rig (or still loading)
 		end
 		joints[jointName] = joint
@@ -129,8 +146,11 @@ local function setup(character: Model): State?
 
 	-- Measure the legs so the crouch drop matches the bent-knee pose:
 	-- a bent thigh/shin covers less height than a straight one.
-	local thighLength = (joints.LeftHip.C1.Position - joints.LeftKnee.C0.Position).Magnitude
-	local shinLength = (joints.LeftKnee.C1.Position - joints.LeftAnkle.C0.Position).Magnitude
+	local _, hipInThigh = jointOffsets(joints.LeftHip)
+	local kneeInThigh, kneeInShin = jointOffsets(joints.LeftKnee)
+	local ankleInShin = jointOffsets(joints.LeftAnkle)
+	local thighLength = (hipInThigh.Position - kneeInThigh.Position).Magnitude
+	local shinLength = (kneeInShin.Position - ankleInShin.Position).Magnitude
 	local shinAngle = knee - thigh -- how far the shin tilts back from straight down
 	local crouchDrop = thighLength * (1 - math.cos(math.rad(thigh))) + shinLength * (1 - math.cos(math.rad(shinAngle)))
 
