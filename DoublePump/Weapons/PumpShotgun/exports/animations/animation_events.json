@@ -1,0 +1,152 @@
+{
+  "fps": 60,
+  "units": "metres, bone-local (bones point +Y = muzzle)",
+  "actions": {
+    "PumpShotgun_Idle": {
+      "frames": [
+        0,
+        240
+      ],
+      "duration_s": 4.0,
+      "loop": true,
+      "events": {},
+      "notes": "Subtle breathing sway. Loop."
+    },
+    "PumpShotgun_Fire": {
+      "frames": [
+        0,
+        18
+      ],
+      "duration_s": 0.3,
+      "loop": false,
+      "events": {
+        "Fire": {
+          "frame": 0,
+          "time_s": 0.0
+        },
+        "RecoverEnd": {
+          "frame": 12,
+          "time_s": 0.2
+        }
+      },
+      "notes": "Recoil kick: back + muzzle up, fast recovery. Trigger pulled at frame 0."
+    },
+    "PumpShotgun_Pump": {
+      "frames": [
+        0,
+        30
+      ],
+      "duration_s": 0.5,
+      "loop": false,
+      "events": {
+        "EjectShell": {
+          "frame": 8,
+          "time_s": 0.1333
+        },
+        "PumpBack": {
+          "frame": 11,
+          "time_s": 0.1833
+        },
+        "PumpForward": {
+          "frame": 26,
+          "time_s": 0.4333
+        }
+      },
+      "notes": "Forend + bolt travel back the full stroke, spent hull leaves the port, carrier lifts."
+    },
+    "PumpShotgun_ReloadStart": {
+      "frames": [
+        0,
+        18
+      ],
+      "duration_s": 0.3,
+      "loop": false,
+      "events": {
+        "ReadyToInsert": {
+          "frame": 18,
+          "time_s": 0.3
+        }
+      },
+      "notes": "Rolls the gun to present the loading port. Follow with ReloadInsert."
+    },
+    "PumpShotgun_ReloadInsert": {
+      "frames": [
+        0,
+        36
+      ],
+      "duration_s": 0.6,
+      "loop": false,
+      "events": {
+        "ShellInserted": {
+          "frame": 22,
+          "time_s": 0.3667
+        },
+        "InsertEnd": {
+          "frame": 36,
+          "time_s": 0.6
+        }
+      },
+      "notes": "One shell through the loading port into the tube. Start and end poses match, so it can repeat, or be cut after ShellInserted for ReloadEnd/Fire."
+    },
+    "PumpShotgun_ReloadEnd": {
+      "frames": [
+        0,
+        18
+      ],
+      "duration_s": 0.3,
+      "loop": false,
+      "events": {
+        "ReloadDone": {
+          "frame": 18,
+          "time_s": 0.3
+        }
+      },
+      "notes": "Returns from the reload pose to rest."
+    },
+    "PumpShotgun_Equip": {
+      "frames": [
+        0,
+        24
+      ],
+      "duration_s": 0.4,
+      "loop": false,
+      "events": {
+        "Ready": {
+          "frame": 20,
+          "time_s": 0.3333
+        }
+      },
+      "notes": "Raise from below the screen to the ready position."
+    },
+    "PumpShotgun_SwapIn": {
+      "frames": [
+        0,
+        9
+      ],
+      "duration_s": 0.15,
+      "loop": false,
+      "events": {
+        "Ready": {
+          "frame": 7,
+          "time_s": 0.1167
+        }
+      },
+      "notes": "Fast raise for the double-pump swap (0.15 s at speed 1)."
+    },
+    "PumpShotgun_Unequip": {
+      "frames": [
+        0,
+        9
+      ],
+      "duration_s": 0.15,
+      "loop": false,
+      "events": {
+        "Hidden": {
+          "frame": 6,
+          "time_s": 0.1
+        }
+      },
+      "notes": "Fast drop out of view; used for the double-pump swap and holstering."
+    }
+  }
+}
