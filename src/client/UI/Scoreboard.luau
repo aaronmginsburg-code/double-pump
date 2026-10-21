@@ -55,15 +55,12 @@ local function buildColumn(parent: Instance, team: string, x: number)
 		FontFace = Theme.Fonts.Display,
 		Parent = panel,
 	})
-	local head = new(
-		"Frame",
-		{
-			Size = UDim2.new(1, -40, 0, 24),
-			Position = UDim2.fromOffset(20, 70),
-			BackgroundTransparency = 1,
-			Parent = panel,
-		}
-	)
+	local head = new("Frame", {
+		Size = UDim2.new(1, -40, 0, 24),
+		Position = UDim2.fromOffset(20, 70),
+		BackgroundTransparency = 1,
+		Parent = panel,
+	})
 	local right = 0
 	for i = #COLS, 1, -1 do
 		local col = COLS[i]

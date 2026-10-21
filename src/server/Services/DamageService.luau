@@ -158,6 +158,7 @@ end
 function DamageService.kill(target: Model)
 	local humanoid = target:FindFirstChildOfClass("Humanoid")
 	if humanoid and humanoid.Health > 0 then
+		CharacterService.endProtection(target)
 		DamageService.apply(nil, target, humanoid.Health, {
 			slot = 0,
 			headshot = false,

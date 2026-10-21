@@ -5,6 +5,7 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
+local GuiService = game:GetService("GuiService")
 
 local Shared = ReplicatedStorage.Shared
 local Net = require(Shared.Net)
@@ -17,6 +18,7 @@ local Controllers = script.Parent.Parent.Controllers
 local MatchClient = require(Controllers.MatchClient)
 local ProfileClient = require(Controllers.ProfileClient)
 local AudioController = require(Controllers.AudioController)
+local InputController = require(Controllers.InputController)
 
 local Postgame = {}
 
@@ -211,15 +213,12 @@ local function showResults(data: any)
 		{ key = "score", title = "SCORE" },
 	}
 	local colWidth = 74
-	local head = new(
-		"Frame",
-		{
-			Size = UDim2.new(1, -40, 0, 26),
-			Position = UDim2.fromOffset(20, 16),
-			BackgroundTransparency = 1,
-			Parent = tablePanel,
-		}
-	)
+	local head = new("Frame", {
+		Size = UDim2.new(1, -40, 0, 26),
+		Position = UDim2.fromOffset(20, 16),
+		BackgroundTransparency = 1,
+		Parent = tablePanel,
+	})
 	for i, col in cols do
 		Theme.label({
 			Text = col.title,
@@ -251,17 +250,13 @@ local function showResults(data: any)
 	end)
 	for i, row in board do
 		local mine = row.userId == player.UserId
-		local r = new(
-			"Frame",
-			{
-				Size = UDim2.new(1, -8, 0, 44),
-				BackgroundColor3 = Theme.teamColor(row.team),
-				BackgroundTransparency = if mine then 0.45 else 0.8,
-				LayoutOrder = i,
-				Parent = list,
-			},
-			{ Theme.corner(6) }
-		)
+		local r = new("Frame", {
+			Size = UDim2.new(1, -8, 0, 44),
+			BackgroundColor3 = Theme.teamColor(row.team),
+			BackgroundTransparency = if mine then 0.45 else 0.8,
+			LayoutOrder = i,
+			Parent = list,
+		}, { Theme.corner(6) })
 		Theme.label({
 			Text = row.name,
 			Size = UDim2.new(1, -(#cols * colWidth) - 20, 0, 26),
@@ -320,16 +315,12 @@ local function showReward(reward: any)
 	if pending then
 		pending:Destroy()
 	end
-	local list = new(
-		"Frame",
-		{
-			Size = UDim2.new(1, -40, 1, -80),
-			Position = UDim2.fromOffset(20, 70),
-			BackgroundTransparency = 1,
-			Parent = rewardPanel,
-		},
-		{ Theme.list(Enum.FillDirection.Vertical, 4, Enum.HorizontalAlignment.Left) }
-	)
+	local list = new("Frame", {
+		Size = UDim2.new(1, -40, 1, -80),
+		Position = UDim2.fromOffset(20, 70),
+		BackgroundTransparency = 1,
+		Parent = rewardPanel,
+	}, { Theme.list(Enum.FillDirection.Vertical, 4, Enum.HorizontalAlignment.Left) })
 	local function line(order: number, left: string, right: string, color: Color3?)
 		local row = new(
 			"Frame",
@@ -373,16 +364,12 @@ local function showReward(reward: any)
 		AudioController.play("Reward")
 	end
 	local info = Levels.fromXp(reward.totalXp or 0)
-	local bar = new(
-		"Frame",
-		{
-			Size = UDim2.new(1, -40, 0, 10),
-			Position = UDim2.new(0, 20, 1, -24),
-			BackgroundColor3 = C.Ink,
-			Parent = rewardPanel,
-		},
-		{ Theme.corner(5) }
-	)
+	local bar = new("Frame", {
+		Size = UDim2.new(1, -40, 0, 10),
+		Position = UDim2.new(0, 20, 1, -24),
+		BackgroundColor3 = C.Ink,
+		Parent = rewardPanel,
+	}, { Theme.corner(5) })
 	local fill = new(
 		"Frame",
 		{ Size = UDim2.fromScale(0, 1), BackgroundColor3 = C.Accent, Parent = bar },
@@ -421,27 +408,20 @@ local function showVoting(data: any)
 		FontFace = Theme.Fonts.Bold,
 		Parent = votingFrame,
 	})
-	local row = new(
-		"Frame",
-		{
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.fromScale(0.5, 0.56),
-			Size = UDim2.fromOffset(1500, 520),
-			BackgroundTransparency = 1,
-			Parent = votingFrame,
-		},
-		{
-			new(
-				"UIListLayout",
-				{
-					FillDirection = Enum.FillDirection.Horizontal,
-					Padding = UDim.new(0, 30),
-					HorizontalAlignment = Enum.HorizontalAlignment.Center,
-					SortOrder = Enum.SortOrder.LayoutOrder,
-				}
-			),
-		}
-	)
+	local row = new("Frame", {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Position = UDim2.fromScale(0.5, 0.56),
+		Size = UDim2.fromOffset(1500, 520),
+		BackgroundTransparency = 1,
+		Parent = votingFrame,
+	}, {
+		new("UIListLayout", {
+			FillDirection = Enum.FillDirection.Horizontal,
+			Padding = UDim.new(0, 30),
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			SortOrder = Enum.SortOrder.LayoutOrder,
+		}),
+	})
 	for i, option in data.options or {} do
 		local colors = MAP_COLORS[option.id] or { C.PanelLight, C.Panel }
 		local card = new("TextButton", {
@@ -456,17 +436,13 @@ local function showVoting(data: any)
 		stroke.Parent = card
 		local image = (AssetIds.Images :: any)["Map" .. option.id]
 		if image and image ~= "" then
-			new(
-				"ImageLabel",
-				{
-					Size = UDim2.new(1, 0, 0, 300),
-					BackgroundTransparency = 1,
-					Image = image,
-					ScaleType = Enum.ScaleType.Crop,
-					Parent = card,
-				},
-				{ Theme.corner(16) }
-			)
+			new("ImageLabel", {
+				Size = UDim2.new(1, 0, 0, 300),
+				BackgroundTransparency = 1,
+				Image = image,
+				ScaleType = Enum.ScaleType.Crop,
+				Parent = card,
+			}, { Theme.corner(16) })
 		else
 			Theme.label({
 				Text = string.upper(option.name),
@@ -478,17 +454,13 @@ local function showVoting(data: any)
 				Parent = card,
 			})
 		end
-		local info = new(
-			"Frame",
-			{
-				Size = UDim2.new(1, 0, 0, 220),
-				Position = UDim2.new(0, 0, 1, -220),
-				BackgroundColor3 = C.Ink,
-				BackgroundTransparency = 0.15,
-				Parent = card,
-			},
-			{ Theme.corner(16) }
-		)
+		local info = new("Frame", {
+			Size = UDim2.new(1, 0, 0, 220),
+			Position = UDim2.new(0, 0, 1, -220),
+			BackgroundColor3 = C.Ink,
+			BackgroundTransparency = 0.15,
+			Parent = card,
+		}, { Theme.corner(16) })
 		Theme.label({
 			Text = option.name,
 			Size = UDim2.new(1, -40, 0, 50),
@@ -530,6 +502,9 @@ local function showVoting(data: any)
 			end
 		end)
 		voteCards[option.id] = { frame = card, count = count, stroke = stroke }
+		if i == 1 and InputController.LastInputKind == "Gamepad" then
+			GuiService.SelectedObject = card
+		end
 	end
 end
 
@@ -559,16 +534,13 @@ end
 function Postgame.start()
 	gui, root = UIRoot.screen("Postgame", 20)
 	gui.Enabled = false
-	new(
-		"Frame",
-		{
-			Size = UDim2.fromScale(1, 1),
-			BackgroundColor3 = C.Ink,
-			BackgroundTransparency = 0.35,
-			BorderSizePixel = 0,
-			Parent = root,
-		}
-	)
+	new("Frame", {
+		Size = UDim2.fromScale(1, 1),
+		BackgroundColor3 = C.Ink,
+		BackgroundTransparency = 0.35,
+		BorderSizePixel = 0,
+		Parent = root,
+	})
 	resultsFrame = new(
 		"Frame",
 		{ Name = "Results", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, Parent = root }

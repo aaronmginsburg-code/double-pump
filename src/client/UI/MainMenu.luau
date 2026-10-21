@@ -435,16 +435,12 @@ pageBuilders.Profile = function(page)
 		FontFace = Theme.Fonts.Display,
 		Parent = top,
 	})
-	refs.ProfileLevel = body(
-		top,
-		"",
-		{
-			Position = UDim2.fromOffset(30, 80),
-			Size = UDim2.fromOffset(600, 26),
-			TextColor3 = C.Text,
-			FontFace = Theme.Fonts.Bold,
-		}
-	)
+	refs.ProfileLevel = body(top, "", {
+		Position = UDim2.fromOffset(30, 80),
+		Size = UDim2.fromOffset(600, 26),
+		TextColor3 = C.Text,
+		FontFace = Theme.Fonts.Bold,
+	})
 	local _, fill = progressBar(top, { Size = UDim2.new(1, -60, 0, 14), Position = UDim2.fromOffset(30, 120) })
 	refs.ProfileXpFill = fill
 
@@ -458,25 +454,18 @@ pageBuilders.Profile = function(page)
 		FontFace = Theme.Fonts.Display,
 		Parent = statsPanel,
 	})
-	local grid = new(
-		"Frame",
-		{
-			Size = UDim2.new(1, -48, 1, -80),
-			Position = UDim2.fromOffset(24, 66),
-			BackgroundTransparency = 1,
-			Parent = statsPanel,
-		},
-		{
-			new(
-				"UIGridLayout",
-				{
-					CellSize = UDim2.new(0.5, -8, 0, 64),
-					CellPadding = UDim2.fromOffset(8, 8),
-					SortOrder = Enum.SortOrder.LayoutOrder,
-				}
-			),
-		}
-	)
+	local grid = new("Frame", {
+		Size = UDim2.new(1, -48, 1, -80),
+		Position = UDim2.fromOffset(24, 66),
+		BackgroundTransparency = 1,
+		Parent = statsPanel,
+	}, {
+		new("UIGridLayout", {
+			CellSize = UDim2.new(0.5, -8, 0, 64),
+			CellPadding = UDim2.fromOffset(8, 8),
+			SortOrder = Enum.SortOrder.LayoutOrder,
+		}),
+	})
 	refs.StatCells = {}
 	for i, key in { "Eliminations", "K/D", "Wins", "Matches", "Headshots", "Double pumps", "Assists", "Accuracy" } do
 		local cell = new(
@@ -505,15 +494,12 @@ pageBuilders.Profile = function(page)
 		})
 	end
 
-	local right = new(
-		"Frame",
-		{
-			Size = UDim2.new(0.5, -10, 0, 380),
-			Position = UDim2.new(0.5, 10, 0, 190),
-			BackgroundTransparency = 1,
-			Parent = page,
-		}
-	)
+	local right = new("Frame", {
+		Size = UDim2.new(0.5, -10, 0, 380),
+		Position = UDim2.new(0.5, 10, 0, 190),
+		BackgroundTransparency = 1,
+		Parent = page,
+	})
 	local mastery = Theme.panel({ Size = UDim2.new(1, 0, 0, 120), Parent = right })
 	Theme.label({
 		Text = "PUMP SHOTGUN MASTERY",
@@ -539,16 +525,12 @@ pageBuilders.Profile = function(page)
 		FontFace = Theme.Fonts.Display,
 		Parent = challenges,
 	})
-	local toggleButton = Theme.button(
-		"DAILY",
-		"Secondary",
-		{
-			Size = UDim2.fromOffset(140, 34),
-			AnchorPoint = Vector2.new(1, 0),
-			Position = UDim2.new(1, -20, 0, 14),
-			Parent = challenges,
-		}
-	)
+	local toggleButton = Theme.button("DAILY", "Secondary", {
+		Size = UDim2.fromOffset(140, 34),
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -20, 0, 14),
+		Parent = challenges,
+	})
 	refs.ChallengeKind = "daily"
 	toggleButton.Activated:Connect(function()
 		refs.ChallengeKind = if refs.ChallengeKind == "daily" then "weekly" else "daily"
@@ -608,17 +590,13 @@ pageRefreshers.Profile = function()
 		return
 	end
 	for i, entry in set.entries or {} do
-		local rowFrame = new(
-			"Frame",
-			{
-				Size = UDim2.new(1, 0, 0, 44),
-				BackgroundColor3 = C.PanelLight,
-				BackgroundTransparency = 0.4,
-				LayoutOrder = i,
-				Parent = list,
-			},
-			{ Theme.corner(8) }
-		)
+		local rowFrame = new("Frame", {
+			Size = UDim2.new(1, 0, 0, 44),
+			BackgroundColor3 = C.PanelLight,
+			BackgroundTransparency = 0.4,
+			LayoutOrder = i,
+			Parent = list,
+		}, { Theme.corner(8) })
 		Theme.label({
 			Text = (if entry.done then "✓  " else "") .. entry.text,
 			Size = UDim2.new(0.62, 0, 0, 20),
@@ -701,16 +679,12 @@ local function drawBoard()
 	if not board then
 		return
 	end
-	local list = new(
-		"Frame",
-		{
-			Size = UDim2.new(1, -48, 1, -40),
-			Position = UDim2.fromOffset(24, 20),
-			BackgroundTransparency = 1,
-			Parent = panel,
-		},
-		{ Theme.list(Enum.FillDirection.Vertical, 4, Enum.HorizontalAlignment.Left) }
-	)
+	local list = new("Frame", {
+		Size = UDim2.new(1, -48, 1, -40),
+		Position = UDim2.fromOffset(24, 20),
+		BackgroundTransparency = 1,
+		Parent = panel,
+	}, { Theme.list(Enum.FillDirection.Vertical, 4, Enum.HorizontalAlignment.Left) })
 	if #board.entries == 0 then
 		body(list, "No entries yet. Be the first.", {})
 	end
@@ -719,17 +693,13 @@ local function drawBoard()
 			break
 		end
 		local mine = entry.userId == player.UserId
-		local rowFrame = new(
-			"Frame",
-			{
-				Size = UDim2.new(1, 0, 0, 40),
-				BackgroundColor3 = if mine then C.AccentDark else C.PanelLight,
-				BackgroundTransparency = if mine then 0.3 else 0.55,
-				LayoutOrder = i,
-				Parent = list,
-			},
-			{ Theme.corner(6) }
-		)
+		local rowFrame = new("Frame", {
+			Size = UDim2.new(1, 0, 0, 40),
+			BackgroundColor3 = if mine then C.AccentDark else C.PanelLight,
+			BackgroundTransparency = if mine then 0.3 else 0.55,
+			LayoutOrder = i,
+			Parent = list,
+		}, { Theme.corner(6) })
 		local rankColor = if i == 1
 			then C.Gold
 			elseif i == 2 then Color3.fromRGB(200, 205, 215)
@@ -811,16 +781,12 @@ end
 
 pageBuilders.Tutorial = function(page)
 	local panel = Theme.panel({ Size = UDim2.new(1, 0, 0, 520), Parent = page })
-	local list = new(
-		"Frame",
-		{
-			Size = UDim2.new(1, -60, 1, -40),
-			Position = UDim2.fromOffset(30, 24),
-			BackgroundTransparency = 1,
-			Parent = panel,
-		},
-		{ Theme.list(Enum.FillDirection.Vertical, 12, Enum.HorizontalAlignment.Left) }
-	)
+	local list = new("Frame", {
+		Size = UDim2.new(1, -60, 1, -40),
+		Position = UDim2.fromOffset(30, 24),
+		BackgroundTransparency = 1,
+		Parent = panel,
+	}, { Theme.list(Enum.FillDirection.Vertical, 12, Enum.HorizontalAlignment.Left) })
 	sectionTitle(list, "THE DOUBLE PUMP", 1)
 	local lines = {
 		"You carry two identical pump shotguns. Each one has its own shells and its own pump cooldown.",
@@ -1011,16 +977,12 @@ function MainMenu.start()
 		FontFace = Theme.Fonts.Heavy,
 		Parent = topBar,
 	})
-	local close = Theme.button(
-		"✕",
-		"Ghost",
-		{
-			Size = UDim2.fromOffset(56, 56),
-			AnchorPoint = Vector2.new(1, 0),
-			Position = UDim2.new(1, 0, 0, 4),
-			Parent = topBar,
-		}
-	)
+	local close = Theme.button("✕", "Ghost", {
+		Size = UDim2.fromOffset(56, 56),
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, 0, 0, 4),
+		Parent = topBar,
+	})
 	close.Activated:Connect(function()
 		MainMenu.close()
 	end)

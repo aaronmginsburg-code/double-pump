@@ -18,6 +18,7 @@ local MainMenu = require(UI.MainMenu)
 local DeathScreen = require(UI.DeathScreen)
 local Scoreboard = require(UI.Scoreboard)
 local Postgame = require(UI.Postgame)
+local MobileControls = require(UI.MobileControls)
 
 local GameFlow = {}
 
@@ -89,6 +90,7 @@ function GameFlow.refresh()
 		InputController.releaseAll()
 	end
 	ViewmodelController.setEnabled(playing)
+	MobileControls.setActive(InputController.combatEnabled)
 	Hud.setVisible(mode ~= "Menu" and not inPostgame and not menuOpen)
 	if isAlive or mode == "Menu" or inPostgame then
 		DeathScreen.hide()

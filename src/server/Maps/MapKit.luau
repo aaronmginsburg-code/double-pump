@@ -318,6 +318,34 @@ function MapKit.spawn(self: Builder, team: string, position: Vector3, lookAt: Ve
 end
 
 ---------------------------------------------------------------------------------------
+-- Symmetry. Arenas are point-symmetric around the origin (rotated 180° about Y), so Red
+-- (-X) and Blue (+X) get exactly the same layout. Build one half with `side` = 1 and
+-- call it again with `side` = -1:
+--
+--   MapKit.both(function(s) b:box(size, MapKit.cf(s, -30, 2, 10, 90), ...) end)
+
+function MapKit.both(fn: (side: number) -> ())
+	fn(1)
+	fn(-1)
+end
+
+-- Point in half `side` (side -1 mirrors x and z).
+function MapKit.p(side: number, x: number, y: number, z: number): Vector3
+	return Vector3.new(x * side, y, z * side)
+end
+
+-- CFrame in half `side`, yawed `yawDeg` degrees (turned 180° extra in the mirrored half).
+function MapKit.cf(side: number, x: number, y: number, z: number, yawDeg: number?): CFrame
+	local yaw = math.rad(yawDeg or 0) + (if side < 0 then math.pi else 0)
+	return CFrame.new(x * side, y, z * side) * CFrame.Angles(0, yaw, 0)
+end
+
+-- Unit horizontal direction in half `side`.
+function MapKit.dir(side: number, x: number, z: number): Vector3
+	return Vector3.new(x * side, 0, z * side).Unit
+end
+
+---------------------------------------------------------------------------------------
 -- Props
 
 function MapKit.crate(self: Builder, cf: CFrame, size: number?, color: Color3?)
@@ -446,8 +474,8 @@ function MapKit.pallet(self: Builder, cf: CFrame)
 	end
 end
 
--- Wall along X or Z from a to b (floor level) with door-sized openings at the given
--- distances along the wall: { {at=, width=, height=} }.
+-- Wall along X or Z from a to b (floor level) with openings at the given distances
+-- along the wall: { {at=, width=, height=, bottom=} } (bottom > 0 makes a window).
 function MapKit.wall(
 	self: Builder,
 	a: Vector3,
@@ -456,7 +484,7 @@ function MapKit.wall(
 	thickness: number,
 	material: Enum.Material,
 	color: Color3,
-	openings: { { at: number, width: number, height: number } }?
+	openings: { { at: number, width: number, height: number, bottom: number? } }?
 )
 	local dir = (b - a)
 	local length = dir.Magnitude
@@ -470,7 +498,7 @@ function MapKit.wall(
 		local cf = CFrame.fromMatrix(center, right, Vector3.yAxis, -unit)
 		self:box(Vector3.new(thickness, y1 - y0, to - from), cf, material, color, { name = "Wall" })
 	end
-	local list: { { at: number, width: number, height: number } } = table.clone(openings or {})
+	local list: { { at: number, width: number, height: number, bottom: number? } } = table.clone(openings or {})
 	table.sort(list, function(x, y)
 		return x.at < y.at
 	end)
@@ -479,6 +507,7 @@ function MapKit.wall(
 		local left = opening.at - opening.width / 2
 		local rightEdge = opening.at + opening.width / 2
 		segment(cursor, left, 0, height)
+		segment(left, rightEdge, 0, opening.bottom or 0)
 		segment(left, rightEdge, opening.height, height)
 		cursor = rightEdge
 	end

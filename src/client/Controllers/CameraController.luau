@@ -49,6 +49,11 @@ CameraController.isTouchOnControl = function(_position: Vector2): boolean
 	return false
 end
 
+-- Lets a touch that began on a control (the FIRE button) also steer the camera.
+function CameraController.addLookTouch(input: InputObject)
+	touchLookInputs[input] = true
+end
+
 function CameraController.requestCursor(): () -> ()
 	cursorRequests += 1
 	local released = false

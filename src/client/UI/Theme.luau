@@ -143,15 +143,12 @@ function Theme.button(text: string, style: ButtonStyle?, props: { [string]: any 
 	local button = new("TextButton", p, {
 		Theme.corner(10),
 		Theme.stroke(if s == "Primary" then Theme.Colors.AccentDark else Theme.Colors.Stroke, 2),
-		new(
-			"UIPadding",
-			{
-				PaddingTop = UDim.new(0.18, 0),
-				PaddingBottom = UDim.new(0.18, 0),
-				PaddingLeft = UDim.new(0, 10),
-				PaddingRight = UDim.new(0, 10),
-			}
-		),
+		new("UIPadding", {
+			PaddingTop = UDim.new(0.18, 0),
+			PaddingBottom = UDim.new(0.18, 0),
+			PaddingLeft = UDim.new(0, 10),
+			PaddingRight = UDim.new(0, 10),
+		}),
 	}) :: TextButton
 	local scale = new("UIScale", { Parent = button }) :: UIScale
 	local function tween(to: number)

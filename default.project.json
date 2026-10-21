@@ -27,6 +27,10 @@
         "Health": {
           "$path": "src/character/Health.server.luau"
         }
+      },
+      "$properties": {
+        "CharacterJumpHeight": 7.6,
+        "CharacterUseJumpPower": false
       }
     },
     "Players": {
@@ -36,12 +40,19 @@
     },
     "Workspace": {
       "$properties": {
-        "Gravity": 196.2
+        "Gravity": 196.2,
+        "StreamingEnabled": false
       }
     },
     "SoundService": {
       "$properties": {
         "RespectFilteringEnabled": true
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Technology": "Future",
+        "GlobalShadows": true
       }
     }
   }

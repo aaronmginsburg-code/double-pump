@@ -237,14 +237,11 @@ local function buildWeapons()
 			BackgroundTransparency = 1,
 			Parent = card,
 		}, {
-			new(
-				"UIListLayout",
-				{
-					FillDirection = Enum.FillDirection.Horizontal,
-					Padding = UDim.new(0, 8),
-					SortOrder = Enum.SortOrder.LayoutOrder,
-				}
-			),
+			new("UIListLayout", {
+				FillDirection = Enum.FillDirection.Horizontal,
+				Padding = UDim.new(0, 8),
+				SortOrder = Enum.SortOrder.LayoutOrder,
+			}),
 		})
 		local pips = {}
 		for i = 1, 5 do

@@ -247,16 +247,12 @@ function Tutorial.start()
 		Outline = false,
 		Parent = panel,
 	})
-	local dotRow = new(
-		"Frame",
-		{
-			Size = UDim2.fromOffset(200, 12),
-			Position = UDim2.new(1, -224, 0, 22),
-			BackgroundTransparency = 1,
-			Parent = panel,
-		},
-		{ Theme.list(Enum.FillDirection.Horizontal, 8, Enum.HorizontalAlignment.Right) }
-	)
+	local dotRow = new("Frame", {
+		Size = UDim2.fromOffset(200, 12),
+		Position = UDim2.new(1, -224, 0, 22),
+		BackgroundTransparency = 1,
+		Parent = panel,
+	}, { Theme.list(Enum.FillDirection.Horizontal, 8, Enum.HorizontalAlignment.Right) })
 	for i = 1, #STEPS do
 		dots[i] = new(
 			"Frame",
@@ -264,16 +260,12 @@ function Tutorial.start()
 			{ Theme.corner(5) }
 		)
 	end
-	local skip = Theme.button(
-		"SKIP  [Backspace]",
-		"Ghost",
-		{
-			Size = UDim2.fromOffset(220, 40),
-			AnchorPoint = Vector2.new(1, 1),
-			Position = UDim2.new(1, -20, 1, -16),
-			Parent = panel,
-		}
-	)
+	local skip = Theme.button("SKIP  [Backspace]", "Ghost", {
+		Size = UDim2.fromOffset(220, 40),
+		AnchorPoint = Vector2.new(1, 1),
+		Position = UDim2.new(1, -20, 1, -16),
+		Parent = panel,
+	})
 	skip.Activated:Connect(Tutorial.skip)
 end
 

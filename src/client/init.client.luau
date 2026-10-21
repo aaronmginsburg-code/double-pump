@@ -29,6 +29,9 @@ local DeathScreen = require(UI.DeathScreen)
 local Postgame = require(UI.Postgame)
 local Tutorial = require(UI.Tutorial)
 local Toasts = require(UI.Toasts)
+local MobileControls = require(UI.MobileControls)
+local SettingsPanel = require(UI.SettingsPanel)
+local DebugOverlay = require(UI.DebugOverlay)
 
 local player = Players.LocalPlayer
 
@@ -65,6 +68,8 @@ start("DeathScreen", DeathScreen.start)
 start("Postgame", Postgame.start)
 start("Tutorial", Tutorial.start)
 start("MainMenu", MainMenu.start)
+start("MobileControls", MobileControls.start)
+start("DebugOverlay", DebugOverlay.start)
 
 -- Wiring between pieces
 Theme.onClick = function()
@@ -73,6 +78,7 @@ end
 Theme.onHover = function()
 	AudioController.play("UIHover", { volume = 0.5 })
 end
+SettingsPanel.editTouchLayout = MobileControls.edit
 MainMenu.onStartTutorial = function()
 	MainMenu.close()
 	Tutorial.begin()

@@ -435,6 +435,10 @@ function MatchService.modeOf(player: Player): Mode
 	return modes[player] or "Menu"
 end
 
+function MatchService.inCombat(): boolean
+	return inCombat()
+end
+
 function MatchService.state(): string
 	return match.state
 end
@@ -571,6 +575,23 @@ function MatchService.start()
 		local events = MatchRules.step(match, step, { players = #matchPlayers(), soloAllowed = soloAllowed })
 		if #events > 0 then
 			handle(events)
+		end
+	end)
+	-- Falling off the map (Rooftops' drops, or out of the world) eliminates you
+	local fallCheck = 0
+	RunService.Heartbeat:Connect(function(dt)
+		fallCheck += dt
+		if fallCheck < 0.25 then
+			return
+		end
+		fallCheck = 0
+		local killY = MapService.killY()
+		for _, p in Players:GetPlayers() do
+			local character = p.Character
+			local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
+			if character and root and root.Position.Y < killY and Combatants.isAlive(character) then
+				DamageService.kill(character)
+			end
 		end
 	end)
 	-- Anyone who (re)spawns into the arena outside live play stays frozen until it starts

@@ -276,6 +276,15 @@ function CharacterService.setSkinProvider(fn: (Player) -> any)
 	skinProvider = fn
 end
 
+-- Re-applies the skin to the gun other players see (after equipping a new skin).
+function CharacterService.refreshSkin(player: Player)
+	local character = player.Character
+	local model = character and character:FindFirstChild("WorldShotgun", true)
+	if skinProvider and model and model:IsA("Model") then
+		ShotgunModel.wrap(model):applySkin(skinProvider(player))
+	end
+end
+
 local function onPlayerAction(player: Player, action: any, value: any)
 	if not limiter:allow(player, os.clock()) then
 		return

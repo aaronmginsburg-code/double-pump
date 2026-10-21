@@ -22,6 +22,8 @@ export type MapModule = {
 	lighting: { [string]: any },
 	ambience: string?,
 	origin: Vector3?,
+	killY: number?, -- players below this height are eliminated (fell off)
+	extents: any?,
 }
 
 MapService.Registry = {} :: { [string]: MapModule }
@@ -129,6 +131,7 @@ function MapService.load(mapId: string): Model
 	model:SetAttribute("MapId", mapId)
 	model:SetAttribute("DisplayName", map.displayName)
 	model:SetAttribute("Ambience", map.ambience or "")
+	model:SetAttribute("KillY", map.killY or -40)
 	prepare(model)
 	model.Parent = workspace
 	arena = model
@@ -190,6 +193,12 @@ function MapService.worldRoots(): { Instance }
 		end
 	end
 	return roots
+end
+
+-- Height below which a character counts as fallen out of the world.
+function MapService.killY(): number
+	local value = arena and arena:GetAttribute("KillY")
+	return if typeof(value) == "number" then value else -40
 end
 
 function MapService.arena(): Model?

@@ -146,29 +146,21 @@ local function slider(
 		Settings.save()
 		show()
 	end
-	local minus = Theme.button(
-		"-",
-		"Ghost",
-		{
-			Size = UDim2.fromOffset(34, 34),
-			AnchorPoint = Vector2.new(1, 0.5),
-			Position = UDim2.new(0.5, -14, 0.5, 0),
-			Parent = frame,
-		}
-	)
+	local minus = Theme.button("-", "Ghost", {
+		Size = UDim2.fromOffset(34, 34),
+		AnchorPoint = Vector2.new(1, 0.5),
+		Position = UDim2.new(0.5, -14, 0.5, 0),
+		Parent = frame,
+	})
 	minus.Activated:Connect(function()
 		nudge(-1)
 	end)
-	local plus = Theme.button(
-		"+",
-		"Ghost",
-		{
-			Size = UDim2.fromOffset(34, 34),
-			AnchorPoint = Vector2.new(0, 0.5),
-			Position = UDim2.new(0.82, 14, 0.5, 0),
-			Parent = frame,
-		}
-	)
+	local plus = Theme.button("+", "Ghost", {
+		Size = UDim2.fromOffset(34, 34),
+		AnchorPoint = Vector2.new(0, 0.5),
+		Position = UDim2.new(0.82, 14, 0.5, 0),
+		Parent = frame,
+	})
 	plus.Activated:Connect(function()
 		nudge(1)
 	end)
