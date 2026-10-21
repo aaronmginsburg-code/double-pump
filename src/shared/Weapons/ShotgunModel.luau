@@ -141,28 +141,116 @@ local function buildStandIn(kind: Kind): (Model, { PartEntry }, { [string]: { Ba
 	-- Receiver and action
 	p("Receiver", "Block", Vector3.new(0.18, 0.27, 0.86), CFrame.new(0, -0.02, -0.13), "metal", "Weapon", parts)
 	p("SightRib", "Block", Vector3.new(0.05, 0.03, 0.86), CFrame.new(0, 0.13, -0.13), "accent", "Weapon", parts)
-	p("Barrel", "Cylinder", Vector3.new(1.62, 0.11, 0.11), CFrame.new(0, boreY, -1.36) * ALONG_Z, "metal", "Weapon", parts)
-	p("Muzzle", "Cylinder", Vector3.new(0.06, 0.125, 0.125), CFrame.new(0, boreY, -2.14) * ALONG_Z, "accent", "Weapon", parts)
-	p("FrontSight", "Block", Vector3.new(0.04, 0.05, 0.05), CFrame.new(0, boreY + 0.075, -2.08), "accent", "Weapon", parts)
-	p("MagTube", "Cylinder", Vector3.new(1.3, 0.095, 0.095), CFrame.new(0, tubeY, -1.2) * ALONG_Z, "metal", "Weapon", parts)
-	p("MagCap", "Cylinder", Vector3.new(0.09, 0.11, 0.11), CFrame.new(0, tubeY, -1.86) * ALONG_Z, "accent", "Weapon", parts)
+	p(
+		"Barrel",
+		"Cylinder",
+		Vector3.new(1.62, 0.11, 0.11),
+		CFrame.new(0, boreY, -1.36) * ALONG_Z,
+		"metal",
+		"Weapon",
+		parts
+	)
+	p(
+		"Muzzle",
+		"Cylinder",
+		Vector3.new(0.06, 0.125, 0.125),
+		CFrame.new(0, boreY, -2.14) * ALONG_Z,
+		"accent",
+		"Weapon",
+		parts
+	)
+	p(
+		"FrontSight",
+		"Block",
+		Vector3.new(0.04, 0.05, 0.05),
+		CFrame.new(0, boreY + 0.075, -2.08),
+		"accent",
+		"Weapon",
+		parts
+	)
+	p(
+		"MagTube",
+		"Cylinder",
+		Vector3.new(1.3, 0.095, 0.095),
+		CFrame.new(0, tubeY, -1.2) * ALONG_Z,
+		"metal",
+		"Weapon",
+		parts
+	)
+	p(
+		"MagCap",
+		"Cylinder",
+		Vector3.new(0.09, 0.11, 0.11),
+		CFrame.new(0, tubeY, -1.86) * ALONG_Z,
+		"accent",
+		"Weapon",
+		parts
+	)
 	p("BarrelBand", "Block", Vector3.new(0.13, 0.2, 0.06), CFrame.new(0, -0.01, -1.72), "accent", "Weapon", parts)
 	p("TriggerGuard", "Block", Vector3.new(0.05, 0.12, 0.34), CFrame.new(0, -0.2, 0.08), "accent", "Weapon", parts)
 	p("Trigger", "Block", Vector3.new(0.03, 0.09, 0.03), CFrame.new(0, -0.17, 0.1), "metal", "Trigger", parts)
 	-- Stock: comb, wrist and butt
-	p("StockWrist", "Block", Vector3.new(0.15, 0.22, 0.42), CFrame.new(0, -0.08, 0.5) * CFrame.Angles(math.rad(-10), 0, 0), "wood", "Weapon", parts)
-	p("Stock", "Block", Vector3.new(0.15, 0.36, 0.78), CFrame.new(0, -0.14, 1.06) * CFrame.Angles(math.rad(-7), 0, 0), "wood", "Weapon", parts)
-	p("ButtPad", "Block", Vector3.new(0.16, 0.42, 0.07), CFrame.new(0, -0.18, 1.48) * CFrame.Angles(math.rad(-7), 0, 0), "accent", "Weapon", parts)
+	p(
+		"StockWrist",
+		"Block",
+		Vector3.new(0.15, 0.22, 0.42),
+		CFrame.new(0, -0.08, 0.5) * CFrame.Angles(math.rad(-10), 0, 0),
+		"wood",
+		"Weapon",
+		parts
+	)
+	p(
+		"Stock",
+		"Block",
+		Vector3.new(0.15, 0.36, 0.78),
+		CFrame.new(0, -0.14, 1.06) * CFrame.Angles(math.rad(-7), 0, 0),
+		"wood",
+		"Weapon",
+		parts
+	)
+	p(
+		"ButtPad",
+		"Block",
+		Vector3.new(0.16, 0.42, 0.07),
+		CFrame.new(0, -0.18, 1.48) * CFrame.Angles(math.rad(-7), 0, 0),
+		"accent",
+		"Weapon",
+		parts
+	)
 	-- Pump (forend) with grooves
 	p("Pump", "Block", Vector3.new(0.2, 0.17, 0.56), CFrame.new(0, tubeY - 0.02, -1.13), "wood", "Pump", parts)
 	for i = -2, 2 do
-		p("PumpGroove", "Block", Vector3.new(0.205, 0.02, 0.03), CFrame.new(0, tubeY - 0.03, -1.13 + i * 0.09), "accent", "Pump", parts)
+		p(
+			"PumpGroove",
+			"Block",
+			Vector3.new(0.205, 0.02, 0.03),
+			CFrame.new(0, tubeY - 0.03, -1.13 + i * 0.09),
+			"accent",
+			"Pump",
+			parts
+		)
 	end
 	p("ActionBar", "Block", Vector3.new(0.02, 0.03, 0.62), CFrame.new(0.08, tubeY + 0.02, -0.8), "metal", "Pump", parts)
 	p("Bolt", "Block", Vector3.new(0.06, 0.07, 0.16), CFrame.new(0.06, B.Bolt.Y, B.Bolt.Z), "metal", "Bolt", parts)
 	-- Shells for the eject/reload beats (hidden at rest)
-	local spent = p("ShellSpent", "Cylinder", Vector3.new(0.25, 0.08, 0.08), CFrame.new(B.ShellSpent) * ALONG_Z, "red", "ShellSpent", parts)
-	local live = p("ShellLive", "Cylinder", Vector3.new(0.25, 0.08, 0.08), CFrame.new(B.ShellLive) * ALONG_Z, "red", "ShellLive", parts)
+	local spent = p(
+		"ShellSpent",
+		"Cylinder",
+		Vector3.new(0.25, 0.08, 0.08),
+		CFrame.new(B.ShellSpent) * ALONG_Z,
+		"red",
+		"ShellSpent",
+		parts
+	)
+	local live = p(
+		"ShellLive",
+		"Cylinder",
+		Vector3.new(0.25, 0.08, 0.08),
+		CFrame.new(B.ShellLive) * ALONG_Z,
+		"red",
+		"ShellLive",
+		parts
+	)
 	spent.Transparency = 1
 	live.Transparency = 1
 
@@ -221,7 +309,10 @@ local function setupImported(self: any, template: Model, clone: boolean)
 	local order: { string } = {}
 	local function visit(bone: Bone)
 		local parent = bone.Parent
-		local parentWorld = if parent and parent:IsA("Bone") then worlds[parent] elseif parent and parent:IsA("BasePart") then parent.CFrame else CFrame.identity
+		local parentWorld = if parent and parent:IsA("Bone")
+			then worlds[parent]
+			elseif parent and parent:IsA("BasePart") then parent.CFrame
+			else CFrame.identity
 		worlds[bone] = parentWorld * bone.CFrame
 		table.insert(order, bone.Name)
 		for _, child in bone:GetChildren() do
@@ -248,7 +339,9 @@ local function setupImported(self: any, template: Model, clone: boolean)
 	end
 	self.boneOrder = order
 	if not rootBone then
-		warn("[Double Pump] Imported shotgun has no ViewmodelRoot bone; animations disabled. See docs/ASSET_PIPELINE.md")
+		warn(
+			"[Double Pump] Imported shotgun has no ViewmodelRoot bone; animations disabled. See docs/ASSET_PIPELINE.md"
+		)
 	end
 end
 
@@ -310,7 +403,8 @@ function ShotgunModel.wrap(model: Model): ShotgunModel
 		local receiver = model:FindFirstChild("Receiver")
 		for _, d in model:GetDescendants() do
 			if d:IsA("BasePart") and d:GetAttribute("Bone") then
-				local entry = { part = d, bone = d:GetAttribute("Bone"), rest = d:GetAttribute("Rest") or CFrame.identity }
+				local entry =
+					{ part = d, bone = d:GetAttribute("Bone"), rest = d:GetAttribute("Rest") or CFrame.identity }
 				if d == receiver then
 					table.insert(self.parts, 1, entry)
 				else

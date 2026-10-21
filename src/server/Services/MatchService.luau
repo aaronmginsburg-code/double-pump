@@ -168,7 +168,11 @@ end
 local function pickSpawn(player: Player): CFrame?
 	local team = TeamService.teamOf(player)
 	local arenaPhase = match.state ~= "Waiting" and match.state ~= "Intermission"
-	local markers: { BasePart } = if team and arenaPhase and MapService.arena() then MapService.spawns(team) else MapService.rangeSpawns()
+	local markers: { BasePart } = if team
+			and arenaPhase
+			and MapService.arena()
+		then MapService.spawns(team)
+		else MapService.rangeSpawns()
 	if #markers == 0 then
 		markers = MapService.rangeSpawns()
 	end
@@ -252,7 +256,10 @@ local function onEnterStarting()
 		cancelRespawn(p)
 		spawnPlayer(p)
 	end
-	matchEvent:FireAllClients("Starting", { mapId = mapId, countdown = M.StartingCountdown })
+	matchEvent:FireAllClients(
+		"Starting",
+		{ mapId = mapId, mapName = MapService.Registry[mapId].displayName, countdown = M.StartingCountdown }
+	)
 end
 
 local function participantsSnapshot()
@@ -335,7 +342,10 @@ end
 local function onVotingEnded()
 	if #voteOptions > 0 then
 		nextMapId = VoteTally.winner(votes, voteOptions, MapService.currentId, rng)
-		matchEvent:FireAllClients("VoteResult", { mapId = nextMapId, name = MapService.Registry[nextMapId :: string].displayName })
+		matchEvent:FireAllClients(
+			"VoteResult",
+			{ mapId = nextMapId, name = MapService.Registry[nextMapId :: string].displayName }
+		)
 	end
 	table.clear(votes)
 end

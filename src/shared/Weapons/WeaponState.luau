@@ -49,8 +49,7 @@ export type State = {
 	lastSwapAt: number,
 }
 
-export type FailReason =
-	"NotEquipped" | "Swapping" | "Cooldown" | "ShotInterval" | "Empty" | "Reloading" | "BadSlot"
+export type FailReason = "NotEquipped" | "Swapping" | "Cooldown" | "ShotInterval" | "Empty" | "Reloading" | "BadSlot"
 
 local WeaponState = {}
 
@@ -166,7 +165,12 @@ function WeaponState.canFire(state: State, slotIndex: number, now: number, toler
 end
 
 -- Applies a shot if allowed. Returns ok, reason, shotNumber (for the spread roll).
-function WeaponState.fire(state: State, slotIndex: number, now: number, tolerance: number?): (boolean, FailReason?, number)
+function WeaponState.fire(
+	state: State,
+	slotIndex: number,
+	now: number,
+	tolerance: number?
+): (boolean, FailReason?, number)
 	local ok, reason = WeaponState.canFire(state, slotIndex, now, tolerance)
 	if not ok then
 		return false, reason :: FailReason?, state.shotCounter

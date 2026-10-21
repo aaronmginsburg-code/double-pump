@@ -245,7 +245,11 @@ local function onFire(player: Player, payload: any)
 	if typeof(slot) ~= "number" or not state.slots[slot] then
 		return
 	end
-	if not ShotValidation.isFiniteVector(origin, 1e5) or not ShotValidation.isFiniteVector(aim, 2) or aim.Magnitude < 0.5 then
+	if
+		not ShotValidation.isFiniteVector(origin, 1e5)
+		or not ShotValidation.isFiniteVector(aim, 2)
+		or aim.Magnitude < 0.5
+	then
 		sendSnapshot(player, "BadPayload")
 		return
 	end
@@ -275,7 +279,8 @@ local function onFire(player: Player, payload: any)
 
 	-- Origin must be near the server's view of the shooter's head (allowing for ping).
 	local ping = math.clamp(player:GetNetworkPing(), 0, 1)
-	local maxOffset = ShotValidation.scaled(V.MaxOriginOffset, V.MaxOriginOffsetPerSecondPing, V.MaxOriginOffsetCap, ping)
+	local maxOffset =
+		ShotValidation.scaled(V.MaxOriginOffset, V.MaxOriginOffsetPerSecondPing, V.MaxOriginOffsetCap, ping)
 	local originValid = (origin - head.Position).Magnitude <= maxOffset
 
 	-- Spread multiplier: crouch comes from the server's attribute. Airborne is believed

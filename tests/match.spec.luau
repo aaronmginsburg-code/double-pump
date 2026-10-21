@@ -179,7 +179,12 @@ end)
 describe("VoteTally", function()
 	local rng = Loader.Random.new(7)
 	it("picks the most voted map", function()
-		local w = VoteTally.winner({ a = "Warehouse", b = "Rooftops", c = "Rooftops" }, { "Warehouse", "DustTown", "Rooftops" }, nil, rng)
+		local w = VoteTally.winner(
+			{ a = "Warehouse", b = "Rooftops", c = "Rooftops" },
+			{ "Warehouse", "DustTown", "Rooftops" },
+			nil,
+			rng
+		)
 		expect(w).toBe("Rooftops")
 	end)
 	it("ignores votes for maps not on offer", function()
@@ -191,7 +196,12 @@ describe("VoteTally", function()
 		local seen = {}
 		for i = 1, 200 do
 			local r = Loader.Random.new(i)
-			local w = VoteTally.winner({ a = "Warehouse", b = "DustTown" }, { "Warehouse", "DustTown", "Rooftops" }, nil, r)
+			local w = VoteTally.winner(
+				{ a = "Warehouse", b = "DustTown" },
+				{ "Warehouse", "DustTown", "Rooftops" },
+				nil,
+				r
+			)
 			seen[w] = (seen[w] or 0) + 1
 		end
 		expect(seen.Rooftops).toBe(nil)

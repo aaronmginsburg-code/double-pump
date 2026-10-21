@@ -70,7 +70,9 @@ local function buildDummy(at: CFrame, drill: boolean): Model
 		part.Anchored = true
 		part.CanCollide = true
 		part.CFrame = root.CFrame * CFrame.new(offset)
-		part.Material = if name == "Head" or name:find("Torso") then Enum.Material.SmoothPlastic else Enum.Material.Metal
+		part.Material = if name == "Head" or name:find("Torso")
+			then Enum.Material.SmoothPlastic
+			else Enum.Material.Metal
 		part.Color = if name == "Head" or name:find("Torso") then SKIN else DARK
 		part.TopSurface = Enum.SurfaceType.Smooth
 		part.BottomSurface = Enum.SurfaceType.Smooth
@@ -185,7 +187,6 @@ function PracticeService.start()
 			dummy.model:PivotTo(dummy.base * offset * CFrame.new(0, 3, 0))
 		end
 	end)
-
 end
 
 return PracticeService

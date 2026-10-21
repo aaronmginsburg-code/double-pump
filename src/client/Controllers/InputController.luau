@@ -54,7 +54,8 @@ local KEYS: { [Enum.KeyCode]: Action } = {
 }
 
 local HOLD: { [Action]: boolean } = { Fire = true, Crouch = true, Scoreboard = true }
-local COMBAT: { [Action]: boolean } = { Fire = true, EquipA = true, EquipB = true, Swap = true, Reload = true, Crouch = true }
+local COMBAT: { [Action]: boolean } =
+	{ Fire = true, EquipA = true, EquipB = true, Swap = true, Reload = true, Crouch = true }
 
 local held: { [Action]: number } = {}
 

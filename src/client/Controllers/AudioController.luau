@@ -84,8 +84,10 @@ local function warnMissing()
 	warned = true
 	task.delay(5, function()
 		warn(
-			`[Double Pump] {#missing} sound(s) not uploaded yet, using fallbacks or silence: {table.concat(missing, ", ")}.`
-				.. " Upload assets/audio (docs/ASSET_PIPELINE.md)."
+			`[Double Pump] {#missing} sound(s) not uploaded yet, using fallbacks or silence: {table.concat(
+				missing,
+				", "
+			)}.` .. " Upload assets/audio (docs/ASSET_PIPELINE.md)."
 		)
 	end)
 end

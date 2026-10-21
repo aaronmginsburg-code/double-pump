@@ -51,11 +51,21 @@ local function effectPart(size: Vector3, color: Color3, material: Enum.Material?
 end
 
 local function fadeOut(part: BasePart, time: number)
-	TweenService:Create(part, TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Transparency = 1 }):Play()
+	TweenService
+		:Create(part, TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Transparency = 1 })
+		:Play()
 	Debris:AddItem(part, time + 0.05)
 end
 
-local function burst(at: CFrame, color: ColorSequence, count: number, speed: NumberRange, size: number, lifetime: number, texture: string?)
+local function burst(
+	at: CFrame,
+	color: ColorSequence,
+	count: number,
+	speed: NumberRange,
+	size: number,
+	lifetime: number,
+	texture: string?
+)
 	local attachment = Instance.new("Attachment")
 	attachment.WorldCFrame = at
 	attachment.Parent = workspace.Terrain
@@ -144,7 +154,8 @@ local function impact(position: Vector3, normal: Vector3, material: Enum.Materia
 	holeIndex = holeIndex % MAX_HOLES + 1
 	local hole = holePool[holeIndex]
 	if not hole then
-		local newHole = effectPart(Vector3.new(0.14, 0.14, 0.02), Color3.fromRGB(25, 22, 20), Enum.Material.SmoothPlastic)
+		local newHole =
+			effectPart(Vector3.new(0.14, 0.14, 0.02), Color3.fromRGB(25, 22, 20), Enum.Material.SmoothPlastic)
 		newHole.Shape = Enum.PartType.Cylinder
 		holePool[holeIndex] = newHole
 		hole = newHole
@@ -191,7 +202,9 @@ local function spawnShell(at: CFrame)
 	shell.CFrame = at * CFrame.Angles(0, math.rad(90), 0)
 	shell.Parent = folder
 	local camera = workspace.CurrentCamera.CFrame
-	shell.AssemblyLinearVelocity = camera.RightVector * (7 + math.random() * 3) + camera.UpVector * (6 + math.random() * 2) + camera.LookVector * -1
+	shell.AssemblyLinearVelocity = camera.RightVector * (7 + math.random() * 3)
+		+ camera.UpVector * (6 + math.random() * 2)
+		+ camera.LookVector * -1
 	shell.AssemblyAngularVelocity = Vector3.new(math.random() * 20 - 10, 15, math.random() * 20 - 10)
 	Debris:AddItem(shell, 2.5)
 	task.delay(0.35, function()
@@ -378,7 +391,14 @@ end
 
 function EffectsController.elimination(position: Vector3, color: Color3?)
 	local c = color or Color3.fromRGB(255, 80, 80)
-	burst(CFrame.new(position), ColorSequence.new(c, Color3.new(1, 1, 1)), if Settings.values.reducedEffects then 10 else 24, NumberRange.new(8, 18), 0.35, 0.6)
+	burst(
+		CFrame.new(position),
+		ColorSequence.new(c, Color3.new(1, 1, 1)),
+		if Settings.values.reducedEffects then 10 else 24,
+		NumberRange.new(8, 18),
+		0.35,
+		0.6
+	)
 end
 
 function EffectsController.start()

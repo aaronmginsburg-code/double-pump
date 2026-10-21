@@ -216,7 +216,12 @@ local function update(dt: number)
 		camera.FieldOfView = values.fov
 	else
 		scenicAngle += dt * 0.06
-		local pos = scenicCenter + Vector3.new(math.cos(scenicAngle) * scenicRadius, scenicRadius * 0.45, math.sin(scenicAngle) * scenicRadius)
+		local pos = scenicCenter
+			+ Vector3.new(
+				math.cos(scenicAngle) * scenicRadius,
+				scenicRadius * 0.45,
+				math.sin(scenicAngle) * scenicRadius
+			)
 		camera.CFrame = CFrame.lookAt(pos, scenicCenter)
 		camera.FieldOfView = 60
 	end

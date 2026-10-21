@@ -34,7 +34,13 @@ function Range.build(): Model
 	b:span(at(-64, 26, -46), at(64, 27, 46), Enum.Material.Metal, DARK, { name = "Ceiling" })
 	-- Roof beams and lights
 	for x = -50, 50, 20 do
-		b:span(at(x - 0.6, 23, -44), at(x + 0.6, 26, 44), Enum.Material.Metal, Color3.fromRGB(70, 74, 82), { query = false })
+		b:span(
+			at(x - 0.6, 23, -44),
+			at(x + 0.6, 26, 44),
+			Enum.Material.Metal,
+			Color3.fromRGB(70, 74, 82),
+			{ query = false }
+		)
 		for z = -30, 30, 20 do
 			b:light(at(x, 22.6, z), Color3.fromRGB(255, 244, 225), 40, 1.2, "Spot")
 		end
@@ -42,24 +48,52 @@ function Range.build(): Model
 	b:sign(backstop, Enum.NormalId.Left, "DOUBLE PUMP  •  PRACTICE RANGE", ACCENT, { bg = DARK })
 
 	-- Firing line with a low counter, distance markers on the floor
-	b:span(at(-42, 0, -40), at(-41, 2.6, 40), Enum.Material.Wood, Color3.fromRGB(120, 86, 56), { name = "Counter", shotThrough = true })
+	b:span(
+		at(-42, 0, -40),
+		at(-41, 2.6, 40),
+		Enum.Material.Wood,
+		Color3.fromRGB(120, 86, 56),
+		{ name = "Counter", shotThrough = true }
+	)
 	local lanes = { -30, -15, 0, 15, 30 }
 	local distances = { 5, 10, 20, 35 }
 	for _, z in lanes do
-		b:span(at(-41, 0.01, z - 0.2), at(60, 0.05, z + 0.2), Enum.Material.SmoothPlastic, ACCENT, { collide = false, query = false })
+		b:span(
+			at(-41, 0.01, z - 0.2),
+			at(60, 0.05, z + 0.2),
+			Enum.Material.SmoothPlastic,
+			ACCENT,
+			{ collide = false, query = false }
+		)
 	end
 	for _, d in distances do
 		local x = -41 + d
-		local stripe = b:span(at(x - 0.3, 0.01, -42), at(x + 0.3, 0.06, 42), Enum.Material.SmoothPlastic, WHITE, { collide = false, query = false })
+		local stripe = b:span(
+			at(x - 0.3, 0.01, -42),
+			at(x + 0.3, 0.06, 42),
+			Enum.Material.SmoothPlastic,
+			WHITE,
+			{ collide = false, query = false }
+		)
 		stripe.Name = "DistanceStripe"
-		local post = b:box(Vector3.new(4, 2, 0.4), CFrame.new(at(x, 20, -43.5)), Enum.Material.SmoothPlastic, DARK, { query = false })
+		local post = b:box(
+			Vector3.new(4, 2, 0.4),
+			CFrame.new(at(x, 20, -43.5)),
+			Enum.Material.SmoothPlastic,
+			DARK,
+			{ query = false }
+		)
 		b:sign(post, Enum.NormalId.Back, `{d} STUDS`, ACCENT)
 	end
 
 	-- Static target dummies at each distance on lanes -30 / -15 / 0
 	for i, d in distances do
 		local x = -41 + d
-		b:marker("Dummy", CFrame.lookAt(at(x, 0, lanes[((i - 1) % 3) + 1]), at(-60, 0, lanes[((i - 1) % 3) + 1])), { Kind = "Static" })
+		b:marker(
+			"Dummy",
+			CFrame.lookAt(at(x, 0, lanes[((i - 1) % 3) + 1]), at(-60, 0, lanes[((i - 1) % 3) + 1])),
+			{ Kind = "Static" }
+		)
 	end
 	b:marker("Dummy", CFrame.lookAt(at(-31, 0, 0), at(-60, 0, 0)), { Kind = "Static" })
 	-- Strafing targets on lane 15 (12 studs) and lane 30 (22 studs)
@@ -70,7 +104,13 @@ function Range.build(): Model
 
 	-- Double-pump drill booth: two dummies close together behind a low wall
 	b:span(at(20, 0, 34), at(21, 3, 42), Enum.Material.Concrete, CONCRETE)
-	local booth = b:box(Vector3.new(0.4, 3, 8), CFrame.new(at(-42.2, 6, 34)), Enum.Material.SmoothPlastic, DARK, { query = false })
+	local booth = b:box(
+		Vector3.new(0.4, 3, 8),
+		CFrame.new(at(-42.2, 6, 34)),
+		Enum.Material.SmoothPlastic,
+		DARK,
+		{ query = false }
+	)
 	b:sign(booth, Enum.NormalId.Left, "DRILL: FIRE • SWAP • FIRE", ACCENT)
 	b:marker("Dummy", CFrame.lookAt(at(-33, 0, 36), at(-60, 0, 36)), { Kind = "Static", Drill = true })
 	b:marker("Dummy", CFrame.lookAt(at(-33, 0, 40), at(-60, 0, 40)), { Kind = "Static", Drill = true })
@@ -87,7 +127,13 @@ function Range.build(): Model
 		b:spawn("Range", at(-54, 0.5, i * 10), at(60, 0.5, i * 10))
 	end
 	b:marker("Camera", CFrame.lookAt(at(-55, 12, 0), at(20, 2, 0)))
-	local welcome = b:box(Vector3.new(0.4, 6, 24), CFrame.new(at(-61.6, 9, 0)), Enum.Material.SmoothPlastic, DARK, { query = false })
+	local welcome = b:box(
+		Vector3.new(0.4, 6, 24),
+		CFrame.new(at(-61.6, 9, 0)),
+		Enum.Material.SmoothPlastic,
+		DARK,
+		{ query = false }
+	)
 	b:sign(welcome, Enum.NormalId.Right, "1 / 2  EQUIP  •  Q  SWAP  •  R  RELOAD  •  HEADSHOTS x1.75", WHITE)
 	b:bounds(Vector2.new(o.X - 62, o.Z - 44), Vector2.new(o.X + 62, o.Z + 44), o.Y - 2, o.Y + 26)
 

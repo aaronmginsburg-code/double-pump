@@ -22,7 +22,13 @@ local MovementController = require(script.Parent.MovementController)
 
 local WeaponController = {}
 
-export type PelletResult = { position: Vector3, normal: Vector3, instance: Instance?, material: Enum.Material?, isCharacter: boolean }
+export type PelletResult = {
+	position: Vector3,
+	normal: Vector3,
+	instance: Instance?,
+	material: Enum.Material?,
+	isCharacter: boolean,
+}
 export type FireInfo = {
 	slot: number,
 	origin: Vector3,

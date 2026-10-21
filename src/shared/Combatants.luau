@@ -71,10 +71,26 @@ end
 
 -- Body parts tracked for lag compensation (R15 + R6 names).
 Combatants.HitParts = {
-	"Head", "UpperTorso", "LowerTorso", "Torso",
-	"LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm", "RightHand",
-	"LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot",
-	"Left Arm", "Right Arm", "Left Leg", "Right Leg",
+	"Head",
+	"UpperTorso",
+	"LowerTorso",
+	"Torso",
+	"LeftUpperArm",
+	"LeftLowerArm",
+	"LeftHand",
+	"RightUpperArm",
+	"RightLowerArm",
+	"RightHand",
+	"LeftUpperLeg",
+	"LeftLowerLeg",
+	"LeftFoot",
+	"RightUpperLeg",
+	"RightLowerLeg",
+	"RightFoot",
+	"Left Arm",
+	"Right Arm",
+	"Left Leg",
+	"Right Leg",
 }
 
 return Combatants

@@ -57,7 +57,12 @@ local function nameOf(model: Model): string
 end
 
 -- Returns: damage actually dealt, killed?, doublePump?
-function DamageService.apply(attacker: Player?, target: Model, amount: number, info: HitInfo): (number, boolean, boolean)
+function DamageService.apply(
+	attacker: Player?,
+	target: Model,
+	amount: number,
+	info: HitInfo
+): (number, boolean, boolean)
 	local humanoid = target:FindFirstChildOfClass("Humanoid")
 	if not humanoid or humanoid.Health <= 0 or target:GetAttribute("Dead") == true then
 		return 0, false, false
@@ -85,7 +90,12 @@ function DamageService.apply(attacker: Player?, target: Model, amount: number, i
 			lastHits[attacker] = byTarget
 		end
 		local previous = byTarget[target]
-		if killed and previous and previous.slot ~= info.slot and now - previous.time <= WeaponConfig.DoublePumpWindow then
+		if
+			killed
+			and previous
+			and previous.slot ~= info.slot
+			and now - previous.time <= WeaponConfig.DoublePumpWindow
+		then
 			doublePump = true
 		end
 		byTarget[target] = { slot = info.slot, time = now }

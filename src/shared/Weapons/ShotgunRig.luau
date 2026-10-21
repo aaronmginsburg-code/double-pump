@@ -42,12 +42,8 @@ ShotgunRig.Animated = { "Weapon", "Pump", "Bolt", "Trigger", "ShellCarrier", "Sh
 
 -- Camera -> gun-root offset from the Blender demo camera (70 deg vertical FOV).
 -- attachments.json: viewmodel_demo_camera.viewmodel_offset_cframe
-ShotgunRig.ViewmodelOffset = CFrame.new(
-	0.8056, -0.48837, -1.07452,
-	0.99027, 0.0, -0.13917,
-	0.01213, 0.99619, 0.08631,
-	0.13864, -0.08716, 0.9865
-)
+ShotgunRig.ViewmodelOffset =
+	CFrame.new(0.8056, -0.48837, -1.07452, 0.99027, 0.0, -0.13917, 0.01213, 0.99619, 0.08631, 0.13864, -0.08716, 0.9865)
 
 ShotgunRig.Length = 3.7
 

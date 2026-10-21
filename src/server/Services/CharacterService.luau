@@ -169,7 +169,11 @@ local function ragdoll(character: Model)
 	for _, d in character:GetDescendants() do
 		if d:IsA("BasePart") then
 			d.CanQuery = false
-			if d.Name ~= "HumanoidRootPart" and not d:FindFirstAncestorOfClass("Accessory") and not d:FindFirstAncestor("WorldShotgun") then
+			if
+				d.Name ~= "HumanoidRootPart"
+				and not d:FindFirstAncestorOfClass("Accessory")
+				and not d:FindFirstAncestor("WorldShotgun")
+			then
 				d.CanCollide = true
 				d.CollisionGroup = Collision.EFFECTS
 			end

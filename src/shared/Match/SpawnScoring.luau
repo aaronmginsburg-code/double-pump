@@ -6,7 +6,13 @@ local SpawnScoring = {}
 
 export type Candidate = { position: Vector3, lastUsed: number }
 
-function SpawnScoring.score(c: Candidate, enemies: { Vector3 }, now: number, radius: number, visible: (Vector3, Vector3) -> boolean): number
+function SpawnScoring.score(
+	c: Candidate,
+	enemies: { Vector3 },
+	now: number,
+	radius: number,
+	visible: (Vector3, Vector3) -> boolean
+): number
 	local nearest = math.huge
 	local seen = false
 	for _, enemy in enemies do
@@ -32,7 +38,13 @@ function SpawnScoring.score(c: Candidate, enemies: { Vector3 }, now: number, rad
 end
 
 -- Index of the best candidate (ties: the first).
-function SpawnScoring.best(candidates: { Candidate }, enemies: { Vector3 }, now: number, radius: number, visible: (Vector3, Vector3) -> boolean): number?
+function SpawnScoring.best(
+	candidates: { Candidate },
+	enemies: { Vector3 },
+	now: number,
+	radius: number,
+	visible: (Vector3, Vector3) -> boolean
+): number?
 	local bestIndex, bestScore = nil, -math.huge
 	for i, c in candidates do
 		local s = SpawnScoring.score(c, enemies, now, radius, visible)

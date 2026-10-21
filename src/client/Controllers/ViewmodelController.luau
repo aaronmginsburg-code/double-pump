@@ -194,7 +194,9 @@ local function buildArms()
 		table.clear(list)
 	end
 	local team = player.Team
-	local sleeve = if team then team.TeamColor.Color:Lerp(Color3.new(0.1, 0.1, 0.12), 0.35) else Color3.fromRGB(60, 64, 76)
+	local sleeve = if team
+		then team.TeamColor.Color:Lerp(Color3.new(0.1, 0.1, 0.12), 0.35)
+		else Color3.fromRGB(60, 64, 76)
 	local glove = Color3.fromRGB(32, 32, 36)
 	for _, side in { "right", "left" } do
 		local list = arms[side]
@@ -234,7 +236,11 @@ local function update(dt: number)
 	if lastCamLook then
 		local delta = (lastCamLook :: CFrame):ToObjectSpace(camCF)
 		local rx, ry = delta:ToEulerAnglesYXZ()
-		local target = CFrame.Angles(math.clamp(rx * 0.6, -0.08, 0.08), math.clamp(ry * 0.6, -0.08, 0.08), math.clamp(-ry * 0.8, -0.1, 0.1))
+		local target = CFrame.Angles(
+			math.clamp(rx * 0.6, -0.08, 0.08),
+			math.clamp(ry * 0.6, -0.08, 0.08),
+			math.clamp(-ry * 0.8, -0.1, 0.1)
+		)
 		swayRot = swayRot:Lerp(target, 1 - math.exp(-dt * 12))
 	end
 	lastCamLook = camCF

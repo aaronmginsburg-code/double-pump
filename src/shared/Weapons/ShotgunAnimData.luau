@@ -364,9 +364,7 @@ return {
 		},
 		PumpShotgun_Idle = {
 			duration = 4.0,
-			events = {
-
-			},
+			events = {},
 			fps = 30,
 			loop = true,
 			tracks = {
