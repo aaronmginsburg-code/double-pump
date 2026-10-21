@@ -1,11 +1,18 @@
-# Built place files
+# Built place files (assets/roblox keeps its exported models)
 *.rbxl
 *.rbxlx
+*.rbxl.lock
+*.rbxlx.lock
 *.rbxm
 *.rbxmx
 !assets/**
 
+# Generated tooling files
+sourcemap.json
+roblox.yml
+
 # Editor and OS clutter
 .DS_Store
 Thumbs.db
-sourcemap.json
+build/
+__pycache__/

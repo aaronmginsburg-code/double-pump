@@ -5,6 +5,10 @@
     "ReplicatedStorage": {
       "Shared": {
         "$path": "src/shared"
+      },
+      "Assets": {
+        "$path": "assets/roblox",
+        "$ignoreUnknownInstances": true
       }
     },
     "ServerScriptService": {
@@ -17,6 +21,38 @@
         "Client": {
           "$path": "src/client"
         }
+      },
+      "StarterCharacterScripts": {
+        "$ignoreUnknownInstances": true,
+        "Health": {
+          "$path": "src/character/Health.server.luau"
+        }
+      },
+      "$properties": {
+        "CharacterJumpHeight": 7.6,
+        "CharacterUseJumpPower": false
+      }
+    },
+    "Players": {
+      "$properties": {
+        "CharacterAutoLoads": false
+      }
+    },
+    "Workspace": {
+      "$properties": {
+        "Gravity": 196.2,
+        "StreamingEnabled": false
+      }
+    },
+    "SoundService": {
+      "$properties": {
+        "RespectFilteringEnabled": true
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Technology": "Future",
+        "GlobalShadows": true
       }
     }
   }

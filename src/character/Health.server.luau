@@ -1,0 +1,2 @@
+-- Replaces Roblox's default "Health" script so characters don't regenerate health.
+-- (Double Pump has no healing: 100 HP, no regen, per the design.)
