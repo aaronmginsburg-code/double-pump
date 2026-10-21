@@ -185,17 +185,19 @@ local function ragdoll(character: Model)
 	end
 end
 
-local function onCharacterAdded(player: Player, character: Model)
+-- Called after LoadCharacterAsync returns: CharacterAdded precedes Roblox's final
+-- rig build and spawn placement, which would otherwise overwrite our team spawn.
+local function prepareCharacter(player: Player, character: Model)
 	local spawnAt = pendingSpawn[player]
 	pendingSpawn[player] = nil
+	local humanoid = character:WaitForChild("Humanoid", 10) :: Humanoid?
+	local root = character:WaitForChild("HumanoidRootPart", 10)
+	if not humanoid or not root or player.Character ~= character or not player.Parent then
+		return
+	end
 	if spawnAt then
 		character:PivotTo(spawnAt)
 	end
-	local humanoid = character:WaitForChild("Humanoid", 10) :: Humanoid?
-	if not humanoid then
-		return
-	end
-	character:WaitForChild("HumanoidRootPart", 10)
 	useClassicJoints(character)
 	setupHumanoid(humanoid)
 	prepareBody(character)
@@ -246,7 +248,10 @@ function CharacterService.spawn(player: Player, cframe: CFrame)
 		player:LoadCharacterAsync()
 	end)
 	if not ok then
+		pendingSpawn[player] = nil
 		warn(`[Double Pump] couldn't spawn {player.Name}: {err}`)
+	elseif player.Parent and player.Character and pendingSpawn[player] then
+		prepareCharacter(player, player.Character)
 	end
 end
 
@@ -310,15 +315,6 @@ end
 function CharacterService.start()
 	Players.CharacterAutoLoads = false
 	Net.event("PlayerAction").OnServerEvent:Connect(onPlayerAction)
-	local function onPlayerAdded(player: Player)
-		player.CharacterAdded:Connect(function(character)
-			onCharacterAdded(player, character)
-		end)
-	end
-	Players.PlayerAdded:Connect(onPlayerAdded)
-	for _, player in Players:GetPlayers() do
-		onPlayerAdded(player)
-	end
 	Players.PlayerRemoving:Connect(function(player)
 		pendingSpawn[player] = nil
 		limiter:forget(player)

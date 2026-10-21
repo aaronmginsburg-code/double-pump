@@ -1,0 +1,8 @@
+2026-10-21T07:32:02.592Z,155.592453,5450,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] MapService failed to start: The current thread cannot write 'FallenPartsDestroyHeight' (lacking capability PluginOrOpenCloud)
+2026-10-21T07:32:02.611Z,155.611191,5450,6,Warning [FLog::CreatorWarning] Warning: [DataService] DataStores unavailable (this place isn't published yet); profiles are kept in memory only
+2026-10-21T07:32:02.614Z,155.614197,5450,6,Info [FLog::CreatorOutput] [Double Pump] server ready
+2026-10-21T07:32:02.826Z,155.826355,72b4,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] Shotgun asset not found in ReplicatedStorage.Assets.Weapons; using the parts stand-in. Import the Blender model as described in docs/ASSET_PIPELINE.md.
+2026-10-21T07:32:05.004Z,158.004074,80e4,6 [FLog::StudioTimingLog] PlaySoloPlayableTotalTime     : 2.9662 sec
+2026-10-21T07:32:07.856Z,160.856247,72b4,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] 1 sound(s) not uploaded yet, using fallbacks or silence: MusicMenu. Upload assets/audio (docs/ASSET_PIPELINE.md).
+2026-10-21T07:48:04.024Z,1117.024048,116c,6,Info [FLog::StudioApplicationState] AboutToQuit
+2026-10-21T07:48:04.026Z,1117.026123,116c,6,Info [FLog::StudioMain] End of main. Return value 0. Has entered application scope: true

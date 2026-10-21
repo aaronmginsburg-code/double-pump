@@ -1,21 +1,24 @@
 # Testing
 
 What tests exist, how to run them, what they last showed, and what has never been run.
-Only results with evidence are listed as passing. Audited 2026-10-21 on commit
-`534df2e` (branch `claude/full-game-build-3jb3hx`).
+Only results with evidence are listed as passing. Latest run: 2026-10-21, Windows,
+`fix/studio-gameplay-blockers`, uncommitted repairs based on
+`14848886bfec43bd5277564ffce89c938f46f629`. The command notes below retain the
+historical Claude audit where explicitly dated. Current Studio coverage is in
+[STUDIO_PLAYTEST_REPORT.md](STUDIO_PLAYTEST_REPORT.md).
 
 ## Summary
 
 | Area | State |
 |---|---|
-| Automated logic tests (Lune) | **120 / 120 pass**, re-run 2026-10-21 05:40 UTC |
+| Automated logic tests (Lune) | **123 / 123 pass**: original 120 plus three lifecycle regressions |
 | Strict type check (luau-lsp) | **0 errors**, re-run 2026-10-21 |
 | Format (StyLua) | **clean**, re-run 2026-10-21 |
 | Place build (Rojo) | **builds** (212 KB `.rbxl`), re-run 2026-10-21 |
-| Lint (Selene) | **not re-run** in this audit (see below); last reported clean 2026-10-21 by the build thread |
+| Lint (Selene) | `selene src`: **0 errors, 0 warnings, 0 parse errors**, exit 0. Extended tests/tools scan: 0 errors, 1 existing warning at validation.spec.luau:41, exit 1 |
 | Shotgun asset (Blender headless) | 38 / 38 checks pass (2026-10-20, `VALIDATION.md` on PR #1 branch) |
-| Roblox Studio solo play | **never run** |
-| Studio multiplayer (Clients and Servers) | **never run** |
+| Roblox Studio solo play | Corrected build: range + 10 targets, HP100, mouse fire, Q switch, R reload and server-confirmed target damage observed |
+| Studio multiplayer (Clients and Servers) | Corrected two-client placement/respawn and staged PvP damage/elimination pass; controlled cadence/reload probes recorded. Remaining coverage in Studio report |
 | Live server / 10 players | **never run** |
 | Phone, tablet, controller | **never run** |
 | DataStores against real Roblox | **never run** (only an in-memory fake) |
@@ -42,8 +45,13 @@ Roblox). Exit code 1 on any failure.
 | `data.spec.luau` | 9 | Profile store: session lock, repair, retries (fake DataStore) |
 | `monetization.spec.luau` | 4 | Receipt handling (disabled/unknown products stay pending) |
 | `maps.spec.luau` | 18 | Every map: 7 spawns/team, spawn ground + headroom, no spawn-to-spawn sightline, symmetry, sightline budget |
+| `studio_blockers.spec.luau` | 3 | Real GameFlow activation across play/menu/death/respawn/results/practice; character final placement before Spawned on initial spawn and respawn; MapService startup under protected-property restriction and serialized destroy height |
 
-Last run: **2026-10-21 05:40 UTC, this audit, Linux container: 120 passed, 0 failed.**
+Latest run: **2026-10-21, Windows, local fix branch: 123 passed, 0 failed.**
+All three new regressions failed against the original coordinators before fixes.
+Boundary mocks model Roblox loading/protected properties; they do not prove physics,
+real input, networking, animations, target damage or actual shot cadence.
+Output: `playtest-evidence/blocker-fixes/automated-tests.log`.
 The two `[Monetization] receipt for unknown or disabled product` warnings in the output
 are expected (the tests feed bad receipts on purpose).
 
@@ -96,10 +104,11 @@ actions, triangle budgets, UVs, textures, scale, part clearance, FBX/GLB reimpor
 Last run 2026-10-20: **38/38 PASS** (`VALIDATION.md`, `exports/validation.json`). Did
 not test Roblox Studio import.
 
-## Not yet executed (manual)
+## Studio coverage still required
 
-The full checklist with a results column is [PLAYTEST.md](PLAYTEST.md). None of it has
-been filled in.
+The full checklist is [PLAYTEST.md](PLAYTEST.md). Consult the separate Studio report
+for observed original-build results and current retest status; no unchecked behavior
+should be inferred passing from the automated tests. Keep solo override false.
 
 | Test | Needs | Notes |
 |---|---|---|

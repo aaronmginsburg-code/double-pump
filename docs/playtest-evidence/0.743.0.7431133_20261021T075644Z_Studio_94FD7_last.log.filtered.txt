@@ -1,0 +1,18 @@
+2026-10-21T07:56:46.916Z,2.916596,6980,6,Info [DFLog::RealtimeMedia] disconnect
+2026-10-21T07:56:51.200Z,7.200636,63f8,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] Shotgun asset not found in ReplicatedStorage.Assets.Weapons; using the parts stand-in. Import the Blender model as described in docs/ASSET_PIPELINE.md.
+2026-10-21T07:56:51.439Z,7.439613,7650,6 [telemetryLog] ParallelDmTaskNames: CaptureDataModelProxyForInstanceCount;TeamCreateWidget-SetDataModel;DebuggerHostAppServices-onDataModelLoaded;PlayTestKickDialog-DisconnectListener;
+2026-10-21T07:56:52.371Z,8.371043,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerPermissionsModule] Invalid value for enum CreatorType
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerList.Thunks.MakePlayerInfoRequests] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerList.Components.Connection.PlayerServiceConnector] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerList.Components.Connection.EventConnections] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerList.Components.Presentation.PlayerListApp] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerList.PlayerListSwitcher] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerList.PlayerListController] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.PlayerList.PlayerListManager] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.TopBar.Components.GamepadConnector] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.TopBar.Components.TopBarScrim] Requested module experienced an error while loading
+2026-10-21T07:56:52.372Z,8.372046,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.Modules.TopBar] Requested module experienced an error while loading
+2026-10-21T07:56:52.524Z,8.524052,7e24,6,Error [FLog::CreatorError] Error: [Roblox][CoreGui.RobloxGui.CoreScripts/InspectAndBuy] Requested module experienced an error while loading
+2026-10-21T07:56:53.017Z,9.017965,7ffc,6,Error [FLog::CreatorError] Error: [Roblox][Script Context.StarterScript] Script Context.StarterScript:507: Invalid value for enum CreatorType
+2026-10-21T07:56:56.217Z,12.217407,2330,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] 1 sound(s) not uploaded yet, using fallbacks or silence: MusicMenu. Upload assets/audio (docs/ASSET_PIPELINE.md).
+2026-10-21T07:57:48.074Z,64.074837,63f8,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester

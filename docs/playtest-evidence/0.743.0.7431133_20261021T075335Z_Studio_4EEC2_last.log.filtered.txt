@@ -1,0 +1,14 @@
+2026-10-21T07:53:39.955Z,4.955884,5bc8,6,Info [DFLog::RealtimeMedia] disconnect
+2026-10-21T07:53:44.414Z,9.414760,15e4,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] Shotgun asset not found in ReplicatedStorage.Assets.Weapons; using the parts stand-in. Import the Blender model as described in docs/ASSET_PIPELINE.md.
+2026-10-21T07:53:44.688Z,9.688204,15e4,6 [telemetryLog] ParallelDmTaskNames: TeamCreateWidget-SetDataModel;CaptureDataModelProxyForInstanceCount;DebuggerHostAppServices-onDataModelLoaded;PlayTestKickDialog-DisconnectListener;
+2026-10-21T07:53:44.923Z,9.923249,15e4,6,Error [FLog::CreatorError] Error: Players.Player1.PlayerScripts.ChatScript:116: Error calling SetCore CoreGuiChatConnections: SetCore: CoreGuiChatConnections has not been registered by the CoreScripts
+2026-10-21T07:53:49.439Z,14.439470,15e4,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] 1 sound(s) not uploaded yet, using fallbacks or silence: MusicMenu. Upload assets/audio (docs/ASSET_PIPELINE.md).
+2026-10-21T07:54:18.361Z,43.361759,1958,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+2026-10-21T07:55:34.912Z,119.912308,15e4,6,Info [DFLog::NetworkClient] Client:Disconnect
+2026-10-21T07:55:34.916Z,119.916328,15e4,7 [FLog::Network] Time to disconnect replication data: 0.074800
+2026-10-21T07:55:34.931Z,119.931053,15e4,6,Info [DFLog::RbxTransportDummyClient] Disconnected from server for reason: Player: 285 (DisconnectClientInitiated)
+2026-10-21T07:55:35.155Z,120.155037,1958,6,Info [DFLog::NetworkClient] Client:Disconnect
+2026-10-21T07:55:35.278Z,120.278389,1958,7 [DFLog::MegaReplicatorLogDisconnectCleanUpLog] Destroying MegaReplicator.
+2026-10-21T07:55:35.357Z,120.357758,7838,6 [FLog::StudioDebuggerV2] DebuggerConnection(00000206BA67BAF0): Disconnected signal (reason=Disconnected)
+2026-10-21T07:55:35.984Z,120.984917,7cc8,6 [DFLog::SignalRCoreError] ID: 1 Disconnected - stop() called
+2026-10-21T07:55:37.303Z,122.303703,7cc8,6,Info [FLog::StudioMain] End of main. Return value 0. Has entered application scope: true

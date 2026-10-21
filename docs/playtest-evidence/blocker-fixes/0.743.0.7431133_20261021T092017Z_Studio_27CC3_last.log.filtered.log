@@ -1,0 +1,5 @@
+2026-10-21T09:20:59.430Z,42.430908,6c24,6,Info [FLog::CreatorOutput] [Double Pump] server ready
+2026-10-21T09:24:15.668Z,238.668121,6c24,6,Info [FLog::CreatorOutput] [DPTEST] POSITION observer attached supersnapstudios Practice nil -1254, 3.09765625, 29.99609375 nearest 2.597659111022949 xz 0.00390625 hp 100 protected 0 now 1792574656.212062 frozen nil map nil
+2026-10-21T09:24:15.668Z,238.668121,6c24,6,Info [FLog::CreatorOutput] [DPTEST] OBSERVER_READY 5 0 dummies 10 destroyHeight -120
+2026-10-21T09:24:47.065Z,270.065308,70bc,6,Info [FLog::CreatorOutput] [DPTEST] TARGET_HP Drill Bot 16.913742065429688
+2026-10-21T09:24:47.066Z,270.066284,70bc,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED supersnapstudios t 1792574687.610258 dt nil slot 2 pellets 10 hits 2 stats 6 0 13 0

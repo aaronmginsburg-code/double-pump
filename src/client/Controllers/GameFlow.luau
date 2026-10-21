@@ -9,6 +9,7 @@ local Controllers = script.Parent
 local UI = script.Parent.Parent.UI
 local CameraController = require(Controllers.CameraController)
 local InputController = require(Controllers.InputController)
+local WeaponController = require(Controllers.WeaponController)
 local ViewmodelController = require(Controllers.ViewmodelController)
 local MatchClient = require(Controllers.MatchClient)
 local AudioController = require(Controllers.AudioController)
@@ -86,6 +87,7 @@ function GameFlow.refresh()
 
 	-- Input, viewmodel, HUD
 	InputController.combatEnabled = playing and not menuOpen
+	WeaponController.active = InputController.combatEnabled
 	if not InputController.combatEnabled then
 		InputController.releaseAll()
 	end

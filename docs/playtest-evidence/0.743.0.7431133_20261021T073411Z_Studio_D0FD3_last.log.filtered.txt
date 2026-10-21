@@ -1,0 +1,12 @@
+2026-10-21T07:34:21.944Z,10.944386,6720,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] Shotgun asset not found in ReplicatedStorage.Assets.Weapons; using the parts stand-in. Import the Blender model as described in docs/ASSET_PIPELINE.md.
+2026-10-21T07:34:26.495Z,15.495742,6720,6 [FLog::StudioTimingLog] PlaySoloPlayableTotalTime     : 15.4957 sec
+2026-10-21T07:34:27.031Z,16.031256,2e00,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] 1 sound(s) not uploaded yet, using fallbacks or silence: MusicMenu. Upload assets/audio (docs/ASSET_PIPELINE.md).
+2026-10-21T07:35:02.366Z,51.366318,14fc,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+2026-10-21T07:38:10.413Z,239.413574,2e00,6,Info [FLog::CreatorOutput] > print("DPTEST", game.Players.LocalPlayer.Name, require(game.Players.LocalPlayer.PlayerScripts.Client.Controllers.WeaponController).active)
+2026-10-21T07:38:10.441Z,239.441666,6720,6,Info [FLog::CreatorOutput] DPTEST Player2 false
+2026-10-21T07:39:05.507Z,294.507660,2e00,6,Info [FLog::CreatorOutput] > local p=game.Players.LocalPlayer; local c=p.PlayerScripts.Client.Controllers; print("DPTEST STATE",p.Name,"input",require(c.InputController).combatEnabled,"camera",require(c.CameraController).mode,"mouse",game.UserInputService.MouseBehavior,"root",p.Character:FindFirstChildOfClass("Humanoid").RootPart,"char",p.Character:GetFullName(),"position",p.Character:GetPivot().Position)
+2026-10-21T07:39:05.513Z,294.513702,2e00,6 [FLog::Output] DPTEST STATE Player2 input false camera Scenic mouse Enum.MouseBehavior.LockCenter root HumanoidRootPart char Workspace.Player2 position -0.028498627245426178, 34.096309661865234, -1.6315956115722656
+2026-10-21T07:41:29.578Z,438.578918,0998,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+2026-10-21T07:47:54.715Z,823.715454,2e00,7 [FLog::Network] Client has been disconnected with reason: The server has shut down
+2026-10-21T07:47:54.725Z,823.725342,2e00,7 [FLog::Network] Client has been disconnected with reason: The server has shut down
+2026-10-21T07:47:54.729Z,823.729858,2e00,7,Warning [FLog::Network] Lost connection with reason : The server has shut down

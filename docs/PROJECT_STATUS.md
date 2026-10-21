@@ -1,5 +1,44 @@
 # Project status
 
+## Current local repairs — 2026-10-21
+
+Authoritative base: PR #2 head `14848886bfec43bd5277564ffce89c938f46f629`, rechecked
+unchanged. Isolated checkout: `complete-game-studio` under the verified backup
+directory. Branch: `fix/studio-gameplay-blockers`; all repairs are uncommitted.
+
+- Practice startup: the script's protected `FallenPartsDestroyHeight` assignment
+  aborted MapService before range construction. The same -120 value now lives in
+  `default.project.json`; MapService proceeds to build the range normally.
+- Firing/switching: `WeaponController.active` was initialized false and never enabled.
+  GameFlow now synchronizes it with the existing combat-input lifecycle.
+- Team spawns: CharacterAdded pivot preceded Roblox's final character placement.
+  CharacterService now prepares/places the character after LoadCharacterAsync returns,
+  checks required parts/current character, and then emits Spawned.
+- Validation: 123/123 tests, direct type analysis, Rojo build, source lint and format
+  checks pass. Extended lint reports one unchanged unused-variable warning in
+  `tests/validation.spec.luau:41`. After the window limit was cleared, Studio solo and
+  two-client tests confirmed range/targets, real mouse firing/manual switching/reload,
+  correct team initial/respawn placement and staged PvP damage/elimination. Controlled
+  accepted alternating intervals were 0.550/0.783/0.484 s; single-gun control 1.116 s.
+  Premature server request rejected; reload interruption preserved inserted shells.
+  Warehouse, Rooftops and Dust Town loaded through ordinary round flow with correct
+  team coordinates. Spawn-facing views sometimes show close walls; investigate
+  camera orientation separately. Full arena navigation remains unverified.
+- No timing, balance, map, asset or product changes. No commit/push/merge/publish.
+  Original prototype untouched; all 52 original backup checksums still match.
+
+See [STUDIO_PLAYTEST_REPORT.md](STUDIO_PLAYTEST_REPORT.md) and
+[CHANGELOG.md](CHANGELOG.md) for evidence, changed files and remaining coverage.
+The respawn pellet-counter mismatch (now Studio-confirmed: predicted 1 vs server 7),
+missing assets, real-device/full-lobby testing and upload/typecheck-tool issues remain
+open. Review the repairs and complete remaining Studio coverage before considering
+integration or launch work.
+
+## Historical Claude handoff audit
+
+The following records the earlier audit; current results above supersede its
+"never tested" statements and older commit/test counts.
+
 Audit date: **2026-10-21**. Audited commit: **`534df2e`** on branch
 `claude/full-game-build-3jb3hx` (draft PR #2). "Verified" below means checked against
 the source, git, or a command run during this audit. "Claimed" means it is stated in

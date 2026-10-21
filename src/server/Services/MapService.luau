@@ -213,7 +213,6 @@ function MapService.start()
 			register(module :: ModuleScript, true)
 		end
 	end
-	workspace.FallenPartsDestroyHeight = -120
 	MapService.loadRange()
 	MapService.useRangeLighting()
 end

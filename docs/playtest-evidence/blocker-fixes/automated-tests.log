@@ -1,0 +1,15 @@
+damage.spec.luau                   14 tests
+data.spec.luau                     9 tests
+maps.spec.luau                     18 tests
+match.spec.luau                    21 tests
+[WARN]
+[Monetization] receipt for unknown or disabled product 555; leaving it pending
+[WARN]
+[Monetization] receipt for unknown or disabled product 111; leaving it pending
+monetization.spec.luau             4 tests
+progression.spec.luau              23 tests
+studio_blockers.spec.luau          3 tests
+validation.spec.luau               11 tests
+weapon_state.spec.luau             20 tests
+
+123 passed, 0 failed

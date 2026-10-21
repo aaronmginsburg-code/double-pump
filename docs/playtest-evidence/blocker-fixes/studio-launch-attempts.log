@@ -1,0 +1,11 @@
+Log: 0.743.0.7431133_20261021T083426Z_Studio_4C036_last.log
+2026-10-21T08:34:26.719Z,0.719844,35c4,6,Info [FLog::StudioKeyEvents] starting Qt main event loop
+2026-10-21T08:34:26.785Z,0.785643,35c4,6,Info [FLog::SystemCheck] Running instance count at launch 9
+2026-10-21T08:34:26.810Z,0.810567,7064,6 [FLog::Output] Studio D3D9 GPU: Intel(R) UHD Graphics 730
+2026-10-21T08:34:26.810Z,0.810567,7064,6 [FLog::Output] Studio D3D9 GPU: Vendor 8086 Device 4692
+2026-10-21T08:34:26.922Z,0.922060,35c4,6,Info [FLog::UIThreadNotifier] Destructing UIThreadNotifier for process '26608' with id 'https://www.roblox.com-Studio'
+Log: 0.743.0.7431133_20261021T083529Z_Studio_5EF8F_last.log
+2026-10-21T08:35:29.942Z,0.942726,680c,6,Info [FLog::StudioKeyEvents] starting Qt main event loop
+2026-10-21T08:35:30.012Z,1.012367,680c,6,Info [FLog::SystemCheck] Running instance count at launch 8
+2026-10-21T08:35:30.031Z,1.031457,7a30,6 [FLog::Output] Studio D3D9 GPU: Intel(R) UHD Graphics 730
+2026-10-21T08:35:30.031Z,1.031457,7a30,6 [FLog::Output] Studio D3D9 GPU: Vendor 8086 Device 4692

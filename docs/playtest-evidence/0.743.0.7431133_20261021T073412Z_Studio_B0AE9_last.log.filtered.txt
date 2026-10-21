@@ -1,0 +1,9 @@
+2026-10-21T07:34:21.097Z,9.097233,21a0,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] Shotgun asset not found in ReplicatedStorage.Assets.Weapons; using the parts stand-in. Import the Blender model as described in docs/ASSET_PIPELINE.md.
+2026-10-21T07:34:23.334Z,11.334243,6cc0,6 [FLog::StudioTimingLog] PlaySoloPlayableTotalTime     : 11.3342 sec
+2026-10-21T07:34:26.124Z,14.124801,6cc0,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] 1 sound(s) not uploaded yet, using fallbacks or silence: MusicMenu. Upload assets/audio (docs/ASSET_PIPELINE.md).
+2026-10-21T07:35:02.410Z,50.410564,6cc0,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+2026-10-21T07:41:29.314Z,437.314789,6cc0,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+2026-10-21T07:44:15.808Z,603.808594,63b0,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+2026-10-21T07:47:54.716Z,822.716187,6cc0,7 [FLog::Network] Client has been disconnected with reason: The server has shut down
+2026-10-21T07:47:54.733Z,822.733704,6cc0,7 [FLog::Network] Client has been disconnected with reason: The server has shut down
+2026-10-21T07:47:54.738Z,822.738647,6cc0,7,Warning [FLog::Network] Lost connection with reason : The server has shut down

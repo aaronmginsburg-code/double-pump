@@ -1,0 +1,7 @@
+2026-10-21T07:53:36.531Z,2.531808,1ae4,6,Info [DFLog::RealtimeMedia] disconnect
+2026-10-21T07:53:44.594Z,10.594242,2510,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] Shotgun asset not found in ReplicatedStorage.Assets.Weapons; using the parts stand-in. Import the Blender model as described in docs/ASSET_PIPELINE.md.
+2026-10-21T07:53:45.232Z,11.232547,2510,6,Error [FLog::CreatorError] Error: Players.Player2.PlayerScripts.ChatScript:116: Error calling SetCore CoreGuiChatConnections: SetCore: CoreGuiChatConnections has not been registered by the CoreScripts
+2026-10-21T07:53:45.871Z,11.871698,763c,6 [telemetryLog] ParallelDmTaskNames: CaptureDataModelProxyForInstanceCount;TeamCreateWidget-SetDataModel;DebuggerHostAppServices-onDataModelLoaded;PlayTestKickDialog-DisconnectListener;
+2026-10-21T07:53:49.905Z,15.905498,4550,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] 1 sound(s) not uploaded yet, using fallbacks or silence: MusicMenu. Upload assets/audio (docs/ASSET_PIPELINE.md).
+2026-10-21T07:54:18.340Z,44.340508,763c,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+2026-10-21T07:57:48.273Z,254.273544,763c,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester

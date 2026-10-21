@@ -2,7 +2,7 @@
 
 For the next AI agent (Codex or other) taking over development. Self-contained: you
 don't need the earlier Claude conversations. Written 2026-10-21 against commit
-`534df2e`. Details: [PROJECT_STATUS.md](PROJECT_STATUS.md), [TESTING.md](TESTING.md),
+`534df2e`; updated below for local repairs based on PR head `14848886bfec43bd5277564ffce89c938f46f629`. Details: [PROJECT_STATUS.md](PROJECT_STATUS.md), [TESTING.md](TESTING.md),
 [ASSET_UPLOAD_MANIFEST.md](ASSET_UPLOAD_MANIFEST.md), [ROADMAP.md](ROADMAP.md). Rules:
 [../AGENTS.md](../AGENTS.md).
 
@@ -29,12 +29,36 @@ cosmetic skins, leaderboards, KBM/controller/touch. Owner: Aaron
 
 ## State in one paragraph
 
-All game code is written (M1–M8): combat with server authority, match flow, three maps,
-UI, saving, progression, shop, leaderboards, mobile/controller support. It builds, passes
-120 Lune unit tests, strict type checks and formatting (all re-run 2026-10-21). It has
-**never been run in Roblox Studio or on a Roblox server**: no human has played it, no
-multiplayer test, no device test, no performance numbers. The shotgun model isn't
-imported (a parts stand-in is used), and no sounds or images are uploaded.
+The complete game remains PR #2, with local, uncommitted repairs on
+`fix/studio-gameplay-blockers` in the isolated `complete-game-studio` clone under the
+backup directory. Initial solo/two-client Studio testing found three blockers; see
+[STUDIO_PLAYTEST_REPORT.md](STUDIO_PLAYTEST_REPORT.md) for historical evidence and
+the repair verification section. GameFlow now enables the existing weapon controller;
+CharacterService initializes and places characters after LoadCharacterAsync finishes;
+the intended -120 destroy height is serialized by Rojo instead of assigned by a
+restricted runtime script. Weapon tuning, state rules, maps and damage are unchanged.
+All 123 tests (120 original + three lifecycle regressions), direct type analysis,
+formatting and source lint pass. Extended lint has one existing warning in
+`tests/validation.spec.luau:41`. After the owner cleared the Studio window limit,
+the corrected build passed solo range startup, real mouse firing/Q switching/R reload,
+target damage, two-client team placement and respawn, and staged real-player damage.
+A controlled controller probe measured server-accepted alternating intervals of
+0.550/0.783/0.484 seconds versus a 1.116-second single-gun control interval. A raw
+premature request was rejected with Cooldown. Reload cancellation preserved inserted
+shells. This is local controlled evidence, not full human/latency/device validation.
+Assets still use stand-ins; no upload or publish occurred.
+Warehouse, Rooftops and Dust Town all loaded through normal match flow with correct
+team marker positions. Warehouse/Rooftops respawns were measured. Some spawn views
+face nearby walls; camera-facing order needs follow-up, not an assumed map defect.
+
+Build for review: `build/DoublePump_STUDIO_BLOCKER_FIXES.rbxl`. No commit, push or
+merge is authorized. Preserve the original prototype checkout and all original
+backup files (52/52 backup hashes rechecked). Next: review the completed Studio
+report and remaining coverage before any integration.
+The separate respawn shot-counter mismatch is now Studio-reproduced: after six
+pre-respawn shots, the next local prediction was 1 and the server broadcast was 7.
+It remains unfixed; investigate hit-registration impact in a separately scoped fix.
+Review [CHANGELOG.md](CHANGELOG.md) before continuing development.
 
 ## Onboarding procedure
 
@@ -91,7 +115,9 @@ StarterCharacterScripts, and sets Workspace/Players/Lighting properties.
 
 ## Remaining tasks (in order)
 
-1. **Owner:** review and merge PR #2; decide how to keep the PR #1 asset (merge, LFS,
+1. **Owner:** review the uncommitted blocker repairs after Studio retesting. Do not
+   commit or merge without approval. Subsequently decide whether to merge PR #2
+   and how to keep the PR #1 asset (merge, LFS,
    or archive branch); decide repo visibility.
 2. Add CI running the checks above (make the type check fail on errors).
 3. Fix `tools/upload_assets.py` so it never writes a decal ID as an image ID (see

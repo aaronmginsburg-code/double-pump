@@ -1,0 +1,3 @@
+Build inventory: 2 Scripts, 1 LocalScript, 69 ModuleScripts
+Workspace.FallenPartsDestroyHeight = -120
+Corrected controller and map source included; inventory checks pass

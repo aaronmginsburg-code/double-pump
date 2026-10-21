@@ -1,0 +1,14 @@
+2026-10-21T07:52:59.444Z,2.444541,80ec,6,Info [DFLog::RealtimeMedia] disconnect
+2026-10-21T07:53:04.439Z,7.439850,3cdc,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] MapService failed to start: The current thread cannot write 'FallenPartsDestroyHeight' (lacking capability PluginOrOpenCloud)
+2026-10-21T07:53:04.455Z,7.455844,3cdc,6,Warning [FLog::CreatorWarning] Warning: [DataService] DataStores unavailable (this place isn't published yet); profiles are kept in memory only
+2026-10-21T07:53:04.457Z,7.457843,3cdc,6,Info [FLog::CreatorOutput] [Double Pump] server ready
+2026-10-21T07:54:17.523Z,80.523537,5368,6,Warning [FLog::CreatorWarning] Warning: [Double Pump] Shotgun asset not found in ReplicatedStorage.Assets.Weapons; using the parts stand-in. Import the Blender model as described in docs/ASSET_PIPELINE.md.
+2026-10-21T07:55:34.563Z,157.563828,3cdc,7 [FLog::Network] Disconnect from 5
+2026-10-21T07:55:34.563Z,157.563828,3cdc,6,Info [FLog::CreatorOutput] Disconnect from 127.0.0.1|58465
+2026-10-21T07:55:34.563Z,157.563828,3cdc,7 [FLog::Network] Client has been disconnected with reason: Client initiated disconnect
+2026-10-21T07:55:34.563Z,157.563828,3cdc,7 [FLog::Network] Disconnect from 5
+2026-10-21T07:55:34.564Z,157.564819,3cdc,6,Info [FLog::CreatorOutput] Disconnect from 127.0.0.1|58465
+2026-10-21T07:55:34.564Z,157.564819,13f8,6,Info [DFLog::RbxTransportDummyServer] Connection closed with reason: Player: 285 (DisconnectClientInitiated)
+2026-10-21T07:55:34.567Z,157.567810,3cdc,7 [FLog::Network] Client has been disconnected with reason: Client initiated disconnect
+2026-10-21T07:55:34.590Z,157.590729,13f8,7,Warning [FLog::Network] Lost connection with reason : Client initiated disconnect
+2026-10-21T07:55:34.602Z,157.602692,13f8,7 [FLog::Network] Time to disconnect replication data: 11.319900

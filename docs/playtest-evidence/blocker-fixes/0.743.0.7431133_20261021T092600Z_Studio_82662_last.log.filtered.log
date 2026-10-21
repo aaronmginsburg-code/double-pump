@@ -1,0 +1,41 @@
+2026-10-21T09:26:05.397Z,5.397795,64e8,6,Info [FLog::CreatorOutput] [Double Pump] server ready
+2026-10-21T09:27:07.961Z,67.961800,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION observer attached Player1 Menu nil nil nearest inf xz inf hp nil protected nil now 1792574828.101748 frozen nil map nil
+2026-10-21T09:27:07.961Z,67.961800,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION observer attached Player2 Menu nil nil nearest inf xz inf hp nil protected nil now 1792574828.10187 frozen nil map nil
+2026-10-21T09:27:07.961Z,67.961800,64e8,6,Info [FLog::CreatorOutput] [DPTEST] OBSERVER_READY 0 0 dummies 10 destroyHeight -120
+2026-10-21T09:27:22.448Z,82.448837,48c4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player2 Match nil -1254, 3.5, 10 nearest inf xz inf hp 100 protected 1792574844.589341 now 1792574842.589461 frozen nil map nil
+2026-10-21T09:27:23.457Z,83.457138,64e4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player2 Match nil -1254, 3.09765625, 10 nearest inf xz inf hp 100 protected 1792574844.589341 now 1792574843.599436 frozen nil map nil
+2026-10-21T09:27:33.575Z,93.575386,4a04,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player1 Match nil -1254, 3.5, -20 nearest inf xz inf hp 100 protected 1792574855.716675 now 1792574853.716732 frozen nil map nil
+2026-10-21T09:27:34.590Z,94.590889,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player1 Match nil -1254, 3.09765625, -20 nearest inf xz inf hp 100 protected 1792574855.716675 now 1792574854.733497 frozen nil map nil
+2026-10-21T09:27:43.475Z,103.475945,48c4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player1 Match Red -65, 3.5, -36 nearest 3 xz 0 hp 100 protected 1792574865.616475 now 1792574863.616571 frozen true map Warehouse
+2026-10-21T09:27:43.528Z,103.528358,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player2 Match Blue 65, 3.5, 36 nearest 3 xz 0 hp 100 protected 1792574865.669524 now 1792574863.669636 frozen true map Warehouse
+2026-10-21T09:27:44.490Z,104.490204,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player1 Match Red -65, 3.096435546875, -36 nearest 2.596435546875 xz 0 hp 100 protected 1792574865.616475 now 1792574864.631785 frozen true map Warehouse
+2026-10-21T09:27:44.541Z,104.541687,48c4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player2 Match Blue 64.983154296875, 3.096435546875, 36 nearest 2.5964901447296143 xz 0.016845703125 hp 100 protected 1792574865.669524 now 1792574864.681609 frozen true map Warehouse
+2026-10-21T09:29:35.086Z,215.086502,0ae4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792574975.229253 dt nil slot 1 pellets 10 hits 0 stats 1 0 0 0
+2026-10-21T09:29:36.202Z,216.202332,64e4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792574976.345377 dt 1.116123914718628 slot 1 pellets 10 hits 0 stats 2 0 0 0
+2026-10-21T09:29:37.303Z,217.303772,64e8,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792574977.445767 dt 1.1003899574279785 slot 1 pellets 10 hits 0 stats 3 0 0 0
+2026-10-21T09:29:37.854Z,217.854691,64e4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792574977.99573 dt 0.5499629974365234 slot 2 pellets 10 hits 0 stats 4 1 0 0
+2026-10-21T09:29:38.636Z,218.636627,64e4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792574978.778673 dt 0.7829430103302002 slot 1 pellets 10 hits 0 stats 5 1 0 0
+2026-10-21T09:29:39.120Z,219.120682,5dd0,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792574979.262368 dt 0.48369503021240234 slot 2 pellets 10 hits 0 stats 6 1 0 0
+2026-10-21T09:30:47.529Z,287.529724,64e4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player1 Match Red -65, 3.5, -36 nearest 3 xz 0 hp 100 protected 1792575049.673415 now 1792575047.673492 frozen nil map Warehouse
+2026-10-21T09:30:48.535Z,288.535675,48c4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player1 Match Red -65, 3.096435546875, -36 nearest 2.596435546875 xz 0 hp 100 protected 1792575049.673415 now 1792575048.677829 frozen nil map Warehouse
+2026-10-21T09:31:03.446Z,303.446564,48c4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792575063.590845 dt 84.32847714424133 slot 1 pellets 10 hits 0 stats 7 1 0 0
+2026-10-21T09:33:13.282Z,433.282135,64e8,6,Info [FLog::CreatorOutput] [DPTEST] STAGED_PVP_RANGE
+2026-10-21T09:33:14.747Z,434.747314,48c4,6,Info [FLog::CreatorOutput] [DPTEST] PVP_TARGET_HP 0
+2026-10-21T09:33:14.748Z,434.748322,48c4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792575194.89283 dt 131.3019847869873 slot 1 pellets 10 hits 10 stats 8 1 10 0
+2026-10-21T09:33:17.647Z,437.647064,64e4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player2 Match Blue 65, 3.5, 36 nearest 3 xz 0 hp 100 protected 1792575199.790796 now 1792575197.790901 frozen true map Warehouse
+2026-10-21T09:33:18.663Z,438.663239,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player2 Match Blue 65, 3.096435546875, 36 nearest 2.596435546875 xz 0 hp 100 protected 1792575199.790796 now 1792575198.808741 frozen true map Warehouse
+2026-10-21T09:33:35.873Z,455.873810,64e4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player1 Match Blue 63, 7.5, -30 nearest 3 xz 0 hp 100 protected 1792575218.017851 now 1792575216.017956 frozen true map Rooftops
+2026-10-21T09:33:35.914Z,455.914581,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player2 Match Red -63, 7.5, -30 nearest 3 xz 0 hp 100 protected 1792575218.06026 now 1792575216.060359 frozen true map Rooftops
+2026-10-21T09:33:36.879Z,456.879578,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player1 Match Blue 63, 7.0963134765625, -30 nearest 2.5963134765625 xz 0 hp 100 protected 1792575218.017851 now 1792575217.025207 frozen true map Rooftops
+2026-10-21T09:33:36.929Z,456.929077,48c4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player2 Match Red -62.9830322265625, 7.0963134765625, -30 nearest 2.5963690280914307 xz 0.0169677734375 hp 100 protected 1792575218.06026 now 1792575217.073951 frozen true map Rooftops
+2026-10-21T09:34:56.076Z,536.076965,64e4,6,Info [FLog::CreatorOutput] [DPTEST] STAGED_PVP_RANGE
+2026-10-21T09:34:57.510Z,537.510132,0ae4,6,Info [FLog::CreatorOutput] [DPTEST] PVP_TARGET_HP 0
+2026-10-21T09:34:57.510Z,537.510132,0ae4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player1 t 1792575297.656585 dt 102.7637550830841 slot 1 pellets 10 hits 10 stats 9 1 20 0
+2026-10-21T09:35:00.288Z,540.288513,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player2 Match Red -63, 7.5, -30 nearest 3 xz 0 hp 100 protected 1792575302.435455 now 1792575300.435546 frozen nil map Rooftops
+2026-10-21T09:35:01.292Z,541.292542,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player2 Match Red -63, 7.0963134765625, -30 nearest 2.5963134765625 xz 0 hp 100 protected 1792575302.435455 now 1792575301.439596 frozen nil map Rooftops
+2026-10-21T09:35:37.576Z,577.576111,64e8,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player2 t 1792575337.722052 dt nil slot 1 pellets 10 hits 0 stats 10 1 20 0
+2026-10-21T09:35:50.854Z,590.854614,64e4,6,Info [FLog::CreatorOutput] [DPTEST] ACCEPTED Player2 t 1792575351.001225 dt 13.279172897338867 slot 2 pellets 10 hits 0 stats 11 1 20 0
+2026-10-21T09:39:02.116Z,782.116638,48c4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player1 Match Blue 70, 3.5, 42 nearest 3 xz 0 hp 100 protected 1792575544.263724 now 1792575542.26385 frozen true map DustTown
+2026-10-21T09:39:02.151Z,782.151917,64e4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned Player2 Match Red -70, 3.5, -42 nearest 3 xz 0 hp 100 protected 1792575544.298241 now 1792575542.29849 frozen true map DustTown
+2026-10-21T09:39:03.119Z,783.119690,64e8,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player1 Match Blue 70, 3.096435546875, 42 nearest 2.596435546875 xz 0 hp 100 protected 1792575544.263724 now 1792575543.268061 frozen true map DustTown
+2026-10-21T09:39:03.156Z,783.156738,64e4,6,Info [FLog::CreatorOutput] [DPTEST] POSITION Spawned+1s Player2 Match Red -70, 3.096435546875, -42 nearest 2.596435546875 xz 0 hp 100 protected 1792575544.298241 now 1792575543.305841 frozen true map DustTown
