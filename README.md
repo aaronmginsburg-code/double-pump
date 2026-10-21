@@ -13,6 +13,19 @@ controller and touch controls.
 - [docs/PUBLISHING.md](docs/PUBLISHING.md): publishing and (optional) Robux coin packs.
 - [docs/PLAYTEST.md](docs/PLAYTEST.md): playtest checklist and report.
 - [docs/ASSET_SOURCES.md](docs/ASSET_SOURCES.md): where every asset came from.
+- [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md): where the source lives, git and
+  backup status, what's verified, known issues.
+- [docs/TESTING.md](docs/TESTING.md): every test, how to run it, last results, what
+  hasn't been run.
+- [docs/ASSET_UPLOAD_MANIFEST.md](docs/ASSET_UPLOAD_MANIFEST.md): every asset still to
+  upload or configure on Roblox.
+- [docs/ROADMAP.md](docs/ROADMAP.md): remaining work in order.
+- [docs/AI_HANDOFF.md](docs/AI_HANDOFF.md) and [AGENTS.md](AGENTS.md): for AI agents
+  taking over development.
+
+**Status (2026-10-21):** code complete, not yet played in Roblox Studio. Until PR #2 is
+merged the game is on branch `claude/full-game-build-3jb3hx`; the shotgun asset sources
+are on branch `claude/project-thread-lv25xu` (PR #1).
 
 ## Setup
 
@@ -64,7 +77,8 @@ To get a place file without Studio syncing: `rojo build -o build/DoublePump.rbxl
 
 ## Checks
 
-Run these before committing; they all pass on the current branch.
+Run these before committing. Results of the last run are in
+[docs/TESTING.md](docs/TESTING.md).
 
 ```sh
 lune run tests/run.luau          # 120 tests: weapon rules, damage, match, progression, saves, maps

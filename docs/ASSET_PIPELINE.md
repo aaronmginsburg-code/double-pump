@@ -11,7 +11,9 @@ None of these are meant to ship. Do the three steps below before publishing.
 
 ## 1. Import the pump shotgun (Studio, about 15 minutes)
 
-Source files are in the project folder `DoublePump/Weapons/PumpShotgun/exports/`
+Source files are on the GitHub branch `claude/project-thread-lv25xu` (draft PR #1;
+`git fetch origin claude/project-thread-lv25xu`) and in the Claude project folder,
+both under `DoublePump/Weapons/PumpShotgun/exports/`
 (`first_person/PumpShotgun_FP.fbx`, `third_person/PumpShotgun_TP.fbx`,
 `props/Shell_Spent.fbx`) with textures in `textures/roblox_1024/` (first person) and
 `textures/third_person/`.

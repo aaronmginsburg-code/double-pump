@@ -1,0 +1,122 @@
+# Testing
+
+What tests exist, how to run them, what they last showed, and what has never been run.
+Only results with evidence are listed as passing. Audited 2026-10-21 on commit
+`534df2e` (branch `claude/full-game-build-3jb3hx`).
+
+## Summary
+
+| Area | State |
+|---|---|
+| Automated logic tests (Lune) | **120 / 120 pass**, re-run 2026-10-21 05:40 UTC |
+| Strict type check (luau-lsp) | **0 errors**, re-run 2026-10-21 |
+| Format (StyLua) | **clean**, re-run 2026-10-21 |
+| Place build (Rojo) | **builds** (212 KB `.rbxl`), re-run 2026-10-21 |
+| Lint (Selene) | **not re-run** in this audit (see below); last reported clean 2026-10-21 by the build thread |
+| Shotgun asset (Blender headless) | 38 / 38 checks pass (2026-10-20, `VALIDATION.md` on PR #1 branch) |
+| Roblox Studio solo play | **never run** |
+| Studio multiplayer (Clients and Servers) | **never run** |
+| Live server / 10 players | **never run** |
+| Phone, tablet, controller | **never run** |
+| DataStores against real Roblox | **never run** (only an in-memory fake) |
+| Developer product purchase | **never run** (products are off) |
+| `tools/upload_assets.py` against Open Cloud | **never run** (dry-run only) |
+
+## Automated suites
+
+All commands run from the repo root. Tools come from `rokit.toml` (`rokit install`).
+
+### 1. Lune unit tests: `lune run tests/run.luau [filter]`
+
+Runs every `tests/*.spec.luau` in Lune 0.11.0 with a fake Roblox require tree
+(`tests/runner/Loader.luau` maps the Rojo project so shared/server modules load outside
+Roblox). Exit code 1 on any failure.
+
+| Spec | Tests | Covers |
+|---|---|---|
+| `damage.spec.luau` | 14 | Pellet damage, multipliers, falloff, max shot damage |
+| `weapon_state.spec.luau` | 20 | Per-gun state machine: cooldown, 0.4 s rule, swap, reload interrupt |
+| `validation.spec.luau` | 11 | Server shot validation (origin, direction, timing) |
+| `match.spec.luau` | 21 | Match rules, scoring, team balance, spawn scoring, vote tally |
+| `progression.spec.luau` | 23 | XP, levels, mastery, challenges, anti-idle |
+| `data.spec.luau` | 9 | Profile store: session lock, repair, retries (fake DataStore) |
+| `monetization.spec.luau` | 4 | Receipt handling (disabled/unknown products stay pending) |
+| `maps.spec.luau` | 18 | Every map: 7 spawns/team, spawn ground + headroom, no spawn-to-spawn sightline, symmetry, sightline budget |
+
+Last run: **2026-10-21 05:40 UTC, this audit, Linux container: 120 passed, 0 failed.**
+The two `[Monetization] receipt for unknown or disabled product` warnings in the output
+are expected (the tests feed bad receipts on purpose).
+
+Does **not** cover: networking/remotes, UI, physics, camera, input, real DataStores,
+anything needing a Roblox server.
+
+### 2. Map layout report: `lune run tools/map_report.luau`
+
+Not a pass/fail test; prints part counts, spawns, sightline percentiles and symmetry.
+2026-10-21 output: Warehouse 812 parts p50/p75/p95 15/35/70 studs; Dust Town 595 parts
+14/31/75; Rooftops 497 parts 17/34/68; all 14 spawns and 100% symmetry.
+
+### 3. Type check: `tools/typecheck.sh`
+
+Builds `sourcemap.json` with Rojo and runs `luau-lsp analyze` (strict) over `src/`,
+skipping the generated `ShotgunAnimData.luau`. Needs the Roblox definitions at
+`~/tools/globalTypes.d.luau` or `ROBLOX_DEFS=<path>`; download from
+`https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.luau`.
+Bash script; on Windows run it from Git Bash or WSL.
+
+Last run: 2026-10-21, this audit (luau-lsp 1.70.1, current `globalTypes.d.luau`):
+**no type errors printed.** Caveat: the script always exits 0 (`|| true`), so read its
+output; no output means clean. With a wrong definitions path it prints hundreds of
+"Unknown global" errors, so a misconfiguration is visible, but CI can't use the exit code.
+
+### 4. Format: `stylua --check src tests tools/*.luau`
+
+Last run: 2026-10-21, this audit: clean (exit 0).
+
+### 5. Lint: `selene src`
+
+Selene 0.31.0, config `selene.toml` (`std = "roblox"`). The Roblox std file
+(`roblox.yml`, gitignored) is generated on first run by downloading the Roblox API dump.
+That download fails inside Claude's cloud containers, so: the build thread used a
+patched Selene reading a local API dump and reported **0 errors, 0 warnings on
+2026-10-21**; this audit could not regenerate `roblox.yml` and did **not** re-run it.
+On a normal machine with internet, stock `selene src` should work. Treat lint as
+"reported clean, unverified" until Codex runs it.
+
+### 6. Place build: `rojo build -o build/DoublePump.rbxl`
+
+Last run: 2026-10-21, this audit: builds. `build/` is gitignored. Never pass an output path
+under an empty `$TMPDIR` (it resolves to `/`).
+
+### 7. Shotgun asset validation (PR #1 branch)
+
+`DoublePump/Weapons/PumpShotgun/scripts/08_validate.py`, run by `scripts/run_all.sh`
+with the pip `bpy` module (Blender 5.x, Python 3.13). 38 checks: object/bone names,
+actions, triangle budgets, UVs, textures, scale, part clearance, FBX/GLB reimport.
+Last run 2026-10-20: **38/38 PASS** (`VALIDATION.md`, `exports/validation.json`). Did
+not test Roblox Studio import.
+
+## Not yet executed (manual)
+
+The full checklist with a results column is [PLAYTEST.md](PLAYTEST.md). None of it has
+been filled in.
+
+| Test | Needs | Notes |
+|---|---|---|
+| Shotgun import and look (`ASSET_PIPELINE.md` step 1) | Roblox Studio | Confirms bone names, scale, muzzle direction, pump/shell animation |
+| Solo play: practice range, firing, swap, reload, HUD, menus, tutorial | Studio | Play button |
+| 2–4 player match: intermission → countdown → combat → results → vote → next map | Studio **Test > Clients and Servers** | Multiplayer simulation on one PC; FPS/ping meaningless |
+| Solo match flow | Studio + `GameConfig.Debug.AllowSoloMatchInStudio = true` | Revert flag afterwards |
+| Saving, leaderboards, coin shop persistence | Studio after first private publish + API access, or live server | Real DataStores |
+| Hit registration under latency, 10-player match, auto-balance | Live private server with real players | Cloud (Roblox servers) |
+| Phone/tablet touch layout, controller | Real devices | Private publish |
+| Performance (FPS, memory, map build time) | Studio + real devices, F2 overlay | No numbers exist |
+| Audio after upload, moderation | Studio after uploads | |
+| Developer product purchase (only if enabled) | Studio test purchase | Owner decision |
+| `upload_assets.py` real run | Open Cloud API key | Owner approval; may hit audio quota |
+
+## What Codex can run without Studio
+
+`lune run tests/run.luau`, `tools/typecheck.sh`, `stylua --check ...`, `selene src`,
+`rojo build`, `lune run tools/map_report.luau`, `python tools/upload_assets.py --user-id 1 --dry-run`.
+Run all of them after every change and record new results here with the date and commit.
