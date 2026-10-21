@@ -221,6 +221,9 @@ local function prepareCharacter(player: Player, character: Model)
 		ragdoll(character)
 		CharacterService.Died:Fire(player, character)
 	end)
+	-- Replicate the intended facing explicitly; CharacterAdded can reach clients
+	-- before the engine finishes loading or this final placement is replicated.
+	character:SetAttribute("SpawnCFrame", spawnAt or character:GetPivot())
 	CharacterService.Spawned:Fire(player, character)
 end
 

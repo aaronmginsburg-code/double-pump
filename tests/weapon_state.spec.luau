@@ -225,6 +225,25 @@ describe("WeaponState", function()
 		expect(s.equipped).toBe(1)
 		expect(s.slots[1].nextFireTime).toBe(-math.huge)
 	end)
+	it("respawn resets the pellet counter to match a fresh client state", function()
+		local server = fresh()
+		for i = 0, 5 do
+			local slot = i % 2 + 1
+			WeaponState.equip(server, slot, i * 0.6)
+			expect(WeaponState.fire(server, slot, i * 0.6 + 0.2)).toBeTruthy()
+		end
+		expect(server.shotCounter).toBe(6)
+		for life = 1, 3 do
+			local now = life * 10
+			WeaponState.reset(server, now)
+			local client = WeaponState.new(rules, now)
+			expect(server.shotCounter).toBe(client.shotCounter)
+			local _, _, serverShot = WeaponState.fire(server, 1, now + timing.EquipTime)
+			local _, _, clientShot = WeaponState.fire(client, 1, now + timing.EquipTime)
+			expect(serverShot).toBe(1)
+			expect(serverShot).toBe(clientShot)
+		end
+	end)
 
 	it("view reports cooldown fraction and readiness", function()
 		local s = fresh()

@@ -37,15 +37,19 @@ local function isolated(fn)
 end
 
 T.describe("Studio blocker regressions", function()
-	T.it("combat follows live play, menus, death, respawn and postgame", function()
+	T.it("combat and facing wait for server spawn data across menus, respawns and modes", function()
 		isolated(function()
 			local client = Loader.game.StarterPlayer.StarterPlayerScripts.Client
 			local controllers, ui = client.Controllers, client.UI
 			local mode, state, team = "Match", "Active", "Red"
 			local humanoid = { Health = 100 }
+			local spawnCFrame = nil
 			Loader.services.Players = {
 				LocalPlayer = {
 					Character = {
+						GetAttribute = function()
+							return spawnCFrame
+						end,
 						FindFirstChildOfClass = function()
 							return humanoid
 						end,
@@ -61,12 +65,17 @@ T.describe("Studio blocker regressions", function()
 				end,
 			}
 			local noop = function() end
+			local facing, facingChanges = nil, 0
 			local camera = {
 				mode = "Combat",
 				setDead = noop,
 				setScenic = noop,
 				requestCursor = function()
 					return noop
+				end,
+				lookAlong = function(cf)
+					facing = cf
+					facingChanges += 1
 				end,
 			}
 			local input = { releaseAll = noop }
@@ -101,15 +110,23 @@ T.describe("Studio blocker regressions", function()
 				T.expect(input.combatEnabled).toBe(expected)
 				T.expect(weapon.active).toBe(expected)
 			end
+			check(false) -- CharacterAdded can arrive before final server placement.
+			spawnCFrame = R.CFrame.lookAt(R.Vector3.new(-65, 3.5, -36), R.Vector3.new(0, 3.5, -36))
 			check(true)
+			T.expect(facing).toBe(spawnCFrame)
 			menu.isOpen = true
 			check(false)
 			menu.isOpen = false
 			check(true)
+			T.expect(facingChanges).toBe(1) -- Resuming must preserve the player's aim.
 			humanoid.Health = 0
 			check(false)
 			humanoid.Health = 100
+			Loader.services.Players.LocalPlayer.Character = table.clone(Loader.services.Players.LocalPlayer.Character)
+			spawnCFrame = R.CFrame.lookAt(R.Vector3.new(65, 3.5, 36), R.Vector3.new(0, 3.5, 36))
 			check(true)
+			T.expect(facing).toBe(spawnCFrame)
+			T.expect(facingChanges).toBe(2)
 			state = "Results"
 			check(false)
 			state, mode, team = "Waiting", "Practice", nil
@@ -146,6 +163,7 @@ T.describe("Studio blocker regressions", function()
 			local finished, pivotAt, notifications = false, nil, 0
 			function player:LoadCharacterAsync()
 				finished = false
+				local attributes = {}
 				local humanoid = { SetStateEnabled = function() end, Died = signal() }
 				local character = {
 					WaitForChild = function(_, name)
@@ -155,7 +173,12 @@ T.describe("Studio blocker regressions", function()
 						return {}
 					end,
 					DescendantAdded = signal(),
-					SetAttribute = function() end,
+					SetAttribute = function(_, name, value)
+						attributes[name] = value
+					end,
+					GetAttribute = function(_, name)
+						return attributes[name]
+					end,
 					PivotTo = function(_, cf)
 						pivotAt = cf
 					end,
@@ -171,6 +194,7 @@ T.describe("Studio blocker regressions", function()
 			service.Spawned:Connect(function(_, character)
 				T.expect(finished).toBe(true)
 				T.expect(character).toBe(player.Character)
+				T.expect(character:GetAttribute("SpawnCFrame")).toBe(pivotAt)
 				notifications += 1
 			end)
 			for _, spawn in { R.CFrame.new(-60, 4, 20), R.CFrame.new(60, 4, -20) } do

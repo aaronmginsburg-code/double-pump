@@ -1,3 +1,23 @@
+## Private release preparation — 2026-10-21
+
+Verified Studio checkpoint: `137a9ebe68341432ea256de1cb7281b0da613a47`.
+Current branch: `release/private-playtest`. Original prototype and verified backup
+remain untouched. A separate recoverable source/history/place backup is at
+`../verified-before-private-release-2026-10-21/`.
+
+- Corrected the real respawn pellet-seed mismatch: WeaponState.reset now resets the
+  server shotCounter, matching the client's fresh weapon state. Studio measured
+  client 1/server 1 on the first post-respawn shot, in solo and local multiplayer.
+- CharacterService replicates the final SpawnCFrame after preparation. GameFlow
+  waits for that readiness marker and aligns the camera once per character. Both
+  team camera direction dots measured 1.0, including after respawn and transitions
+  between match and practice. Closing menus preserves the player's existing aim.
+- 124 tests pass (all original 123 plus one counter regression); type analysis,
+  source Selene, StyLua and Rojo build pass. No weapon timing, damage, movement,
+  map or monetization changes. Parts-based guns/embedded animations remain usable;
+  unuploaded audio and map thumbnails remain cosmetic limitations.
+- Publication and normal Roblox Player verification are in progress; the final
+  PRIVATE_RELEASE_REPORT.md will record confirmed IDs, access and live results.
 # Changelog
 
 ## Unreleased — Studio gameplay blockers (2026-10-21)
@@ -37,3 +57,4 @@ Weapon configuration, double-pump state rules, damage, movement, recoil, animati
 team rules, maps and assets are unchanged. Original prototype and all 52 backup
 files remain intact. The separate post-respawn shot-counter issue is now reproduced
 in Studio (predicted 1 vs server 7) and remains unfixed for a separately scoped review.
+

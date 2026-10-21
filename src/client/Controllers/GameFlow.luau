@@ -26,11 +26,15 @@ local GameFlow = {}
 local player = Players.LocalPlayer
 local releaseCursor: (() -> ())? = nil
 local lastKiller: Model? = nil
+local alignedCharacter: Model? = nil
 
 local function alive(): boolean
 	local character = player.Character
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-	return humanoid ~= nil and humanoid.Health > 0
+	return character ~= nil
+		and humanoid ~= nil
+		and humanoid.Health > 0
+		and typeof(character:GetAttribute("SpawnCFrame")) == "CFrame"
 end
 
 local function postgame(): boolean
@@ -71,10 +75,11 @@ function GameFlow.refresh()
 	if playing then
 		if CameraController.mode ~= "Combat" then
 			CameraController.setCombat()
-			local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart") :: BasePart?
-			if root then
-				CameraController.lookAlong(root.CFrame)
-			end
+		end
+		local character = player.Character :: Model
+		if alignedCharacter ~= character then
+			CameraController.lookAlong(character:GetAttribute("SpawnCFrame") :: CFrame)
+			alignedCharacter = character
 		end
 	elseif mode ~= "Menu" and not isAlive and not inPostgame then
 		if CameraController.mode ~= "Dead" then
@@ -137,6 +142,7 @@ end
 
 local function onCharacter(character: Model)
 	lastKiller = nil
+	character:GetAttributeChangedSignal("SpawnCFrame"):Connect(GameFlow.refresh)
 	local humanoid = character:WaitForChild("Humanoid", 10) :: Humanoid?
 	if humanoid then
 		humanoid.Died:Connect(function()

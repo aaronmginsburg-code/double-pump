@@ -234,6 +234,7 @@ function WeaponState.reset(state: State, now: number)
 	state.equipped = 1
 	state.readyAt = now + state.rules.timing.EquipTime
 	state.nextShotTime = NEVER
+	state.shotCounter = 0
 	state.lastSwapAt = NEVER
 end
 
