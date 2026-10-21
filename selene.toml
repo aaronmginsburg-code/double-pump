@@ -1,0 +1,6 @@
+std = "roblox"
+
+[lints]
+# Luau type casts and generics confuse a couple of selene's checks
+mixed_table = "allow"
+shadowing = "allow"

@@ -9,3 +9,8 @@
 .DS_Store
 Thumbs.db
 sourcemap.json
+sourcemap.json
+roblox.yml
+*.rbxl
+*.rbxl.lock
+*.rbxlx.lock
