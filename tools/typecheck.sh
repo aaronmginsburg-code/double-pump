@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Type-checks src/ with luau-lsp and the Roblox type definitions.
-# Needs: rojo, luau-lsp, and globalTypes.d.luau (see docs/DEVELOPMENT.md).
+# Needs: rojo, luau-lsp, and globalTypes.d.luau (see README.md, "Checks").
 set -euo pipefail
 cd "$(dirname "$0")/.."
 DEFS="${ROBLOX_DEFS:-$HOME/tools/globalTypes.d.luau}"
