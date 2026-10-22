@@ -42,3 +42,5 @@ No independent cold-start agent test was performed. Same-agent handoff review su
 ## Obsidian UI follow-up
 
 Opened the new canonical Double Pump note in the existing Peronal Knowledge Base app. It renders its heading, project type, active status, ISO-date properties, Roblox/double-pump tags and content. Quick Switcher also lists the six project notes and dated session. Screenshot: release-evidence-20261022/obsidian-overview.jpg. This confirms actual application discovery/rendering for the overview, not a claim that every external URL was clicked.
+
+Final preservation check: Obsidian normalized line endings and inserted one blank line after the overview frontmatter when opening it. No semantic content changed; the app-formatted file was retained and its final hash recorded. All unrelated note hashes still match the baseline. No vault content was overwritten to force a hash match.

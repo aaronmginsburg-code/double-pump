@@ -27,5 +27,11 @@
     "05 - Journal/2026-10-22 0112 - Double Pump - Release Transition.md"
   ],
   "vaultCommittedOrPushed": false,
-  "backupConfigurationChanged": false
+  "backupConfigurationChanged": false,
+  "appNormalization": {
+    "paths": [
+      "01 - Projects/Roblox/Double Pump/Double Pump.md"
+    ],
+    "detail": "Obsidian normalized line endings and inserted one blank line after frontmatter when opening overview; semantic content unchanged; retained."
+  }
 }
