@@ -1,3 +1,15 @@
+## Lobby update publication - 2026-10-21
+
+Published privately as version 9 to existing place 82505574993280 (universe 10772275012). Creator Dashboard confirms owner/collaborator-only access. 245 automated tests pass; staged Studio multiplayer covers voluntary queueing, nonlethal lobby PvP, all arenas, match PvP and return to lobby. See LOBBY_AND_MATCHMAKING_UPDATE.md for evidence, retained diagnostic failures and manual test limits. Normal Roblox Player/mobile acceptance remains pending.
+
+## Owner live-client confirmation — 2026-10-21
+
+Aaron opened the private experience on another computer and reported that he has
+been testing it and it looks good. Basic normal-client launch/playability is now
+owner-confirmed. Detailed live multiplayer, map-cycle and performance checks remain
+outstanding; this does not change the automated Player verification limitations
+recorded below. No further source, settings or publication changes were made.
+
 # Double Pump FPS — Studio playtest report
 
 Date: 2026-10-21 (America/Los_Angeles). Latest status: three local repairs implemented,
@@ -448,4 +460,44 @@ rerun accepted-shot/claim validation across respawns and latency, ordinary arena
 navigation, protection/assists and device/performance tests; then consider assets
 and launch preparation. No weapon tuning or conventional cooldown substitution is
 justified by these observations.
+
+
+## Private release follow-up — 2026-10-21
+
+Private release source checkpoint: `a487de38a96261dbeac74e701e69ce31762123f9`.
+The confirmed respawn shotCounter defect is corrected by resetting server state
+alongside client state. GameFlow now waits for server SpawnCFrame readiness before
+aligning each new character's camera. Combat timing/damage/config/maps are unchanged.
+
+Actual follow-up Studio checks: solo A/B fire and target damage; normal solo respawn
+first shot client/server 1/1; two-client ordinary match startup/team assignment;
+both team camera direction dots 1.0; normal multiplayer respawn direction 1.0 and
+first shot client/server 1/1; match-to-practice and practice-to-next-match transition
+direction 1.0; Warehouse loaded through ordinary results/map voting. The close
+Rooftops cover remains visible from correctly oriented spawns. No map redesign.
+
+124 automated tests pass, direct type analysis exit 0, Selene src 0 errors/warnings,
+Windows line-ending-aware StyLua exit 0, Rojo build passes. Temporary observers were
+discarded before publishing. All 72 scripts in the downloaded cloud place match
+the tested build. See [PRIVATE_RELEASE_REPORT.md](../PRIVATE_RELEASE_REPORT.md) and
+[release evidence](private-release-evidence/) for measured logs/screenshots.
+
+Privately published universe 10772275012, place 82505574993280, published version 2.
+Regular Roblox Player gameplay has NOT been verified. Existing Studio cadence and
+PvP observations above must not be presented as live-client results. Missing audio,
+parts-based guns and placeholder image limitations remain documented.
+
+## Mobile private version 5 — 2026-10-21
+
+The mobile follow-up observations, measured simulated-intent shot sequence, both
+handedness screenshots and explicit hardware limitations are recorded in
+[MOBILE_CONTROLS_UPDATE.md](../MOBILE_CONTROLS_UPDATE.md). Cloud source matches all
+76 tested scripts. This does not extend older PvP/map-cycle evidence to the new UI.
+
+
+## Touch-camera / independent hand revision
+
+See [revision report](../MOBILE_CAMERA_AND_HANDEDNESS_UPDATE.md) for actual 2026-10-21
+Studio observations, all four setting screenshots, 197 tests, limitations and
+publication status. No new full map-cycle/PvP or physical multitouch pass is claimed.
 

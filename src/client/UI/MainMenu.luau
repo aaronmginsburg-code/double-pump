@@ -172,13 +172,14 @@ pageBuilders.Play = function(page)
 		TextColor3 = C.Text,
 		FontFace = Theme.Fonts.Bold,
 	})
-	local play = Theme.button("PLAY", "Primary", {
+	local play = Theme.button("MATCH QUEUE", "Primary", {
 		Size = UDim2.fromOffset(300, 84),
 		Position = UDim2.new(0, 32, 1, -112),
 		FontFace = Theme.Fonts.Display,
 		Parent = match,
 	})
 	play.Activated:Connect(function()
+		MainMenu.close()
 		Net.event("PlayerAction"):FireServer("Deploy")
 	end)
 	refs.PlayButton = play
@@ -207,6 +208,7 @@ pageBuilders.Play = function(page)
 		Parent = practice,
 	})
 	practiceButton.Activated:Connect(function()
+		MainMenu.close()
 		Net.event("PlayerAction"):FireServer("Practice")
 	end)
 
@@ -236,29 +238,19 @@ local function controlsText(): string
 	if kind == "Gamepad" then
 		return "<b>R2</b> fire   <b>R1/L1</b> swap   <b>D-pad</b> pick gun\n<b>X</b> reload   <b>B</b> crouch   <b>A</b> jump\n<b>Select</b> scoreboard   <b>Start</b> menu"
 	elseif kind == "Touch" then
-		return "Drag the right side to aim. <b>FIRE</b>, <b>SWAP</b>, <b>1</b>/<b>2</b>, <b>RELOAD</b>, <b>CROUCH</b> and <b>JUMP</b> buttons are on screen. Move them in Settings."
+		return "Drag open screen space to aim. Hold <b>FIRE</b> and swipe down in <b>↓ SWAP</b> to double pump. A fresh swipe fires the next ready gun. Choose Control Layout and Weapon Hand independently in Settings."
 	end
 	return "<b>LMB</b> fire   <b>1</b>/<b>2</b> pick gun   <b>Q</b> swap\n<b>R</b> reload   <b>C</b>/<b>Ctrl</b> crouch   <b>Space</b> jump\n<b>Tab</b> scoreboard   <b>M</b> menu"
 end
 
 pageRefreshers.Play = function()
 	local state = MatchClient.state()
-	local count = MatchClient.get("Players") or 0
-	local mapName = MatchClient.get("MapName") or ""
 	local mode = MatchClient.mode()
-	local text
-	if state == "Waiting" then
-		text =
-			`Waiting for players ({count}/{GameConfig.Match.MinPlayersToStart}). You'll warm up in the range until a match starts.`
-	elseif state == "Active" or state == "Overtime" then
-		text = `Match in progress{if mapName ~= "" then " on " .. mapName else ""}. Jump in now.`
-	elseif state == "Results" or state == "Voting" then
-		text = "Match just ended. Next one starts shortly."
-	else
-		text = `Next match starting{if mapName ~= "" then " on " .. mapName else ""}.`
-	end
-	refs.MatchStatus.Text = text
-	refs.PlayButton.Text = if mode == "Match" then "RESUME" else "PLAY"
+	refs.MatchStatus.Text = if mode == "Match"
+		then "You are in the current match."
+		elseif state ~= "Waiting" then "Arena occupied. Enter the Match Queue Zone for the next game."
+		else "Walk into the Match Queue Zone in the range. Two players start a 15-second countdown."
+	refs.PlayButton.Text = if mode == "Match" then "RESUME" else "MATCH QUEUE"
 	refs.ControlsText.Text = controlsText()
 end
 
@@ -929,8 +921,9 @@ function MainMenu.start()
 		navButtons[item.key] = button
 	end
 	local leave =
-		Theme.button("LEAVE TO MENU", "Danger", { Size = UDim2.fromOffset(300, 54), LayoutOrder = 20, Parent = nav })
+		Theme.button("RETURN TO RANGE", "Danger", { Size = UDim2.fromOffset(300, 54), LayoutOrder = 20, Parent = nav })
 	leave.Activated:Connect(function()
+		MainMenu.close()
 		Net.event("PlayerAction"):FireServer("Menu")
 	end)
 	refs.Leave = leave

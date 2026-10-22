@@ -1,0 +1,5 @@
+2026-10-21T22:25:40.945Z,74.945969,53c4,6,Info [FLog::CreatorOutput] Place file downloaded to 'C:\Users\aaron\Documents\double-pump-backups\2026-10-21-prototype-uncommitted\complete-game-studio\build\DoublePump_CAMERA_HAND_CLOUD_DOWNLOADED.rbxl'
+2026-10-21T22:25:48.219Z,82.219505,65d8,6,Error [FLog::CreatorError] Error: DataStoreService: StudioAccessToApisNotAllowed: Studio access to APIs is not allowed. API: GetAsync, Data Store: DoublePump_Profiles_v1
+2026-10-21T22:25:48.253Z,82.253822,7be8,6,Info [FLog::CreatorOutput] [Double Pump] server ready
+2026-10-21T22:26:19.986Z,113.986084,24b8,6,Error [FLog::CreatorError] Error: Failed to load sound rbxasset://sounds/swoosh.wav: Asset is not approved for the requester
+Visual: menu loaded; Practice targets visible, HP 100, right weapon rendered; stopped test.

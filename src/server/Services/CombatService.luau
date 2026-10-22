@@ -32,6 +32,7 @@ local WeaponState = require(Shared.Weapons.WeaponState)
 
 local CharacterService = require(script.Parent.CharacterService)
 local DamageService = require(script.Parent.DamageService)
+local CombatContext = require(script.Parent.CombatContext)
 
 local CombatService = {}
 
@@ -177,7 +178,8 @@ local function checkClaimedHit(
 	if not target or not humanoid or humanoid.Health <= 0 or target:GetAttribute("Dead") == true then
 		return nil
 	end
-	if not Combatants.isEnemy(shooter, target) then
+	local shooterPlayer = Combatants.player(shooter)
+	if not shooterPlayer or CombatContext.resolve(shooterPlayer, target) == "Blocked" then
 		return nil
 	end
 	local zone: Damage.Zone? = Damage.zoneForPart(hit.part.Name)

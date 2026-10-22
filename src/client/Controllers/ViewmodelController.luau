@@ -18,6 +18,8 @@ local Signal = require(Shared.Util.Signal)
 local WeaponController = require(script.Parent.WeaponController)
 local CameraController = require(script.Parent.CameraController)
 local MovementController = require(script.Parent.MovementController)
+local Settings = require(script.Parent.Settings)
+local Presentation = require(Shared.Mobile.Presentation)
 
 local ViewmodelController = {}
 
@@ -270,10 +272,21 @@ local function update(dt: number)
 		* ShotgunRig.ViewmodelOffset
 		* CFrame.new(0, -0.25 * wallPush, 0.9 * wallPush)
 		* CFrame.Angles(-0.5 * wallPush, 0.25 * wallPush, 0)
+	local left = Settings.values.weaponHand == "left"
+	if left then
+		base = camCF * Presentation.reflect(camCF:ToObjectSpace(base))
+	end
 
 	local equipped = WeaponController.state.equipped
 	for _, gun in guns do
 		local pose = gun.anim:update(dt)
+		if left then
+			local mirrored = {}
+			for name, delta in pose do
+				mirrored[name] = Presentation.reflect(delta)
+			end
+			pose = mirrored
+		end
 		if gun.visible then
 			gun.model:setRoot(base)
 			gun.model:setPose(pose)
@@ -284,8 +297,16 @@ local function update(dt: number)
 	if gun and gun.visible then
 		local shoulderR = (camCF * CFrame.new(1.05, -1.55, 0.7)).Position
 		local shoulderL = (camCF * CFrame.new(-0.35, -1.7, 0.1)).Position
-		placeArm(arms.right, shoulderR, gun.model:point("Grip"))
-		placeArm(arms.left, shoulderL, gun.model:point("SupportHand"))
+		if left then
+			shoulderR = (camCF * CFrame.new(0.35, -1.7, 0.1)).Position
+			shoulderL = (camCF * CFrame.new(-1.05, -1.55, 0.7)).Position
+		end
+		placeArm(if left then arms.left else arms.right, if left then shoulderL else shoulderR, gun.model:point("Grip"))
+		placeArm(
+			if left then arms.right else arms.left,
+			if left then shoulderR else shoulderL,
+			gun.model:point("SupportHand")
+		)
 		for _, list in arms do
 			for _, p in list do
 				p.LocalTransparencyModifier = 0

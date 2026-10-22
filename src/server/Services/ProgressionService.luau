@@ -222,6 +222,9 @@ local SETTING_TYPES: { [string]: string } = {
 	crosshairColor = "string",
 	crosshairSize = "number",
 	touchLayout = "table",
+	touchLayoutV2 = "table",
+	controlLayout = "string",
+	weaponHand = "string",
 	tutorialDone = "boolean",
 }
 
@@ -238,7 +241,15 @@ local function cleanSettings(raw: any): { [string]: any }?
 					out[key] = v
 				end
 			elseif kind == "string" then
-				if #v <= 24 then
+				if
+					#v <= 24
+					and (
+						(key ~= "controlLayout" and key ~= "weaponHand")
+						or v == "right"
+						or v == "left"
+						or (key == "controlLayout" and (v == "Right-Handed" or v == "Left-Handed"))
+					)
+				then
 					out[key] = v
 				end
 			elseif kind == "table" then
@@ -267,6 +278,9 @@ local function cleanSettings(raw: any): { [string]: any }?
 			end
 		end
 	end
+	local presentation = require(Shared.Preferences).normalize(out)
+	out.controlLayout = presentation.controlLayout
+	out.weaponHand = presentation.weaponHand
 	return out
 end
 

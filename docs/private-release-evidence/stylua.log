@@ -1,0 +1,5 @@
+Raw default StyLua check: exit 1, reporting Windows CRLF versus LF differences.
+Full raw output retained locally at build/playtest/private-release-stylua-raw-crlf.log.
+Required Windows-aware check: stylua --check --line-endings Windows src tests tools/*.luau
+Result: exit 0; see stylua-windows.log (empty success output).
+No gameplay source was reformatted or changed to address line endings.

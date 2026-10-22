@@ -7,6 +7,7 @@ local Shared = ReplicatedStorage.Shared
 local GameConfig = require(Shared.Config.GameConfig)
 local Signal = require(Shared.Util.Signal)
 local Net = require(Shared.Net)
+local Preferences = require(Shared.Preferences)
 
 local Settings = {}
 
@@ -27,6 +28,9 @@ export type Values = {
 	crosshairColor: string, -- key into CROSSHAIR_COLORS
 	crosshairSize: number, -- 0.6 .. 1.6
 	touchLayout: { [string]: { number } }, -- button -> {xScale, yScale}
+	touchLayoutV2: { [string]: { number } },
+	controlLayout: string,
+	weaponHand: string,
 	tutorialDone: boolean,
 }
 
@@ -55,6 +59,9 @@ local DEFAULTS: Values = {
 	crosshairColor = "White",
 	crosshairSize = 1,
 	touchLayout = {},
+	touchLayoutV2 = {},
+	controlLayout = "right",
+	weaponHand = "right",
 	tutorialDone = false,
 }
 
@@ -72,6 +79,9 @@ function Settings.apply(saved: any)
 			(Settings.values :: any)[key] = value
 		end
 	end
+	local presentation = Preferences.normalize(saved)
+	Settings.values.controlLayout = presentation.controlLayout
+	Settings.values.weaponHand = presentation.weaponHand
 	Settings.Changed:Fire(Settings.values)
 end
 

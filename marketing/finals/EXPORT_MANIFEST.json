@@ -1,0 +1,34 @@
+[
+  {
+    "file": "01_DoublePump_1920x1080.jpg",
+    "width": 1920,
+    "height": 1080,
+    "format": "jpeg",
+    "space": "srgb",
+    "bytes": 704419
+  },
+  {
+    "file": "02_FirstPerson_1920x1080.jpg",
+    "width": 1920,
+    "height": 1080,
+    "format": "jpeg",
+    "space": "srgb",
+    "bytes": 605862
+  },
+  {
+    "file": "03_5v5Rooftops_1920x1080.jpg",
+    "width": 1920,
+    "height": 1080,
+    "format": "jpeg",
+    "space": "srgb",
+    "bytes": 622267
+  },
+  {
+    "file": "DoublePump_Icon_512.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "space": "srgb",
+    "bytes": 452220
+  }
+]

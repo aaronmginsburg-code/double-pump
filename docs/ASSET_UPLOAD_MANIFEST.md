@@ -1,3 +1,48 @@
+## 2026-10-21 - Lobby queue addition
+
+The physical queue uses only code-created Roblox parts, BillboardGui and text. No new mesh, image, sound, animation, external asset source or upload is required. Existing asset limitations remain unchanged. See `LOBBY_AND_MATCHMAKING_UPDATE.md`.
+
+## Marketing asset delivery � 2026-10-21
+
+Owner reports the latest mobile camera/independent-hand revision works properly.
+Created marketing-only assets: three icon concepts, six thumbnail concepts, one
+refined 512-square icon and three refined 1920x1080 thumbnails, with Studio captures,
+editable SVG typography, generated masters and source prompts. Files are under
+marketing/. No gameplay code, combat settings, maps, cloud version, access or
+monetization was changed; no promotional art was uploaded. 197 tests pass and all
+78 local scripts still match the previously verified candidate. See
+[marketing report](../marketing/MARKETING_ASSET_REPORT.md) for provenance, capture
+limitations, final files and upload instructions. Earlier sections are historical.
+
+## Camera and independent weapon hand revision — 2026-10-21
+
+Owner tested version 5 on iPhone 17 Pro Max with no technical issues. On
+feat/mobile-controls (base a487de38a96261dbeac74e701e69ce31762123f9, uncommitted),
+LOOK was removed and original displacement-based touch aiming restored. All other
+mobile bounds and swipe/held-fire behavior remain unchanged. Control Layout and
+Weapon Hand are independent canonical right/left preferences; profile v3 preserves
+old coupled layout/weapon selections. Datastore name unchanged.
+
+197 tests pass; type analysis, StyLua, Selene and Rojo pass. Local build and Studio
+snapshot match all 78 script containers. Actual Studio checks include all four
+combinations, drag axes/gesture separation, server-saved left UI/right weapon,
+respawn continuity and desktop mouse/Q/R. Physical revised multitouch and live
+rejoin/map-cycle testing remain pending. Privately published version 8 to the
+existing experience; Dashboard confirms owner/collaborator-only access. Independently
+reopened cloud copy matches all 78 tested sources. Version 5 remains recoverable.
+
+See [MOBILE_CAMERA_AND_HANDEDNESS_UPDATE.md](../MOBILE_CAMERA_AND_HANDEDNESS_UPDATE.md)
+for files, migration, screenshots, exact test scope, backup and publication state.
+Earlier sections below are historical.
+
+## Current mobile release note — 2026-10-21
+
+Private version 5 reuses all existing models, animations and UI glyphs; no new
+assets/IDs/uploads are required. Creator is supersnapstudios (11808586604), universe
+10772275012, place 82505574993280. The historical inventory below predates the first
+private publication. Existing missing/moderated audio warnings remain; observed
+Practice/combat was usable. See ../MOBILE_CONTROLS_UPDATE.md for current evidence.
+
 # Asset upload manifest
 
 Everything that still has to be uploaded to Roblox, or configured on Roblox, before
@@ -163,3 +208,10 @@ set `Enabled = true`. This involves real money: **owner decision only.**
   source and QA material.
 - `docs/images/maps/*`: documentation images.
 - Fonts and the HUD vignette are built-in `rbxasset://` content.
+
+## Mobile controls candidate — 2026-10-21
+
+The mobile update adds only locally drawn UI glyphs and reuses existing shotgun
+models/animations. It requires no new uploaded images, meshes, audio or asset IDs.
+No assets were uploaded or replaced. Existing missing cosmetic assets remain as
+recorded above. See ../MOBILE_CONTROLS_UPDATE.md for validation status.

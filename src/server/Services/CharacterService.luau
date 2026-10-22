@@ -22,6 +22,7 @@ CharacterService.Spawned = Signal.new() :: Signal.Signal<Player, Model>
 CharacterService.Died = Signal.new() :: Signal.Signal<Player, Model>
 
 local pendingSpawn: { [Player]: CFrame } = {}
+local retiring: { [Model]: boolean } = setmetatable({}, { __mode = "k" }) :: any
 local limiter = RateLimiter.new(GameConfig.Network.GeneralBurst * 3, GameConfig.Network.LookUpdateRate + 4)
 local skinProvider: ((Player) -> any)? = nil
 
@@ -198,8 +199,15 @@ local function prepareCharacter(player: Player, character: Model)
 	if spawnAt then
 		character:PivotTo(spawnAt)
 	end
+	-- Rebuilding avatar joints can temporarily remove the neck. Disable the
+	-- engine's neck-death rule before that work, not after restoring health.
+	humanoid.RequiresNeck = false
 	useClassicJoints(character)
 	setupHumanoid(humanoid)
+	retiring[character] = nil
+	character:SetAttribute("Dead", false)
+	character:SetAttribute("Frozen", false)
+	character:SetAttribute("Crouching", false)
 	prepareBody(character)
 	character.DescendantAdded:Connect(function(d)
 		if d:IsA("BasePart") and d:FindFirstAncestorOfClass("Accessory") then
@@ -216,7 +224,14 @@ local function prepareCharacter(player: Player, character: Model)
 	CharacterService.protect(character, GameConfig.Player.SpawnProtection)
 	task.defer(mountWorldGun, player, character)
 
-	humanoid.Died:Once(function()
+	local handledDeath = false
+	humanoid.Died:Connect(function()
+		-- An engine initialization death may have been queued before preparation
+		-- restored health. It must not mark a living, prepared spawn as dead.
+		if humanoid.Health > 0 or handledDeath or retiring[character] or player.Character ~= character then
+			return
+		end
+		handledDeath = true
 		character:SetAttribute("Dead", true)
 		ragdoll(character)
 		CharacterService.Died:Fire(player, character)
@@ -224,6 +239,7 @@ local function prepareCharacter(player: Player, character: Model)
 	-- Replicate the intended facing explicitly; CharacterAdded can reach clients
 	-- before the engine finishes loading or this final placement is replicated.
 	character:SetAttribute("SpawnCFrame", spawnAt or character:GetPivot())
+	character:SetAttribute("SpawnRevision", 1)
 	CharacterService.Spawned:Fire(player, character)
 end
 
@@ -247,6 +263,11 @@ function CharacterService.spawn(player: Player, cframe: CFrame)
 		return
 	end
 	pendingSpawn[player] = cframe + Vector3.new(0, 3, 0)
+	-- LoadCharacterAsync can kill the old humanoid before replacing it. That is
+	-- a transfer, not an elimination/reset requiring a second delayed respawn.
+	if player.Character then
+		retiring[player.Character] = true
+	end
 	local ok, err = pcall(function()
 		player:LoadCharacterAsync()
 	end)
@@ -256,6 +277,34 @@ function CharacterService.spawn(player: Player, cframe: CFrame)
 	elseif player.Parent and player.Character and pendingSpawn[player] then
 		prepareCharacter(player, player.Character)
 	end
+end
+
+-- Moving a living participant between the range and arena is not a death. Keep
+-- the prepared rig and its listeners; loading another avatar here can race the
+-- engine's old-character teardown and create delayed, stale death notifications.
+function CharacterService.transfer(player: Player, cframe: CFrame)
+	local character = player.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
+	if not character or not humanoid or not root or humanoid.Health <= 0 or character:GetAttribute("Dead") == true then
+		CharacterService.spawn(player, cframe)
+		return
+	end
+	local spawnAt = cframe + Vector3.new(0, 3, 0)
+	character:SetAttribute("SpawnCFrame", nil)
+	character:SetAttribute("SpawnRevision", ((character:GetAttribute("SpawnRevision") :: number?) or 0) + 1)
+	setupHumanoid(humanoid)
+	character:SetAttribute("Frozen", false)
+	character:SetAttribute("Crouching", false)
+	character:SetAttribute("EquippedSlot", 1)
+	character:SetAttribute("AimPitch", 0)
+	root.Anchored = false
+	root.AssemblyLinearVelocity = Vector3.zero
+	root.AssemblyAngularVelocity = Vector3.zero
+	character:PivotTo(spawnAt)
+	CharacterService.protect(character, GameConfig.Player.SpawnProtection)
+	character:SetAttribute("SpawnCFrame", spawnAt)
+	CharacterService.Spawned:Fire(player, character)
 end
 
 function CharacterService.despawn(player: Player)

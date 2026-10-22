@@ -215,7 +215,7 @@ local function makeEnv(scriptNode)
 		UDim = roblox.UDim,
 		UDim2 = roblox.UDim2,
 		Enum = roblox.Enum,
-		Instance = roblox.Instance,
+		Instance = Loader.Instance or roblox.Instance,
 		NumberSequence = roblox.NumberSequence,
 		NumberSequenceKeypoint = roblox.NumberSequenceKeypoint,
 		ColorSequence = roblox.ColorSequence,

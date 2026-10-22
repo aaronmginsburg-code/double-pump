@@ -1,0 +1,5 @@
+2026-10-21T22:23:09.872Z,2363.872803,83f0,6,Info [FLog::StudioPublishStatusLabel] Publish succeeded for placeId 82505574993280; marking as published (refreshing menu label to "Publish latest version")
+2026-10-21T22:23:15.407Z,2369.407227,74c4,6,Info [FLog::StudioPublishStatusLabel] Publish succeeded for placeId 82505574993280; marking as published (refreshing menu label to "Publish latest version")
+2026-10-21T22:23:15.409Z,2369.409424,7ae0,6,Info [FLog::CreatorOutput] Published new changes in "Double Pump [Private Test]" to Roblox.
+2026-10-21T22:23:15.412Z,2369.412354,7ae0,6,Info [FLog::CreatorOutput] → Add publish notes to v8
+Dashboard published-only: 8, 7, 5, 2. Audience: Only available to you and your collaborators.

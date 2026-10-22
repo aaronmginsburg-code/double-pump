@@ -13,6 +13,7 @@ local Net = require(Shared.Net)
 local Signal = require(Shared.Util.Signal)
 local WeaponConfig = require(Shared.Config.WeaponConfig)
 local CharacterService = require(script.Parent.CharacterService)
+local CombatContext = require(script.Parent.CombatContext)
 
 local DamageService = {}
 
@@ -66,6 +67,16 @@ function DamageService.apply(
 	local humanoid = target:FindFirstChildOfClass("Humanoid")
 	if not humanoid or humanoid.Health <= 0 or target:GetAttribute("Dead") == true then
 		return 0, false, false
+	end
+	if attacker then
+		local context = CombatContext.resolve(attacker, target)
+		if context == "Blocked" then
+			return 0, false, false
+		elseif context == "Practice" then
+			-- The caller already aggregated the authoritative pellet damage. Report
+			-- its full hypothetical value, without health changes, logs or signals.
+			return amount, false, false
+		end
 	end
 	if CharacterService.isProtected(target) then
 		return 0, false, false

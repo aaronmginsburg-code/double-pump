@@ -1,0 +1,33 @@
+ M GAME_DESIGN.md
+ M docs/AI_HANDOFF.md
+ M docs/ASSET_SOURCES.md
+ M docs/ASSET_UPLOAD_MANIFEST.md
+ M docs/CHANGELOG.md
+ M docs/PROJECT_STATUS.md
+ M docs/ROADMAP.md
+ M docs/STUDIO_PLAYTEST_REPORT.md
+ M docs/TESTING.md
+ M src/client/Controllers/CameraController.luau
+ M src/client/Controllers/Settings.luau
+ M src/client/Controllers/ViewmodelController.luau
+ M src/client/Controllers/WeaponController.luau
+ M src/client/UI/Hud.luau
+ M src/client/UI/MainMenu.luau
+ M src/client/UI/MobileControls.luau
+ M src/client/UI/SettingsPanel.luau
+ M src/client/UI/Tutorial.luau
+ M src/server/Services/ProgressionService.luau
+ M src/shared/Progression/Profile.luau
+?? MOBILE_CAMERA_AND_HANDEDNESS_UPDATE.md
+?? MOBILE_CONTROLS_UPDATE.md
+?? PRIVATE_PLAYTEST_GUIDE.md
+?? PRIVATE_RELEASE_REPORT.md
+?? docs/camera-hand-evidence/
+?? docs/mobile-controls-evidence/
+?? docs/private-release-evidence/
+?? marketing/
+?? src/shared/Mobile/
+?? src/shared/Preferences.luau
+?? tests/camera_handedness.spec.luau
+?? tests/fixtures/
+?? tests/mobile_controls.spec.luau

@@ -177,9 +177,31 @@ function WeaponController.tryFire()
 	end
 end
 
-function WeaponController.equip(slot: number)
+-- Mobile requests use exactly the same prediction and remote path, without a
+-- desktop input buffer that could outlive the owning fire finger.
+function WeaponController.mobileReady(): (boolean, string?)
 	if not canAct() then
-		return
+		return false, "Inactive"
+	end
+	local s = state()
+	return WeaponState.canFire(s, s.equipped, os.clock())
+end
+
+function WeaponController.fireMobile()
+	local ready, reason = WeaponController.mobileReady()
+	if ready then
+		doFire(os.clock())
+	elseif reason == "Empty" then
+		WeaponController.DryFire:Fire(state().equipped)
+		if WeaponConfig.Ammo.AutoReloadWhenEmpty then
+			WeaponController.reload()
+		end
+	end
+end
+
+function WeaponController.equip(slot: number): boolean
+	if not canAct() then
+		return false
 	end
 	local s = state()
 	local previous = s.equipped
@@ -192,7 +214,9 @@ function WeaponController.equip(slot: number)
 			WeaponController.ReloadEnded:Fire(previous, false)
 		end
 		WeaponController.Equipped:Fire(slot, previous, false)
+		return true
 	end
+	return false
 end
 
 function WeaponController.swap()

@@ -5,6 +5,16 @@
 
 local GameConfig = {}
 
+GameConfig.LobbyQueue = {
+	Minimum = 2,
+	Capacity = 10,
+	Countdown = 15,
+	PollInterval = 0.1,
+	-- Rear corner of the existing range, outside every range spawn and target lane.
+	Offset = Vector3.new(-52, 7, 37),
+	Size = Vector3.new(18, 14, 10),
+}
+
 GameConfig.Match = {
 	MaxPlayers = 10, -- also set Max Players to 10 in Game Settings > Places
 	MaxTeamSize = 5,

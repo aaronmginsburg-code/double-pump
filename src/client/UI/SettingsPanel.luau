@@ -193,7 +193,14 @@ local function toggle(parent: Instance, order: number, title: string, key: strin
 	show()
 end
 
-local function choice(parent: Instance, order: number, title: string, key: string, options: { string })
+local function choice(
+	parent: Instance,
+	order: number,
+	title: string,
+	key: string,
+	options: { string },
+	display: { [string]: string }?
+)
 	local frame = row(parent, order, title)
 	local button = Theme.button("", "Secondary", {
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -202,7 +209,8 @@ local function choice(parent: Instance, order: number, title: string, key: strin
 		Parent = frame,
 	})
 	local function show()
-		button.Text = tostring((Settings.values :: any)[key]) .. "  ▸"
+		local value = (Settings.values :: any)[key]
+		button.Text = (if display then display[value] or tostring(value) else tostring(value)) .. "  ▸"
 	end
 	button.Activated:Connect(function()
 		local current = table.find(options, (Settings.values :: any)[key]) or 0
@@ -269,8 +277,19 @@ function SettingsPanel.build(parent: Instance): ScrollingFrame
 	slider(scroll, n(), "Size", "crosshairSize", 0.6, 1.6, 0.05, decimal)
 
 	header(scroll, n(), "CONTROLS")
+	if UserInputService.TouchEnabled then
+		choice(
+			scroll,
+			n(),
+			"Control Layout",
+			"controlLayout",
+			{ "right", "left" },
+			{ right = "Right-Handed", left = "Left-Handed" }
+		)
+	end
 	toggle(scroll, n(), "Crouch is a toggle", "crouchToggle")
 	toggle(scroll, n(), "Mouse wheel switches guns", "wheelSwitching")
+	choice(scroll, n(), "Weapon Hand", "weaponHand", { "right", "left" }, { right = "Right", left = "Left" })
 	action(scroll, n(), "Touch button layout", "Edit layout", function()
 		if SettingsPanel.editTouchLayout then
 			SettingsPanel.editTouchLayout()

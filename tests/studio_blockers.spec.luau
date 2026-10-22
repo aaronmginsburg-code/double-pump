@@ -161,15 +161,31 @@ T.describe("Studio blocker regressions", function()
 			Loader.inject(Loader.Shared.Weapons.ShotgunModel, {})
 			Loader.inject(Loader.Shared.Util.Signal, { new = signal })
 			local finished, pivotAt, notifications = false, nil, 0
+			local latestHumanoid
+			local loadCount = 0
 			function player:LoadCharacterAsync()
+				loadCount += 1
+				if latestHumanoid then
+					latestHumanoid.Health = 0
+					latestHumanoid.Died:Fire() -- engine retires the previous living character
+				end
 				finished = false
-				local attributes = {}
+				local attributes = { Dead = true, Frozen = true, Crouching = true }
 				local humanoid = { SetStateEnabled = function() end, Died = signal() }
+				latestHumanoid = humanoid
+				local root = {}
 				local character = {
+					FindFirstChild = function(_, name)
+						return if name == "HumanoidRootPart" then root else nil
+					end,
+					FindFirstChildOfClass = function()
+						return humanoid
+					end,
 					WaitForChild = function(_, name)
 						return if name == "Humanoid" then humanoid else {}
 					end,
 					GetDescendants = function()
+						T.expect(humanoid.RequiresNeck).toBe(false)
 						return {}
 					end,
 					DescendantAdded = signal(),
@@ -191,10 +207,17 @@ T.describe("Studio blocker regressions", function()
 			end
 			local service = Loader.require(Loader.Server.Services.CharacterService)
 			service.start()
+			local deaths = 0
+			service.Died:Connect(function()
+				deaths += 1
+			end)
 			service.Spawned:Connect(function(_, character)
 				T.expect(finished).toBe(true)
 				T.expect(character).toBe(player.Character)
 				T.expect(character:GetAttribute("SpawnCFrame")).toBe(pivotAt)
+				T.expect(character:GetAttribute("Dead")).toBe(false)
+				T.expect(character:GetAttribute("Frozen")).toBe(false)
+				T.expect(character:GetAttribute("Crouching")).toBe(false)
 				notifications += 1
 			end)
 			for _, spawn in { R.CFrame.new(-60, 4, 20), R.CFrame.new(60, 4, -20) } do
@@ -202,6 +225,29 @@ T.describe("Studio blocker regressions", function()
 				T.expect(pivotAt).toBe(spawn + R.Vector3.new(0, 3, 0))
 			end
 			T.expect(notifications).toBe(2)
+			T.expect(deaths).toBe(0) -- forced transfers never schedule another respawn
+			local living = player.Character
+			latestHumanoid.Health = 20
+			living:SetAttribute("Frozen", true)
+			living:SetAttribute("Crouching", true)
+			service.transfer(player, R.CFrame.new(-1254, 0.5, 0))
+			T.expect(player.Character).toBe(living)
+			T.expect(loadCount).toBe(2) -- healthy transfers never reload/kill the avatar
+			T.expect(latestHumanoid.Health).toBe(100)
+			T.expect(living:GetAttribute("SpawnRevision")).toBe(2)
+			T.expect(living:GetAttribute("Frozen")).toBe(false)
+			T.expect(living:GetAttribute("Crouching")).toBe(false)
+			T.expect(pivotAt).toBe(R.CFrame.new(-1254, 3.5, 0))
+			-- A queued engine Died event after health restoration must neither mark
+			-- the living spawn dead nor consume its later real death listener.
+			latestHumanoid.Died:Fire()
+			T.expect(player.Character:GetAttribute("Dead")).toBe(false)
+			latestHumanoid.Health = 0
+			latestHumanoid.Died:Fire()
+			T.expect(player.Character:GetAttribute("Dead")).toBe(true)
+			T.expect(deaths).toBe(1)
+			latestHumanoid.Died:Fire()
+			T.expect(deaths).toBe(1)
 		end)
 	end)
 

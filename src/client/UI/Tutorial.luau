@@ -39,11 +39,11 @@ local STEPS: { Step } = {
 	{ text = "Shoot a target.", keys = { Keyboard = "Left mouse button", Gamepad = "R2", Touch = "FIRE button" } },
 	{
 		text = "Switch to your other shotgun.",
-		keys = { Keyboard = "Press 2 or Q", Gamepad = "R1 or L1", Touch = "SWAP button" },
+		keys = { Keyboard = "Press 2 or Q", Gamepad = "R1 or L1", Touch = "Swipe down in ↓ SWAP" },
 	},
 	{
 		text = "Double pump: hit a target, switch, and hit it again within a second.",
-		keys = { Keyboard = "Click, Q, click", Gamepad = "R2, R1, R2", Touch = "FIRE, SWAP, FIRE" },
+		keys = { Keyboard = "Click, Q, click", Gamepad = "R2, R1, R2", Touch = "Hold FIRE, swipe down to swap + fire" },
 	},
 	{
 		text = "Reload. Shells go in one at a time; firing or switching stops the reload.",
@@ -93,7 +93,7 @@ local function finish(completed: boolean)
 	Net.event("SettingsAction"):FireServer("TutorialDone")
 	if completed then
 		stepLabel.Text = "TUTORIAL COMPLETE"
-		textLabel.Text = "You're ready. Press PLAY in the menu (M) when you want a real match."
+		textLabel.Text = "You're ready. Enter the Match Queue Zone in the range when you want a real match."
 		hintLabel.Text = ""
 		AudioController.play("LevelUp")
 		task.delay(5, function()

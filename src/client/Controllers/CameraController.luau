@@ -16,6 +16,7 @@ local Shared = ReplicatedStorage.Shared
 local GameConfig = require(Shared.Config.GameConfig)
 local WeaponConfig = require(Shared.Config.WeaponConfig)
 local Settings = require(script.Parent.Settings)
+local DragAim = require(Shared.Mobile.DragAim)
 
 local CameraController = {}
 
@@ -26,6 +27,7 @@ export type Mode = "Combat" | "Dead" | "Scenic"
 CameraController.mode = "Scenic" :: Mode
 CameraController.yaw = 0
 CameraController.pitch = 0
+CameraController.touchInputEnabled = false
 
 local recoil = 0 -- current extra pitch from recoil (radians)
 local recoilYaw = 0
@@ -34,7 +36,7 @@ local bobTime = 0
 local cursorRequests = 0
 local gamepadLook = Vector2.zero
 local touchDelta = Vector2.zero
-local touchLookInputs: { [InputObject]: boolean } = {}
+local dragAim = DragAim.new()
 local scenicCenter = Vector3.new(0, 20, 0)
 local scenicRadius = 60
 local scenicAngle = 0
@@ -49,9 +51,9 @@ CameraController.isTouchOnControl = function(_position: Vector2): boolean
 	return false
 end
 
--- Lets a touch that began on a control (the FIRE button) also steer the camera.
-function CameraController.addLookTouch(input: InputObject)
-	touchLookInputs[input] = true
+function CameraController.clearTouchLook()
+	dragAim:clear()
+	touchDelta = Vector2.zero
 end
 
 function CameraController.requestCursor(): () -> ()
@@ -77,12 +79,14 @@ function CameraController.kick(strength: number?)
 end
 
 function CameraController.setScenic(center: Vector3, radius: number)
+	CameraController.clearTouchLook()
 	scenicCenter = center
 	scenicRadius = radius
 	CameraController.mode = "Scenic"
 end
 
 function CameraController.setDead(body: Model?, killer: Model?)
+	CameraController.clearTouchLook()
 	deathFocus = body
 	deathTarget = killer
 	deathTime = 0
@@ -155,7 +159,7 @@ local function update(dt: number)
 
 	if mode == "Combat" and root and humanoid then
 		-- Look input
-		if wantLock then
+		if wantLock and not CameraController.touchInputEnabled then
 			local delta = UserInputService:GetMouseDelta()
 			local k = C.MouseRadiansPerPixel * values.sensitivity
 			CameraController.yaw -= delta.X * k
@@ -238,28 +242,29 @@ function CameraController.start()
 	UserInputService.InputChanged:Connect(function(input)
 		if input.KeyCode == Enum.KeyCode.Thumbstick2 then
 			gamepadLook = Vector2.new(input.Position.X, input.Position.Y)
-		elseif input.UserInputType == Enum.UserInputType.Touch and touchLookInputs[input] then
-			touchDelta += Vector2.new(input.Delta.X, input.Delta.Y)
+		elseif input.UserInputType == Enum.UserInputType.Touch then
+			touchDelta += dragAim:move(input, Vector2.new(input.Delta.X, input.Delta.Y))
 		end
 	end)
 	UserInputService.InputEnded:Connect(function(input)
 		if input.KeyCode == Enum.KeyCode.Thumbstick2 then
 			gamepadLook = Vector2.zero
 		end
-		touchLookInputs[input] = nil
+		dragAim:finish(input)
 	end)
 	UserInputService.TouchStarted:Connect(function(input, processed)
-		if processed then
-			return
-		end
 		local pos = Vector2.new(input.Position.X, input.Position.Y)
-		local viewport = workspace.CurrentCamera.ViewportSize
-		-- Left 40% of the screen belongs to the movement thumbstick
-		if pos.X > viewport.X * 0.4 and not CameraController.isTouchOnControl(pos) then
-			touchLookInputs[input] = true
-		end
+		dragAim:begin(
+			input,
+			processed
+				or CameraController.mode ~= "Combat"
+				or CameraController.cursorVisible()
+				or CameraController.isTouchOnControl(pos)
+		)
 	end)
+	UserInputService.WindowFocusReleased:Connect(CameraController.clearTouchLook)
 	player.CharacterAdded:Connect(function()
+		CameraController.clearTouchLook()
 		alignOrientation = nil
 		eyeY = nil
 	end)

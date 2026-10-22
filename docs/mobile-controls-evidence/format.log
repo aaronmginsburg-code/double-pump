@@ -1,0 +1,2 @@
+StyLua --check --line-endings Windows src tests [expanded tools/*.luau]
+Exit code: 0

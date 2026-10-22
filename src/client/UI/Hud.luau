@@ -19,6 +19,7 @@ local MatchClient = require(Controllers.MatchClient)
 local Settings = require(Controllers.Settings)
 local InputController = require(Controllers.InputController)
 local AudioController = require(Controllers.AudioController)
+local MobileLayout = require(game:GetService("ReplicatedStorage").Shared.Mobile.Layout)
 
 local Hud = {}
 
@@ -27,6 +28,7 @@ local C = Theme.Colors
 local new = Theme.new
 
 local gui: ScreenGui
+local mobileGui: ScreenGui
 local root: Frame
 local refs: { [string]: any } = {}
 local slotCards: { { frame: Frame, pips: { Frame }, bar: Frame, status: TextLabel, glow: UIStroke, scale: UIScale, key: TextLabel } } =
@@ -135,6 +137,7 @@ local function buildHealth()
 		Size = UDim2.fromOffset(380, 74),
 		Parent = root,
 	})
+	refs.HealthBox = box
 	Theme.label({
 		Text = "HP",
 		Position = UDim2.fromOffset(16, 12),
@@ -201,6 +204,7 @@ local function buildWeapons()
 			SortOrder = Enum.SortOrder.LayoutOrder,
 		}),
 	})
+	refs.WeaponsHolder = holder
 	for slot = 1, 2 do
 		local card = Theme.panel({
 			Name = "Slot" .. slot,
@@ -678,7 +682,18 @@ local function updateTop()
 	end
 	local banner = ""
 	if MatchClient.mode() == "Practice" then
-		banner = "PRACTICE RANGE  •  open the menu (M) to join a match"
+		local queued = player:GetAttribute("Queued") == true
+		local queueState = MatchClient.get("QueueState")
+		if queued and queueState == "Countdown" then
+			local left = math.max(0, (MatchClient.get("QueueEndsAt") or 0) - workspace:GetServerTimeNow())
+			banner = `QUEUED  •  MATCH STARTING IN {math.ceil(left)}  •  leave the zone to cancel`
+		elseif queued then
+			banner = if queueState == "Pending"
+				then "QUEUED  •  NEXT MATCH PENDING"
+				else "QUEUED  •  WAITING FOR MORE PLAYERS"
+		else
+			banner = "FIRING RANGE  •  Enter the Match Queue Zone to join the next game"
+		end
 	elseif state == "Waiting" and MatchClient.mode() == "Match" then
 		banner =
 			`WAITING FOR PLAYERS  ({MatchClient.get("Players") or 1}/{MatchClient.get("MinPlayers") or 2})  •  warm up on the range`
@@ -713,6 +728,9 @@ end
 
 function Hud.setVisible(visible: boolean)
 	gui.Enabled = visible
+	if mobileGui then
+		mobileGui.Enabled = visible
+	end
 end
 
 function Hud.start()
@@ -722,6 +740,52 @@ function Hud.start()
 	buildWeapons()
 	buildCrosshair()
 	buildFeed()
+	-- Mobile HUD elements share the touch surface's safe coordinate space; the
+	-- desktop reference-pixel layout and all card animations remain unchanged.
+	mobileGui = new("ScreenGui", {
+		Name = "MobileHud",
+		DisplayOrder = 10,
+		ResetOnSpawn = false,
+		ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets,
+		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+		Parent = gui.Parent,
+	}) :: ScreenGui
+	local mobileLayer = new(
+		"Frame",
+		{ Name = "MobileHud", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Parent = mobileGui }
+	) :: Frame
+	local ammoScale = new("UIScale", { Parent = refs.WeaponsHolder }) :: UIScale
+	local healthScale = new("UIScale", { Parent = refs.HealthBox }) :: UIScale
+	local function mobileLayout()
+		local touch = InputController.LastInputKind == "Touch"
+		local left = Settings.values.controlLayout == "left"
+		local size = mobileLayer.AbsoluteSize
+		local layout = MobileLayout.calculate(size.X, size.Y, left)
+		for _, spec in
+			{ { refs.WeaponsHolder, ammoScale, "Ammo", 460, 120 }, { refs.HealthBox, healthScale, "Health", 380, 74 } }
+		do
+			local f, sc = spec[1], spec[2]
+			if touch then
+				local r = layout.rects[spec[3]]
+				f.Parent = mobileLayer
+				f.AnchorPoint = Vector2.zero
+				f.Position = UDim2.fromOffset(r.x, r.y)
+				sc.Scale = r.w / spec[4]
+			else
+				f.Parent = root
+				sc.Scale = 1
+				f.AnchorPoint = Vector2.new(if spec[3] == "Ammo" then 1 else 0, 1)
+				f.Position = if spec[3] == "Ammo" then UDim2.new(1, -28, 1, -28) else UDim2.new(0, 28, 1, -28)
+			end
+		end
+		for slot, card in slotCards do
+			card.frame.LayoutOrder = if touch and left then 3 - slot else slot
+		end
+	end
+	Settings.Changed:Connect(mobileLayout)
+	InputController.InputKindChanged:Connect(mobileLayout)
+	mobileLayer:GetPropertyChangedSignal("AbsoluteSize"):Connect(mobileLayout)
+	mobileLayout()
 	drawCrosshair()
 	Settings.Changed:Connect(drawCrosshair)
 

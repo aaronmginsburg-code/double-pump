@@ -1,0 +1,58 @@
+{
+  "mode": "built-in image_gen",
+  "concepts": [
+    {
+      "key": "thumbnail-A-double-pump",
+      "prompt": "Use case: ads-marketing. Create ONE polished 16:9 landscape Roblox FPS thumbnail CONCEPT, 1920x1080 composition. Original DOUBLE PUMP game, accurate to supplied real Studio references. The black pump-action shotgun has a brown/orange ribbed wooden fore-end and a dark stock, simple low-poly long receiver. No scope, assault rifles, pistols, building mechanics, explosives, superpowers, blood or licensed logos. Keep simple block-built Roblox environments and block avatars, not realistic soldiers or high-detail fantasy city. A player holds ONE shotgun at a time and switches between two identical guns; never show dual-wielding. No Studio/browser frame, no HUD, no text, no watermark. Bold clean focal hierarchy, restrained cinematic light, subject separation, leave calm dark space in UPPER LEFT for later title overlay. Do not invent map structures beyond the reference. CORE MECHANIC concept: a clearly graphic diagonal split between TWO sequential first-person combat moments in the actual Warehouse orange-rack/crate/catwalk setting from reference. Each panel shows just one identical black-and-wood pump shotgun from first person. First shot has brief amber muzzle flash; second panel the other shotgun has just been raised toward one distant red block-avatar rival. These are sequential editorial panels, NOT two weapons held simultaneously. Dynamic but uncluttered; only two action panels. Cool steel and amber palette.",
+      "refs": [
+        "02-warehouse-first-person-raw.jpg"
+      ],
+      "file": "C:\\Users\\aaron\\.codex\\generated_images\\01a15d47-3f78-7901-8a4d-369e79375d8c\\exec-4000e7ed-4242-4cfc-8bc2-d8366c019a01.png"
+    },
+    {
+      "key": "thumbnail-B-close-combat",
+      "prompt": "Use case: ads-marketing. Create ONE polished 16:9 landscape Roblox FPS thumbnail CONCEPT, 1920x1080 composition. Original DOUBLE PUMP game, accurate to supplied real Studio references. The black pump-action shotgun has a brown/orange ribbed wooden fore-end and a dark stock, simple low-poly long receiver. No scope, assault rifles, pistols, building mechanics, explosives, superpowers, blood or licensed logos. Keep simple block-built Roblox environments and block avatars, not realistic soldiers or high-detail fantasy city. A player holds ONE shotgun at a time and switches between two identical guns; never show dual-wielding. No Studio/browser frame, no HUD, no text, no watermark. Bold clean focal hierarchy, restrained cinematic light, subject separation, leave calm dark space in UPPER LEFT for later title overlay. Do not invent map structures beyond the reference. FAST SHOTGUN PVP concept: low-angle close encounter in Dust Town, sand-colored flat-roof adobe buildings, simple wooden market stalls, compact fountain street exactly inspired by map reference. One blue-shirt block avatar on left and one red-shirt block avatar on right face off using identical black-and-wood pump shotguns. Each holds one gun, recognizable pump fore-ends, one brief muzzle flash, dynamic stepping poses. Warm golden hour and clear teal sky. Medium action framing, not a huge cinematic battle.",
+      "refs": [
+        "05-dust-town-wide-raw.jpg",
+        "02-warehouse-first-person-raw.jpg"
+      ],
+      "file": "C:\\Users\\aaron\\.codex\\generated_images\\01a15d47-3f78-7901-8a4d-369e79375d8c\\exec-4acb4936-e5f0-4a42-a7bb-959854b92d11.png"
+    },
+    {
+      "key": "thumbnail-C-five-v-five",
+      "prompt": "Use case: ads-marketing. Create ONE polished 16:9 landscape Roblox FPS thumbnail CONCEPT, 1920x1080 composition. Original DOUBLE PUMP game, accurate to supplied real Studio references. The black pump-action shotgun has a brown/orange ribbed wooden fore-end and a dark stock, simple low-poly long receiver. No scope, assault rifles, pistols, building mechanics, explosives, superpowers, blood or licensed logos. Keep simple block-built Roblox environments and block avatars, not realistic soldiers or high-detail fantasy city. A player holds ONE shotgun at a time and switches between two identical guns; never show dual-wielding. No Studio/browser frame, no HUD, no text, no watermark. Bold clean focal hierarchy, restrained cinematic light, subject separation, leave calm dark space in UPPER LEFT for later title overlay. Do not invent map structures beyond the reference. TEAM ARENA concept: Rooftops map from reference, compact gray flat roofs joined by short white-railed bridges, AC units, water tanks and existing cyan/pink neon strips at night. Show four visible block-avatar combatants from a 5v5 match, two blue and two red, each with ONE matching pump shotgun; one player jumping a small gap and another using AC cover. Team-versus-team diagonal framing, closer camera not distant tiny crowd. Expose enough night shadows to read action but keep modest simple game materials, no cyberpunk mega-city, no flying, no large explosions. Top-left negative space.",
+      "refs": [
+        "06-rooftops-staged-raw.jpg",
+        "02-warehouse-first-person-raw.jpg"
+      ],
+      "file": "C:\\Users\\aaron\\.codex\\generated_images\\01a15d47-3f78-7901-8a4d-369e79375d8c\\exec-78c0a128-64c5-4a78-9aa2-e16f550d73a2.png"
+    },
+    {
+      "key": "thumbnail-D-first-person",
+      "prompt": "Use case: ads-marketing. Create ONE polished 16:9 landscape Roblox FPS thumbnail CONCEPT, 1920x1080 composition. Original DOUBLE PUMP game, accurate to supplied real Studio references. The black pump-action shotgun has a brown/orange ribbed wooden fore-end and a dark stock, simple low-poly long receiver. No scope, assault rifles, pistols, building mechanics, explosives, superpowers, blood or licensed logos. Keep simple block-built Roblox environments and block avatars, not realistic soldiers or high-detail fantasy city. A player holds ONE shotgun at a time and switches between two identical guns; never show dual-wielding. No Studio/browser frame, no HUD, no text, no watermark. Bold clean focal hierarchy, restrained cinematic light, subject separation, leave calm dark space in UPPER LEFT for later title overlay. Do not invent map structures beyond the reference. FIRST-PERSON concept: preserve the actual screenshot's exact first-person gun silhouette, black receiver brown fore-end and camo sleeve, Warehouse's orange rack beams, yellow catwalk railing, pallet crates and tight gray aisles. Recompose toward a clean lane with a single red block-avatar rival peeking from crate cover around mid-right. One foreground shotgun lower right aims toward center. Small muzzle flash optional, crisp original simple game geometry, brighter legible midtones, no elaborate set dressing. Single continuous view, no split.",
+      "refs": [
+        "02-warehouse-first-person-raw.jpg"
+      ],
+      "file": "C:\\Users\\aaron\\.codex\\generated_images\\01a15d47-3f78-7901-8a4d-369e79375d8c\\exec-de6e1e2a-78bc-40b4-ac47-4f8371d1d249.png"
+    },
+    {
+      "key": "thumbnail-E-three-arenas",
+      "prompt": "Use case: ads-marketing. Create ONE polished 16:9 landscape Roblox FPS thumbnail CONCEPT, 1920x1080 composition. Original DOUBLE PUMP game, accurate to supplied real Studio references. The black pump-action shotgun has a brown/orange ribbed wooden fore-end and a dark stock, simple low-poly long receiver. No scope, assault rifles, pistols, building mechanics, explosives, superpowers, blood or licensed logos. Keep simple block-built Roblox environments and block avatars, not realistic soldiers or high-detail fantasy city. A player holds ONE shotgun at a time and switches between two identical guns; never show dual-wielding. No Studio/browser frame, no HUD, no text, no watermark. Bold clean focal hierarchy, restrained cinematic light, subject separation, leave calm dark space in UPPER LEFT for later title overlay. Do not invent map structures beyond the reference. MAP VARIETY concept: three clean diagonal slices showing Warehouse's gray hall/orange racks/yellow railings, Dust Town's adobe fountain and wooden stalls at golden hour, and Rooftops' compact gray bridges/AC/cyan pink neon at night. Use the supplied three map references for actual geometry vocabulary. ONE small block-avatar with a pump shotgun in each slice for scale, not a mass battle. Unified editorial triptych with strong color separation and an uncluttered dark strip upper-left for later title. No labels or text.",
+      "refs": [
+        "02-warehouse-first-person-raw.jpg",
+        "05-dust-town-wide-raw.jpg",
+        "06-rooftops-staged-raw.jpg"
+      ],
+      "file": "C:\\Users\\aaron\\.codex\\generated_images\\01a15d47-3f78-7901-8a4d-369e79375d8c\\exec-e687c047-0026-489e-af4a-62b8b4038e67.png"
+    },
+    {
+      "key": "thumbnail-F-precision",
+      "prompt": "Use case: ads-marketing. Create ONE polished 16:9 landscape Roblox FPS thumbnail CONCEPT, 1920x1080 composition. Original DOUBLE PUMP game, accurate to supplied real Studio references. The black pump-action shotgun has a brown/orange ribbed wooden fore-end and a dark stock, simple low-poly long receiver. No scope, assault rifles, pistols, building mechanics, explosives, superpowers, blood or licensed logos. Keep simple block-built Roblox environments and block avatars, not realistic soldiers or high-detail fantasy city. A player holds ONE shotgun at a time and switches between two identical guns; never show dual-wielding. No Studio/browser frame, no HUD, no text, no watermark. Bold clean focal hierarchy, restrained cinematic light, subject separation, leave calm dark space in UPPER LEFT for later title overlay. Do not invent map structures beyond the reference. PRECISION DUEL concept: over-shoulder close view of a blue block-avatar pumping the black-and-wood shotgun beside a simple Warehouse orange metal rack; a red rival peeks from gray office cover across a short aisle. Deliberate eye-level composition, barrel aligned at opponent head height, no scope, no sniper optics, no huge crosshair graphics. Subtle warm muzzle flash illuminating geometric weapon detail, focused skill-based duel, cool backlights and warm accents. Shotgun remains dominant; clean composition.",
+      "refs": [
+        "02-warehouse-first-person-raw.jpg"
+      ],
+      "file": "C:\\Users\\aaron\\.codex\\generated_images\\01a15d47-3f78-7901-8a4d-369e79375d8c\\exec-588ffa76-b252-43c2-a1e7-b02adc7f3d4f.png"
+    }
+  ],
+  "finalIconPrompt": "Use case: precise-object-edit. Refine image 1 into the FINAL square icon for DOUBLE PUMP. Keep the excellent crossed pair of exactly two identical pump shotguns, strong X silhouette, clean negative space, cyan/amber separation and navy background. Input 2 is the ACTUAL game weapon reference: correct both guns' stocks and receivers to dark black/charcoal to match it; preserve orange-brown ribbed WOOD fore-ends only. Both are the same shotgun model. Make fore-ends a touch larger/readable, simplify tiny sparks, reduce central bloom so overlapping receivers remain distinct. No hands, no muzzle flashes, no simultaneous firing, no extra guns, no text, no badges or logo. Premium low-poly original arcade weapon emblem; polished but faithful to actual weapon geometry. Generous 6% margin all sides for safe 512x512 export. Deliver clean square high-resolution artwork."
+}

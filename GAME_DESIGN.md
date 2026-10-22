@@ -1,3 +1,7 @@
+## 2026-10-21 - Permanent firing-range lobby and voluntary queue
+
+Implemented a server-owned physical FIFO queue (2-10 players, 15 seconds), selected-roster map voting, nonlethal range PvP using the existing pellet damage pipeline, and full-health/ammo return to the lobby. Healthy transfers retain the prepared avatar; real deaths retain normal respawns. Base a487de38 with existing mobile/camera changes preserved; no commit/push. 245 tests pass; staged three-client Studio cycles verified all three arenas, real match PvP and return/requeue, plus an actual fourth late join. See `LOBBY_AND_MATCHMAKING_UPDATE.md` and `docs/lobby-matchmaking-evidence/` for exact evidence, initial failed probes and limitations. Private publication is tracked in the report. Weapon balance, control implementations and arena source files remain unchanged.
+
 # Double Pump: game design
 
 A 5v5 first-person team deathmatch on Roblox where everyone carries two identical pump
@@ -151,3 +155,29 @@ Every sound was synthesised for this game (`tools/gen_audio.py`); the shotgun wa
 in Blender for it; maps and UI are built in code. See `docs/ASSET_SOURCES.md`. Settings
 include volume per channel, crosshair style, colour and size, reduced effects, camera bob
 and damage numbers.
+
+## Mobile controls, private version 5 (2026-10-21)
+
+Touch controls now use separate movement/look sticks, a held FIRE pad and a fresh
+quick downward swipe outside the movement stick. Each swipe deliberately switches
+weapons and, while FIRE remains held, queues at most one shot until the existing
+weapon state permits it. Holding FIRE alone does not repeat. This mobile input
+preference leaves all numbers and desktop/gamepad behavior above unchanged.
+Settings offers Right-Handed/Left-Handed; touch UI and local first-person presentation
+mirror without reversing world movement/aim or changing third-person guns/damage.
+See MOBILE_CONTROLS_UPDATE.md. Studio checks pass; private version 5 contains this
+update. Physical multitouch and live rejoin persistence remain unverified.
+
+## Touch camera / independent hand revision (2026-10-21)
+
+LOOK has been removed; free-screen finger displacement uses the original touch
+camera sensitivity. Control Layout controls only touch layout. Weapon Hand controls
+only first-person presentation on mobile and desktop; both save independently.
+Remaining buttons and swipe/fire sequence retain version 5 geometry and behavior.
+See MOBILE_CAMERA_AND_HANDEDNESS_UPDATE.md for verification/publication status.
+
+## Promotional assets — 2026-10-21
+
+Marketing-only artwork is in marketing/. It represents the existing pump-shotgun
+combat, manual swapping, 5v5 format and current arenas. It does not add gameplay
+features. See marketing/MARKETING_ASSET_REPORT.md for illustration provenance.

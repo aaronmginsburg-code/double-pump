@@ -1,15 +1,15 @@
 --!strict
--- Touch controls: FIRE (drag it to aim while shooting), SWAP, 1 / 2, RELOAD, CROUCH,
--- plus scoreboard and menu. Movement uses Roblox's thumbstick and jump button.
--- Every button is a deliberate tap: SWAP never fires and FIRE never swaps.
---
--- Layout editor (Settings > Touch button layout): drag buttons anywhere, pinch-free
--- size with the +/- chips, Reset to restore, Done to save into the profile.
-
+-- Touch-only adapter: fixed movement stick and free-screen drag aiming, one owned finger per control,
+-- deliberate swipe intents, and one cancellable held-fire follow-up per valid swap.
+local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
-
+local GuiService = game:GetService("GuiService")
+local RunService = game:GetService("RunService")
+local Shared = game:GetService("ReplicatedStorage").Shared
+local Layout = require(Shared.Mobile.Layout)
+local TouchState = require(Shared.Mobile.TouchState)
+local FireSequence = require(Shared.Mobile.FireSequence)
 local Theme = require(script.Parent.Theme)
-local UIRoot = require(script.Parent.UIRoot)
 local Controllers = script.Parent.Parent.Controllers
 local InputController = require(Controllers.InputController)
 local CameraController = require(Controllers.CameraController)
@@ -17,272 +17,469 @@ local WeaponController = require(Controllers.WeaponController)
 local Settings = require(Controllers.Settings)
 
 local MobileControls = {}
-
-local C = Theme.Colors
-local new = Theme.new
-
-type ButtonDef = {
-	name: string,
-	text: string,
-	action: string,
-	size: number,
-	x: number,
-	y: number,
-	hold: boolean?,
-	look: boolean?,
-}
-
--- Default positions as fractions of the screen (anchor at the button centre).
-local DEFS: { ButtonDef } = {
-	{ name = "Fire", text = "FIRE", action = "Fire", size = 150, x = 0.86, y = 0.62, hold = true, look = true },
-	{ name = "Swap", text = "SWAP", action = "Swap", size = 104, x = 0.73, y = 0.79 },
-	{ name = "EquipA", text = "1", action = "EquipA", size = 78, x = 0.68, y = 0.58 },
-	{ name = "EquipB", text = "2", action = "EquipB", size = 78, x = 0.75, y = 0.47 },
-	{ name = "Reload", text = "R", action = "Reload", size = 78, x = 0.95, y = 0.40 },
-	{ name = "Crouch", text = "C", action = "Crouch", size = 86, x = 0.93, y = 0.86, hold = true },
-	{ name = "Scoreboard", text = "≡", action = "Scoreboard", size = 64, x = 0.62, y = 0.08, hold = true },
-	{ name = "Menu", text = "II", action = "Menu", size = 64, x = 0.68, y = 0.08 },
-}
-
+local player = Players.LocalPlayer
+local C, new = Theme.Colors, Theme.new
 local gui: ScreenGui
 local holder: Frame
-local buttons: { [string]: { frame: TextButton, def: ButtonDef, scale: UIScale } } = {}
-local editing = false
 local editBar: Frame
-local wanted = false
+local buttons: { [string]: TextButton } = {}
+local knobs: { [string]: Frame } = {}
+local current: Layout.Result = Layout.calculate(844, 390, false)
+local touches = TouchState.new(1)
+local sequence = FireSequence.new()
+local moveStick = Vector2.zero
+local jumpHeld = false
+local wanted, editing = false, false
+local controls: any = nil
+local customControls = false
+local editStarts: { [InputObject]: { name: string, x: number, y: number, start: Vector2 } } = {}
+local labels: { [string]: string } = {
+	Fire = "FIRE",
+	Move = "MOVE",
+	Jump = "↑",
+	Reload = "R",
+	Crouch = "C",
+	EquipA = "1",
+	EquipB = "2",
+	Scoreboard = "≡",
+	Menu = "II",
+	Swipe = "↓ SWAP",
+}
+local mouseDrag: InputObject? = nil
 
-local function layoutOf(name: string): (number, number, number)
-	local saved = Settings.values.touchLayout[name]
-	for _, def in DEFS do
-		if def.name == name then
-			if saved then
-				return saved[1], saved[2], saved[3] or 1
-			end
-			return def.x, def.y, 1
+local function point(input: InputObject): Vector2
+	return Vector2.new(input.Position.X, input.Position.Y) - holder.AbsolutePosition
+end
+
+local function pressed(name: string, on: boolean)
+	local b = buttons[name]
+	if b then
+		b.BackgroundTransparency = if on then 0.08 elseif name == "Swipe" then 0.94 else 0.3
+	end
+end
+
+local function neutral()
+	sequence:release()
+	for _, role in { "Crouch", "Scoreboard" } do
+		if touches.owners[role] then
+			InputController.trigger(role, false)
 		end
 	end
-	return 0.5, 0.5, 1
+	touches:clear()
+	table.clear(editStarts)
+	mouseDrag = nil
+	moveStick = Vector2.zero
+	jumpHeld = false
+	CameraController.clearTouchLook()
+	for name in buttons do
+		pressed(name, false)
+	end
+	for _, knob in knobs do
+		knob.Position = UDim2.fromScale(0.5, 0.5)
+	end
 end
 
 local function place()
-	-- Sized from the screen height so buttons are thumb-sized on phones and tablets
-	local k = math.clamp(workspace.CurrentCamera.ViewportSize.Y / 720, 0.55, 1.3)
-	for name, entry in buttons do
-		local x, y, sc = layoutOf(name)
-		entry.frame.Position = UDim2.fromScale(x, y)
-		entry.frame.Size = UDim2.fromOffset(entry.def.size * k, entry.def.size * k)
-		entry.scale.Scale = sc
+	if not holder then
+		return
+	end
+	neutral()
+	local size = holder.AbsoluteSize
+	current = Layout.calculate(size.X, size.Y, Settings.values.controlLayout == "left", Settings.values.touchLayoutV2)
+	touches.unit = current.unit
+	for name, b in buttons do
+		local r = current.rects[name]
+		b.Position = UDim2.fromOffset(r.x, r.y)
+		b.Size = UDim2.fromOffset(r.w, r.h)
+	end
+end
+
+local function updateVisibility()
+	if not gui then
+		return
+	end
+	local touchMode = InputController.LastInputKind == "Touch"
+	local show = editing or (wanted and touchMode)
+	if gui.Enabled ~= show then
+		neutral()
+	end
+	gui.Enabled = show
+	CameraController.touchInputEnabled = touchMode
+	if controls and customControls ~= touchMode then
+		customControls = touchMode
+		if touchMode then
+			controls:Disable()
+		else
+			controls:Enable()
+		end
+	end
+	local defaultTouch = player.PlayerGui:FindFirstChild("TouchGui")
+	if defaultTouch and defaultTouch:IsA("ScreenGui") and touchMode then
+		defaultTouch.Enabled = false
 	end
 end
 
 function MobileControls.isOnControl(position: Vector2): boolean
-	if not gui or not gui.Enabled then
-		return false
+	if not gui or not gui.Enabled or editing or not wanted or GuiService.MenuIsOpen then
+		return true
 	end
-	for _, entry in buttons do
-		local f = entry.frame
-		local p, s = f.AbsolutePosition, f.AbsoluteSize
-		if position.X >= p.X and position.X <= p.X + s.X and position.Y >= p.Y and position.Y <= p.Y + s.Y then
+	local p = position - holder.AbsolutePosition
+	for name, r in current.rects do
+		if buttons[name] and Layout.contains(r, p.X, p.Y) then
 			return true
 		end
 	end
 	return false
 end
 
-local function makeButton(def: ButtonDef)
-	local isFire = def.name == "Fire"
-	local button = new("TextButton", {
-		Name = def.name,
-		Text = def.text,
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.fromOffset(def.size, def.size),
-		BackgroundColor3 = if isFire then C.Accent else C.Panel,
-		BackgroundTransparency = if isFire then 0.15 else 0.35,
-		TextColor3 = if isFire then C.Ink else C.Text,
-		FontFace = Theme.Fonts.Display,
-		TextScaled = true,
-		AutoButtonColor = false,
-		Parent = holder,
-	}, {
-		new("UICorner", { CornerRadius = UDim.new(0.5, 0) }),
-		Theme.stroke(if isFire then C.AccentDark else C.Stroke, 3, 0.2),
-		new("UIPadding", {
-			PaddingTop = UDim.new(0.26, 0),
-			PaddingBottom = UDim.new(0.26, 0),
-			PaddingLeft = UDim.new(0.18, 0),
-			PaddingRight = UDim.new(0.18, 0),
-		}),
-	}) :: TextButton
-	local scale = new("UIScale", { Parent = button }) :: UIScale
-	buttons[def.name] = { frame = button, def = def, scale = scale }
-
-	local activeTouch: InputObject? = nil
-	local dragStart: Vector2? = nil
-	local startPos: Vector2? = nil
-	button.InputBegan:Connect(function(input)
-		if
-			input.UserInputType ~= Enum.UserInputType.Touch
-			and input.UserInputType ~= Enum.UserInputType.MouseButton1
-		then
-			return
+local function swipe()
+	sequence:swipe(function()
+		local nextSlot = if WeaponController.state.equipped == 1 then 2 else 1
+		if WeaponController.equip(nextSlot) then
+			return nextSlot
 		end
-		if editing then
-			activeTouch = input
-			dragStart = Vector2.new(input.Position.X, input.Position.Y)
-			startPos = button.AbsolutePosition + button.AbsoluteSize / 2
-			return
-		end
-		activeTouch = input
-		button.BackgroundTransparency = 0
-		InputController.trigger(def.action, true)
-		if not def.hold then
-			InputController.trigger(def.action, false)
-		end
-		if def.look and input.UserInputType == Enum.UserInputType.Touch then
-			CameraController.addLookTouch(input)
-		end
+		return nil
 	end)
-	local function release(input: InputObject)
-		if input ~= activeTouch then
-			return
+end
+
+local function changed(input: InputObject)
+	if editing and mouseDrag and input.UserInputType == Enum.UserInputType.MouseMovement then
+		-- Mouse is only an editor fallback. Combat touch ownership remains physical.
+		local drag = editStarts[mouseDrag]
+		if drag then
+			local p = point(input)
+			local size = holder.AbsoluteSize
+			local center = Vector2.new(drag.x, drag.y) + p - drag.start
+			local x = center.X / math.max(size.X, 1)
+			if Settings.values.controlLayout == "left" then
+				x = 1 - x
+			end
+			local saved = table.clone(Settings.values.touchLayoutV2)
+			saved[drag.name] = { x, center.Y / math.max(size.Y, 1), 1 }
+			Settings.values.touchLayoutV2 = saved
+			current = Layout.calculate(size.X, size.Y, Settings.values.controlLayout == "left", saved)
+			for name, b in buttons do
+				local r = current.rects[name]
+				b.Position = UDim2.fromOffset(r.x, r.y)
+				b.Size = UDim2.fromOffset(r.w, r.h)
+			end
 		end
-		activeTouch = nil
-		button.BackgroundTransparency = if isFire then 0.15 else 0.35
-		if editing then
-			return
-		end
-		if def.hold then
-			InputController.trigger(def.action, false)
-		end
+		return
 	end
-	button.InputEnded:Connect(release)
-	UserInputService.InputEnded:Connect(release)
-	UserInputService.InputChanged:Connect(function(input)
-		if editing and input == activeTouch and dragStart and startPos then
-			local delta = Vector2.new(input.Position.X, input.Position.Y) - (dragStart :: Vector2)
-			local center = (startPos :: Vector2) + delta
-			local viewport = workspace.CurrentCamera.ViewportSize
-			local _, _, sc = layoutOf(def.name)
-			local layout = table.clone(Settings.values.touchLayout)
-			layout[def.name] =
-				{ math.clamp(center.X / viewport.X, 0.03, 0.97), math.clamp(center.Y / viewport.Y, 0.05, 0.95), sc }
-			Settings.values.touchLayout = layout
-			place()
+	local drag = editStarts[input]
+	if drag and editing then
+		local pos = point(input)
+		local delta = pos - drag.start
+		local size = holder.AbsoluteSize
+		local x = (drag.x + delta.X) / math.max(size.X, 1)
+		if Settings.values.controlLayout == "left" then
+			x = 1 - x
 		end
-	end)
+		local saved = table.clone(Settings.values.touchLayoutV2)
+		saved[drag.name] = { x, (drag.y + delta.Y) / math.max(size.Y, 1), 1 }
+		Settings.values.touchLayoutV2 = saved
+		-- Reflow without releasing the editor's drag ownership.
+		current = Layout.calculate(size.X, size.Y, Settings.values.controlLayout == "left", saved)
+		for name, b in buttons do
+			local r = current.rects[name]
+			b.Position = UDim2.fromOffset(r.x, r.y)
+			b.Size = UDim2.fromOffset(r.w, r.h)
+		end
+		return
+	end
+	local t = touches.touches[input]
+	if not t then
+		return
+	end
+	local pos = point(input)
+	if t.role == "Swipe" then
+		if touches:move(input, pos.X, pos.Y, os.clock()) then
+			swipe()
+		end
+	elseif t.role == "Move" then
+		local r = current.rects[t.role]
+		local v = TouchState.stick(pos.X - r.x - r.w / 2, pos.Y - r.y - r.h / 2, r.w * 0.30)
+		knobs[t.role].Position = UDim2.new(0.5, v.X * r.w * 0.28, 0.5, v.Y * r.h * 0.28)
+		moveStick = v
+	end
 end
 
-local function updateVisibility()
-	local show = editing or (wanted and InputController.LastInputKind == "Touch")
-	gui.Enabled = show
+local function began(name: string, input: InputObject)
+	if
+		input.UserInputType ~= Enum.UserInputType.Touch
+		and not (editing and input.UserInputType == Enum.UserInputType.MouseButton1)
+	then
+		return
+	end
+	local p = point(input)
+	if editing then
+		if name ~= "Swipe" then
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				mouseDrag = input
+			end
+			local r = current.rects[name]
+			editStarts[input] = { name = name, x = r.x + r.w / 2, y = r.y + r.h / 2, start = p }
+		end
+		return
+	end
+	if not wanted or GuiService.MenuIsOpen or not touches:begin(input, name, p.X, p.Y, os.clock()) then
+		return
+	end
+	pressed(name, true)
+	if name == "Fire" then
+		sequence:press(WeaponController.fireMobile)
+	elseif name == "Move" then
+		changed(input)
+	elseif name == "Jump" then
+		jumpHeld = true
+	elseif name == "Crouch" or name == "Scoreboard" then
+		InputController.trigger(name, true)
+	elseif name ~= "Swipe" then
+		sequence.pending = nil
+		InputController.trigger(name, true)
+	end
 end
 
--- Called by the flow controller: true while the player is in combat.
+local function ended(input: InputObject)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 and mouseDrag then
+		editStarts[mouseDrag] = nil
+		mouseDrag = nil
+	end
+	editStarts[input] = nil
+	-- Some devices deliver only a final change on touch-up. Consume at most once.
+	changed(input)
+	local role = touches:finish(input)
+	if not role then
+		return
+	end
+	pressed(role, false)
+	if role == "Fire" then
+		sequence:release()
+	elseif role == "Move" then
+		moveStick = Vector2.zero
+	elseif role == "Jump" then
+		jumpHeld = false
+	elseif role == "Crouch" or role == "Scoreboard" then
+		InputController.trigger(role, false)
+	end
+	if knobs[role] then
+		knobs[role].Position = UDim2.fromScale(0.5, 0.5)
+	end
+end
+
 function MobileControls.setActive(active: boolean)
 	wanted = active
+	if not active then
+		neutral()
+	end
 	updateVisibility()
 end
 
 function MobileControls.edit()
+	neutral()
 	editing = true
-	gui.DisplayOrder = 60 -- above the menu it was opened from
+	gui.DisplayOrder = 60
 	editBar.Visible = true
 	updateVisibility()
 end
 
-local function stopEditing()
-	editing = false
-	gui.DisplayOrder = 12
-	editBar.Visible = false
-	Settings.set("touchLayout", Settings.values.touchLayout)
-	Settings.save()
-	updateVisibility()
-end
-
 function MobileControls.start()
-	gui = UIRoot.screen("MobileControls", 12)
+	gui = Instance.new("ScreenGui")
+	gui.Name = "MobileControls"
+	gui.ResetOnSpawn = false
+	gui.DisplayOrder = 12
+	gui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+	gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	gui.Enabled = false
-	-- Buttons are positioned in real screen space (not the scaled reference space) so the
-	-- layout fractions mean the same thing on every device.
-	holder = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Parent = gui })
-	for _, def in DEFS do
-		makeButton(def)
+	holder =
+		new("Frame", { Name = "TouchSurface", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Parent = gui })
+	gui.Parent = player:WaitForChild("PlayerGui")
+	for name, text in labels do
+		local fire = name == "Fire"
+		local b = new("TextButton", {
+			Name = name,
+			Text = if name == "Move" then "" else text,
+			AutoButtonColor = false,
+			BackgroundColor3 = if fire then C.Accent else C.Panel,
+			TextColor3 = if fire then C.Ink else C.Text,
+			FontFace = Theme.Fonts.Display,
+			TextScaled = true,
+			Active = true,
+			Parent = holder,
+		}, {
+			new("UICorner", { CornerRadius = UDim.new(if name == "Swipe" then 0.08 else 0.5, 0) }),
+			Theme.stroke(if fire then C.AccentDark else C.Stroke, 2, 0.2),
+			new("UIPadding", {
+				PaddingLeft = UDim.new(0.15, 0),
+				PaddingRight = UDim.new(0.15, 0),
+				PaddingTop = UDim.new(0.27, 0),
+				PaddingBottom = UDim.new(0.27, 0),
+			}),
+		}) :: TextButton
+		buttons[name] = b
+		if name == "Move" or name == "Fire" or name == "Swipe" then
+			local padding = b:FindFirstChildOfClass("UIPadding")
+			if padding then
+				padding:Destroy()
+			end
+		end
+		if name == "Swipe" then
+			b.Text = ""
+			Theme.label({
+				Text = "↓ SWAP",
+				Position = UDim2.fromScale(0, 0.03),
+				Size = UDim2.fromScale(1, 0.15),
+				TextColor3 = C.TextDim,
+				Outline = false,
+				Parent = b,
+			})
+		end
+		if name == "Move" then
+			local knob = new("Frame", {
+				Name = "Thumb",
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				Position = UDim2.fromScale(0.5, 0.5),
+				Size = UDim2.fromScale(0.43, 0.43),
+				BackgroundColor3 = C.Text,
+				BackgroundTransparency = 0.45,
+				Parent = b,
+			}, { new("UICorner", { CornerRadius = UDim.new(0.5, 0) }) }) :: Frame
+			knobs[name] = knob
+			Theme.label({
+				Text = text,
+				Size = UDim2.fromScale(1, 0.18),
+				Position = UDim2.fromScale(0, 0.76),
+				FontFace = Theme.Fonts.Bold,
+				Outline = false,
+				Parent = b,
+			})
+		elseif fire then
+			-- Local vector glyph: no external image dependency.
+			b.Text = ""
+			Theme.label({
+				Text = "⊕",
+				Position = UDim2.fromScale(0.1, 0),
+				Size = UDim2.fromScale(0.8, 0.63),
+				TextColor3 = C.Ink,
+				Outline = false,
+				Parent = b,
+			})
+			Theme.label({
+				Text = "FIRE",
+				Position = UDim2.fromScale(0, 0.66),
+				Size = UDim2.fromScale(1, 0.26),
+				TextColor3 = C.Ink,
+				Outline = false,
+				Parent = b,
+			})
+		end
+		b.InputBegan:Connect(function(input)
+			began(name, input)
+		end)
+		pressed(name, false)
 	end
-	place()
-
 	editBar = Theme.panel({
 		AnchorPoint = Vector2.new(0.5, 0),
-		Position = UDim2.new(0.5, 0, 0, 20),
-		Size = UDim2.fromOffset(520, 70),
+		Position = UDim2.fromScale(0.5, 0.02),
+		Size = UDim2.fromScale(0.55, 0.12),
 		Visible = false,
 		Parent = gui,
 	})
 	Theme.label({
-		Text = "Drag buttons to move them",
-		Size = UDim2.new(0.5, 0, 1, -20),
-		Position = UDim2.fromOffset(14, 10),
+		Text = "Drag controls • unsafe overlaps are rejected",
+		Size = UDim2.fromScale(0.6, 1),
 		TextXAlignment = Enum.TextXAlignment.Left,
-		FontFace = Theme.Fonts.Bold,
+		Outline = false,
 		Parent = editBar,
 	})
-	local function sizeAll(delta: number)
-		local layout = table.clone(Settings.values.touchLayout)
-		for _, def in DEFS do
-			local x, y, sc = layoutOf(def.name)
-			layout[def.name] = { x, y, math.clamp(sc + delta, 0.6, 1.5) }
-		end
-		Settings.values.touchLayout = layout
-		place()
-	end
-	local smaller = Theme.button(
-		"-",
-		"Secondary",
-		{ Size = UDim2.fromOffset(44, 44), Position = UDim2.new(0.5, 0, 0, 13), Parent = editBar }
-	)
-	smaller.Activated:Connect(function()
-		sizeAll(-0.1)
-	end)
-	local bigger = Theme.button(
-		"+",
-		"Secondary",
-		{ Size = UDim2.fromOffset(44, 44), Position = UDim2.new(0.5, 50, 0, 13), Parent = editBar }
-	)
-	bigger.Activated:Connect(function()
-		sizeAll(0.1)
-	end)
 	local reset = Theme.button(
 		"RESET",
 		"Ghost",
-		{ Size = UDim2.fromOffset(84, 44), Position = UDim2.new(0.5, 100, 0, 13), Parent = editBar }
+		{ Position = UDim2.fromScale(0.62, 0.1), Size = UDim2.fromScale(0.18, 0.8), Parent = editBar }
 	)
 	reset.Activated:Connect(function()
-		Settings.values.touchLayout = {}
+		Settings.values.touchLayoutV2 = {}
 		place()
 	end)
 	local done = Theme.button(
 		"DONE",
 		"Primary",
-		{ Size = UDim2.fromOffset(80, 44), Position = UDim2.new(0.5, 180, 0, 13), Parent = editBar }
+		{ Position = UDim2.fromScale(0.81, 0.1), Size = UDim2.fromScale(0.18, 0.8), Parent = editBar }
 	)
-	done.Activated:Connect(stopEditing)
-
+	done.Activated:Connect(function()
+		editing = false
+		editBar.Visible = false
+		gui.DisplayOrder = 12
+		Settings.set("touchLayoutV2", Settings.values.touchLayoutV2)
+		Settings.save()
+		updateVisibility()
+	end)
 	CameraController.isTouchOnControl = MobileControls.isOnControl
-	InputController.InputKindChanged:Connect(updateVisibility)
+	UserInputService.InputChanged:Connect(changed)
+	UserInputService.InputEnded:Connect(ended)
+	UserInputService.WindowFocusReleased:Connect(neutral)
+	GuiService.MenuOpened:Connect(neutral)
+	player.CharacterAdded:Connect(neutral)
+	WeaponController.Reset:Connect(neutral)
+	WeaponController.Rejected:Connect(function()
+		sequence.pending = nil
+	end)
+	InputController.Action:Connect(function(action, down)
+		if down and (action == "Reload" or action == "EquipA" or action == "EquipB" or action == "Swap") then
+			sequence.pending = nil
+		end
+	end)
+	InputController.InputKindChanged:Connect(function()
+		neutral()
+		updateVisibility()
+	end)
 	Settings.Changed:Connect(place)
-	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(place)
-	-- Highlight which gun is out
+	holder:GetPropertyChangedSignal("AbsoluteSize"):Connect(place)
+	place()
+	task.spawn(function()
+		local pm = player.PlayerScripts:WaitForChild("PlayerModule", 10)
+		if pm and pm:IsA("ModuleScript") then
+			controls = (require(pm) :: any):GetControls()
+			updateVisibility()
+		end
+	end)
+	RunService:BindToRenderStep("DoublePumpMobileMove", Enum.RenderPriority.Input.Value, function()
+		updateVisibility()
+		local active = wanted and gui.Enabled and not editing and not GuiService.MenuIsOpen
+		if not active then
+			if sequence.held or next(touches.touches) then
+				neutral()
+			end
+		end
+		if customControls then
+			player:Move(if active then Vector3.new(moveStick.X, 0, moveStick.Y) else Vector3.zero, true)
+			local char = player.Character
+			local hum = char and char:FindFirstChildOfClass("Humanoid")
+			if hum and active and jumpHeld then
+				hum.Jump = true
+			end
+		end
+	end)
+	RunService.Heartbeat:Connect(function()
+		local ready, reason = WeaponController.mobileReady()
+		sequence:step(
+			wanted and gui.Enabled and not editing and not GuiService.MenuIsOpen,
+			WeaponController.state.equipped,
+			ready,
+			reason,
+			WeaponController.fireMobile
+		)
+	end)
 	WeaponController.Equipped:Connect(function(slot)
-		for name, entry in buttons do
+		for name, b in buttons do
 			if name == "EquipA" or name == "EquipB" then
-				local mine = (name == "EquipA" and slot == 1) or (name == "EquipB" and slot == 2)
-				entry.frame.BackgroundColor3 = if mine then C.PanelLight else C.Panel
-				local stroke = entry.frame:FindFirstChildOfClass("UIStroke")
+				local stroke = b:FindFirstChildOfClass("UIStroke")
 				if stroke then
-					stroke.Color = if mine then C.Accent else C.Stroke
+					stroke.Color = if (name == "EquipA") == (slot == 1) then C.Accent else C.Stroke
 				end
 			end
 		end
 	end)
+	updateVisibility()
 end
-
 return MobileControls

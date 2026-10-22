@@ -1,0 +1,20 @@
+
+Algorithm : SHA256
+Hash      : 4BB38843B100C57AB3F844F9982D2F68B45340E5D311CFE4C205B7C8DFF7460C
+Path      : C:\Users\aaron\Documents\double-pump-backups\2026-10-21-prototype-uncommitted\complete-game-studio\build\DoublePump_MOBILE_CONTROLS.rbxl
+
+Algorithm : SHA256
+Hash      : A0CCC0BC0D5E56015D732B7088C52FED02474698AEBC95132FFCA53F1F116D2C
+Path      : C:\Users\aaron\Documents\double-pump-backups\2026-10-21-prototype-uncommitted\complete-game-studio\build\DoublePump_MOBILE_STUDIO_VERIFIED.rbxl
+
+Algorithm : SHA256
+Hash      : C81B54D171A8B63EECCCE8810EC138789581F8097AAACFFCED1D248838D1596C
+Path      : C:\Users\aaron\Documents\double-pump-backups\2026-10-21-prototype-uncommitted\before-mobile-controls-2026-10-21\DoublePump_STABLE_PRIVATE_v2.rbxl
+
+
+
+Algorithm : SHA256
+Hash      : 3D6DF25D6F734482D138AF71ABF5F8574C36FFD7E2348FD62BE9F39DBC1D5EF9
+Path      : C:\Users\aaron\Documents\double-pump-backups\2026-10-21-prototype-uncommitted\complete-game-studio\build\DoublePump_MOBILE_CLOUD_DOWNLOADED.rbxl
+
+

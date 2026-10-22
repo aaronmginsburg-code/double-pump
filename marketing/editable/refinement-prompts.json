@@ -1,0 +1,30 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "key": "refined-A",
+      "prompt": "Use case: compositing. Refine image 1 for FINAL Double Pump promotional background, 16:9 landscape. Image 1 is edit target, image 2 actual game reference. Preserve the distinctive diagonal TWO SEQUENTIAL MOMENT layout, exactly one black pump shotgun held in each moment, Warehouse orange racks/yellow catwalk/gray office/crates. Improve clean framing and small-size readability. Make the right-panel gun angle visibly different, raised after a manual swap; left panel fires a modest muzzle flash. Same weapon model in both: dark black receiver and stock, orange-brown ribbed pump fore-end as actual reference. Both sleeves should match actual dark camouflage fabric. Remove any extra background tracer lines or second muzzle flashes; no large blast, no explosion, no dual wielding. Maintain the upper-left 42% width / top35% as dark calm rack/ceiling area for typography. Keep recognizable simple Roblox part geometry. No text, no HUD, no badges, no frame or watermark. Crisp polished promotional illustration, not a claim of raw screenshot.",
+      "refs": [
+        "C:/Users/aaron/.codex/generated_images/01a15d47-3f78-7901-8a4d-369e79375d8c/exec-4000e7ed-4242-4cfc-8bc2-d8366c019a01.png",
+        "C:/Users/aaron/Documents/double-pump-backups/2026-10-21-prototype-uncommitted/complete-game-studio/marketing/captures/02-warehouse-first-person-raw.jpg"
+      ]
+    },
+    {
+      "key": "refined-D",
+      "prompt": "Use case: precise-object-edit. Refine image 1 into final 16:9 first-person combat promotional background. Image 1 is edit target; image 2 actual gameplay weapon/environment reference. Keep single continuous Warehouse view, same exact main-gun shape and brown fore-end, camo sleeves, crate enemy, orange rack, gray office and yellow catwalk. Make the enemy's weapon visibly the SAME pump shotgun, not a rifle or pistol; keep just a single small flash at the player's muzzle. Simplify distracting bright sparks, preserve center encounter, subtly improve black receiver edge readability without adding attachments. Keep the LEFTmost third of rack dark and free of subjects for title, do not put any lettering in image. No fabricated features, new guns or realistic soldier models, no blood, no UI. Faithful block-built game arena illustration with restrained promotional polish.",
+      "refs": [
+        "C:/Users/aaron/.codex/generated_images/01a15d47-3f78-7901-8a4d-369e79375d8c/exec-de6e1e2a-78bc-40b4-ac47-4f8371d1d249.png",
+        "C:/Users/aaron/Documents/double-pump-backups/2026-10-21-prototype-uncommitted/complete-game-studio/marketing/captures/02-warehouse-first-person-raw.jpg"
+      ]
+    },
+    {
+      "key": "refined-C",
+      "prompt": "Use case: precise-object-edit. Refine image 1 as FINAL 16:9 team arena promotional background; image 1 is target, image 2 actual Rooftops map reference, image 3 actual weapon. Keep four blocky red/blue Roblox players with one pump shotgun each, compact gray roofs, short bridges, white railings, AC cover and existing neon cyan/pink strips and water tank. Simplify all gun details to match actual black receiver/orange-brown ribbed pump fore-end. Remove the long laser-like tracer streaks completely; effects should be brief modest amber muzzle flashes only, no laser weapons or explosives. Jumping blue player should be visibly stepping across a SMALL rooftop gap with normal gravity, no airborne abilities. Keep bright readable team silhouettes but preserve nighttime. Do not expand the skyline or arena. Keep top-left sky dark and calm for type. No text, HUD, labels or watermark. Honest stylized key art based on real map, not a raw screenshot.",
+      "refs": [
+        "C:/Users/aaron/.codex/generated_images/01a15d47-3f78-7901-8a4d-369e79375d8c/exec-78c0a128-64c5-4a78-9aa2-e16f550d73a2.png",
+        "C:/Users/aaron/Documents/double-pump-backups/2026-10-21-prototype-uncommitted/complete-game-studio/marketing/captures/06-rooftops-staged-raw.jpg",
+        "C:/Users/aaron/Documents/double-pump-backups/2026-10-21-prototype-uncommitted/complete-game-studio/marketing/captures/02-warehouse-first-person-raw.jpg"
+      ]
+    }
+  ]
+}

@@ -27,6 +27,7 @@ local player = Players.LocalPlayer
 local releaseCursor: (() -> ())? = nil
 local lastKiller: Model? = nil
 local alignedCharacter: Model? = nil
+local alignedRevision: any = nil
 
 local function alive(): boolean
 	local character = player.Character
@@ -77,9 +78,11 @@ function GameFlow.refresh()
 			CameraController.setCombat()
 		end
 		local character = player.Character :: Model
-		if alignedCharacter ~= character then
+		local revision = character:GetAttribute("SpawnRevision")
+		if alignedCharacter ~= character or alignedRevision ~= revision then
 			CameraController.lookAlong(character:GetAttribute("SpawnCFrame") :: CFrame)
 			alignedCharacter = character
+			alignedRevision = revision
 		end
 	elseif mode ~= "Menu" and not isAlive and not inPostgame then
 		if CameraController.mode ~= "Dead" then
@@ -143,6 +146,7 @@ end
 local function onCharacter(character: Model)
 	lastKiller = nil
 	character:GetAttributeChangedSignal("SpawnCFrame"):Connect(GameFlow.refresh)
+	character:GetAttributeChangedSignal("SpawnRevision"):Connect(GameFlow.refresh)
 	local humanoid = character:WaitForChild("Humanoid", 10) :: Humanoid?
 	if humanoid then
 		humanoid.Died:Connect(function()
@@ -167,7 +171,7 @@ function GameFlow.start()
 		task.spawn(onCharacter, player.Character)
 	end
 	player:GetAttributeChangedSignal("Mode"):Connect(function()
-		if MatchClient.mode() ~= "Menu" and MainMenu.isOpen and not alive() then
+		if MatchClient.mode() ~= "Menu" and MainMenu.isOpen then
 			-- Waiting for the spawn: close the menu now so the transition is immediate
 			MainMenu.close()
 		end

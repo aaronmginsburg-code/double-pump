@@ -4,8 +4,8 @@
 --
 -- Player modes:
 --   "Menu"     in the main menu, no character
---   "Match"    pressed Play: in the current match, or waiting in the range for one
---   "Practice" chose the range from the menu; never pulled into a match
+--   "Match"    selected by the physical queue: reserved/voting, or in the arena
+--   "Practice" permanent default lobby; only queue occupancy can request a match
 --
 -- Match state is replicated through attributes on ReplicatedStorage.MatchState so late
 -- joiners see it immediately; one-off moments (countdown, results, voting) go through
@@ -19,6 +19,7 @@ local Shared = ReplicatedStorage.Shared
 local Combatants = require(Shared.Combatants)
 local GameConfig = require(Shared.Config.GameConfig)
 local MatchRules = require(Shared.Match.MatchRules)
+local LobbyQueue = require(Shared.Match.LobbyQueue)
 local Net = require(Shared.Net)
 local RateLimiter = require(Shared.Util.RateLimiter)
 local Signal = require(Shared.Util.Signal)
@@ -26,6 +27,8 @@ local SpawnScoring = require(Shared.Match.SpawnScoring)
 local VoteTally = require(Shared.Match.VoteTally)
 
 local CharacterService = require(script.Parent.CharacterService)
+local CombatContext = require(script.Parent.CombatContext)
+local QueueZone = require(script.Parent.Parent.Maps.QueueZone)
 local CombatService = require(script.Parent.CombatService)
 local DamageService = require(script.Parent.DamageService)
 local MapService = require(script.Parent.MapService)
@@ -76,6 +79,19 @@ local rng = Random.new()
 local stateFolder: Folder
 local matchEvent: RemoteEvent
 local voteLimiter = RateLimiter.new(6, 2)
+local queue = LobbyQueue.new(GameConfig.LobbyQueue)
+local lobbyReady: { [Player]: boolean } = {}
+local lastNotification: { [Player]: number } = {}
+local queueState = "Waiting"
+local drawQueue: (string, number, number, number, number) -> ()
+
+local function sendParticipants(kind: string, data: any)
+	for player, mode in modes do
+		if mode == "Match" and player.Parent then
+			matchEvent:FireClient(player, kind, data)
+		end
+	end
+end
 
 local function newStats(): PlayerStats
 	return {
@@ -149,7 +165,13 @@ local function enemyPositions(team: string?): { Vector3 }
 	for _, p in Players:GetPlayers() do
 		local character = p.Character
 		local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
-		if root and character and Combatants.isAlive(character) and TeamService.teamOf(p) ~= team then
+		if
+			modes[p] == "Match"
+			and root
+			and character
+			and Combatants.isAlive(character)
+			and TeamService.teamOf(p) ~= team
+		then
 			table.insert(list, root.Position)
 		end
 	end
@@ -167,8 +189,12 @@ end
 
 local function pickSpawn(player: Player): CFrame?
 	local team = TeamService.teamOf(player)
-	local arenaPhase = match.state ~= "Waiting" and match.state ~= "Intermission"
-	local markers: { BasePart } = if team
+	local arenaPhase = match.state == "Starting"
+		or match.state == "Active"
+		or match.state == "Overtime"
+		or match.state == "Results"
+	local markers: { BasePart } = if modes[player] == "Match"
+			and team
 			and arenaPhase
 			and MapService.arena()
 		then MapService.spawns(team)
@@ -195,13 +221,17 @@ local function pickSpawn(player: Player): CFrame?
 	return marker.CFrame
 end
 
-local function spawnPlayer(player: Player)
+local function spawnPlayer(player: Player, transfer: boolean?)
 	if not player.Parent or modes[player] == "Menu" or modes[player] == nil then
 		return
 	end
 	local cf = pickSpawn(player)
 	if cf then
-		CharacterService.spawn(player, cf)
+		if transfer then
+			CharacterService.transfer(player, cf)
+		else
+			CharacterService.spawn(player, cf)
+		end
 	end
 end
 
@@ -254,9 +284,10 @@ local function onEnterStarting()
 		stats[p] = newStats()
 		publishStats(p)
 		cancelRespawn(p)
-		spawnPlayer(p)
+		CombatContext.set(p, "Reserved")
+		task.spawn(spawnPlayer, p, true)
 	end
-	matchEvent:FireAllClients(
+	sendParticipants(
 		"Starting",
 		{ mapId = mapId, mapName = MapService.Registry[mapId].displayName, countdown = M.StartingCountdown }
 	)
@@ -311,7 +342,7 @@ local function onMatchEnded(winner: string?, reason: string)
 		mvp = mvp,
 		participants = participants,
 	}
-	matchEvent:FireAllClients("Ended", {
+	sendParticipants("Ended", {
 		winner = winner,
 		reason = reason,
 		scores = result.scores,
@@ -331,18 +362,18 @@ local function onEnterVoting()
 		table.insert(options, { id = id, name = map.displayName, description = map.description or "" })
 	end
 	stateFolder:SetAttribute("VoteOptions", table.concat(voteOptions, ","))
-	matchEvent:FireAllClients("Voting", { options = options, duration = M.VotingTime })
+	sendParticipants("Voting", { options = options, duration = M.VotingTime })
 end
 
 local function broadcastVotes()
 	local counts = VoteTally.counts(votes, voteOptions)
-	matchEvent:FireAllClients("VoteCounts", counts)
+	sendParticipants("VoteCounts", counts)
 end
 
 local function onVotingEnded()
 	if #voteOptions > 0 then
 		nextMapId = VoteTally.winner(votes, voteOptions, MapService.currentId, rng)
-		matchEvent:FireAllClients(
+		sendParticipants(
 			"VoteResult",
 			{ mapId = nextMapId, name = MapService.Registry[nextMapId :: string].displayName }
 		)
@@ -351,11 +382,21 @@ local function onVotingEnded()
 end
 
 local function onWaiting()
-	-- Not enough players: everyone in Match mode goes back to the range
 	for _, p in matchPlayers() do
-		TeamService.clear(p)
 		cancelRespawn(p)
-		spawnPlayer(p)
+		lobbyReady[p] = false
+		if p.Character then
+			DamageService.forget(p.Character)
+		end
+		modes[p] = "Practice"
+		TeamService.clear(p)
+		CombatContext.set(p, "Lobby")
+		p:SetAttribute("Mode", "Practice")
+		p:SetAttribute("Queued", false)
+		stats[p] = newStats()
+		publishStats(p)
+		-- Character loading yields: never block the single match/queue clock.
+		task.spawn(spawnPlayer, p, true)
 	end
 	MapService.useRangeLighting()
 end
@@ -364,6 +405,7 @@ local function handle(events: { MatchRules.Event })
 	for _, e in events do
 		if e.kind == "State" then
 			local to = (e :: any).to
+			CombatContext.activate(if to == "Active" or to == "Overtime" then match.matchNumber else nil)
 			if to == "Starting" then
 				onEnterStarting()
 				freezeAll(true)
@@ -374,16 +416,16 @@ local function handle(events: { MatchRules.Event })
 			elseif to == "Waiting" and (e :: any).from ~= "Waiting" then
 				onWaiting()
 			end
-			matchEvent:FireAllClients("State", to)
+			sendParticipants("State", to)
 		elseif e.kind == "MatchStarted" then
-			matchEvent:FireAllClients("Started", { target = match.target })
+			sendParticipants("Started", { target = match.target })
 			MatchService.MatchStarted:Fire(MapService.currentId or "")
 		elseif e.kind == "MatchEnded" then
 			onMatchEnded((e :: any).winner, (e :: any).reason)
 		elseif e.kind == "VotingEnded" then
 			onVotingEnded()
 		elseif e.kind == "Countdown" then
-			matchEvent:FireAllClients("Countdown", (e :: any).seconds)
+			sendParticipants("Countdown", (e :: any).seconds)
 		end
 	end
 	publishState()
@@ -393,41 +435,20 @@ end
 -- Players
 
 function MatchService.setMode(player: Player, mode: Mode)
-	local previous = modes[player]
-	modes[player] = mode
-	player:SetAttribute("Mode", mode)
-	if mode == "Menu" then
-		cancelRespawn(player)
-		TeamService.clear(player)
-		CharacterService.despawn(player)
-	elseif mode == "Practice" then
-		TeamService.clear(player)
-		cancelRespawn(player)
-		spawnPlayer(player)
-	elseif mode == "Match" then
-		if previous ~= "Match" then
-			stats[player] = newStats()
-			publishStats(player)
-		end
-		local state = match.state
-		if state == "Active" or state == "Overtime" or state == "Starting" then
-			-- Join the match in progress on the team that needs players
-			if TeamService.assign(player, match.scores) then
-				cancelRespawn(player)
-				spawnPlayer(player)
-				if state == "Starting" and player.Character then
-					CharacterService.setFrozen(player.Character, true)
-				end
-			else
-				-- Both teams full: wait in the range
-				TeamService.clear(player)
-				spawnPlayer(player)
-			end
-		else
-			TeamService.clear(player)
-			spawnPlayer(player)
-		end
+	if mode == "Match" then
+		return -- queue admission is the only way to reserve a match slot
 	end
+	cancelRespawn(player)
+	lobbyReady[player] = false
+	if player.Character then
+		DamageService.forget(player.Character)
+	end
+	modes[player] = "Practice"
+	TeamService.clear(player)
+	CombatContext.set(player, "Lobby")
+	player:SetAttribute("Mode", "Practice")
+	player:SetAttribute("Queued", false)
+	task.spawn(spawnPlayer, player, true)
 	publishState()
 end
 
@@ -445,17 +466,19 @@ end
 
 local function onPlayerAction(player: Player, action: any, value: any)
 	if action == "Deploy" then
-		if MatchService.modeOf(player) ~= "Match" then
-			MatchService.setMode(player, "Match")
-		end
-	elseif action == "Practice" then
-		MatchService.setMode(player, "Practice")
-	elseif action == "Menu" then
-		if MatchService.modeOf(player) ~= "Menu" then
-			MatchService.setMode(player, "Menu")
+		-- Legacy menu button explains the physical queue; it cannot admit anyone.
+		Net.event("Notify"):FireClient(player, "Enter the Match Queue Zone in the firing range.")
+	elseif action == "Practice" or action == "Menu" then
+		if modes[player] == "Match" then
+			MatchService.setMode(player, "Practice")
 		end
 	elseif action == "Vote" then
-		if match.state ~= "Voting" or typeof(value) ~= "string" or not table.find(voteOptions, value) then
+		if
+			modes[player] ~= "Match"
+			or match.state ~= "Voting"
+			or typeof(value) ~= "string"
+			or not table.find(voteOptions, value)
+		then
 			return
 		end
 		if not voteLimiter:allow(player, os.clock()) then
@@ -469,7 +492,7 @@ end
 local function onEliminated(elimination: DamageService.Elimination)
 	local victimPlayer = elimination.victimPlayer
 	local killer = elimination.killer
-	if victimPlayer then
+	if victimPlayer and modes[victimPlayer] == "Match" and inCombat() then
 		local s = statsOf(victimPlayer)
 		s.deaths += 1
 		publishStats(victimPlayer)
@@ -478,7 +501,13 @@ local function onEliminated(elimination: DamageService.Elimination)
 		return
 	end
 	local killerTeam = TeamService.teamOf(killer)
-	if not killerTeam or not inCombat() then
+	if
+		not killerTeam
+		or modes[killer] ~= "Match"
+		or not victimPlayer
+		or modes[victimPlayer] ~= "Match"
+		or not inCombat()
+	then
 		return
 	end
 	local s = statsOf(killer)
@@ -492,6 +521,9 @@ local function onEliminated(elimination: DamageService.Elimination)
 	end
 	publishStats(killer)
 	for _, assister in elimination.assists do
+		if modes[assister] ~= "Match" then
+			continue
+		end
 		local a = statsOf(assister)
 		a.assists += 1
 		a.score += 50
@@ -511,7 +543,7 @@ function MatchService.start()
 	Net.event("PlayerAction").OnServerEvent:Connect(onPlayerAction)
 	DamageService.Eliminated:Connect(onEliminated)
 	DamageService.Damaged:Connect(function(attacker, _, dealt)
-		if attacker and stats[attacker] then
+		if attacker and modes[attacker] == "Match" and inCombat() and stats[attacker] then
 			stats[attacker].damage += dealt
 		end
 	end)
@@ -528,11 +560,7 @@ function MatchService.start()
 		if not character or character:GetAttribute("Frozen") == true then
 			return false
 		end
-		local team = TeamService.teamOf(player)
-		if team == nil then
-			return true -- practice range
-		end
-		return inCombat()
+		return modes[player] == "Practice" or (modes[player] == "Match" and inCombat())
 	end)
 	CombatService.setWorldRoots(MapService.worldRoots)
 
@@ -547,14 +575,20 @@ function MatchService.start()
 		end)
 	end)
 
-	Players.PlayerAdded:Connect(function(player)
-		modes[player] = "Menu"
-		player:SetAttribute("Mode", "Menu")
+	local function onPlayerAdded(player: Player)
 		publishStats(player)
-	end)
+		MatchService.setMode(player, "Practice")
+	end
+	Players.PlayerAdded:Connect(onPlayerAdded)
+	for _, player in Players:GetPlayers() do
+		task.spawn(onPlayerAdded, player)
+	end
 	Players.PlayerRemoving:Connect(function(player)
 		cancelRespawn(player)
 		modes[player] = nil
+		lobbyReady[player] = nil
+		lastNotification[player] = nil
+		CombatContext.forget(player)
 		stats[player] = nil
 		votes[player] = nil
 		voteLimiter:forget(player)
@@ -562,17 +596,93 @@ function MatchService.start()
 		task.defer(publishState)
 	end)
 
+	local range = workspace:FindFirstChild("Range") :: Model
+	local rangeOrigin = MapService.Registry.Range.origin or Vector3.new(-1200, 0, 0)
+	local zoneCFrame = CFrame.new(rangeOrigin + GameConfig.LobbyQueue.Offset)
+	drawQueue = QueueZone.build(range, zoneCFrame, GameConfig.LobbyQueue.Size)
+	local function stepQueue(): boolean
+		local occupants = {}
+		local candidates = Players:GetPlayers()
+		table.sort(candidates, function(a, b)
+			return a.UserId < b.UserId
+		end)
+		for _, p in candidates do
+			local character = p.Character
+			local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
+			if
+				modes[p] == "Practice"
+				and lobbyReady[p]
+				and character
+				and root
+				and Combatants.isAlive(character)
+				and LobbyQueue.contains(zoneCFrame, GameConfig.LobbyQueue.Size, root.Position)
+			then
+				table.insert(occupants, p)
+			end
+		end
+		local previous = queueState
+		local selected, state =
+			LobbyQueue.step(queue, occupants, workspace:GetServerTimeNow(), match.state == "Waiting")
+		queueState = state
+		for _, p in candidates do
+			local queued = table.find(queue.order, p) ~= nil
+			if p:GetAttribute("Queued") ~= queued then
+				p:SetAttribute("Queued", queued)
+				local now = os.clock()
+				if not table.find(selected, p) and now - (lastNotification[p] or -math.huge) >= 1 then
+					Net.event("Notify"):FireClient(p, if queued then "Joined Match Queue" else "Left Match Queue")
+					lastNotification[p] = now
+				end
+			end
+			if queued and previous ~= state and (state == "Countdown" or state == "Waiting") then
+				Net.event("Notify"):FireClient(
+					p,
+					if state == "Countdown"
+						then `Match starting in {GameConfig.LobbyQueue.Countdown} seconds`
+						else "Waiting for more players"
+				)
+			end
+		end
+		stateFolder:SetAttribute("QueueState", state)
+		stateFolder:SetAttribute("QueueCount", #queue.order)
+		stateFolder:SetAttribute("QueueEndsAt", queue.deadline or 0)
+		drawQueue(
+			state,
+			#queue.order,
+			GameConfig.LobbyQueue.Capacity,
+			GameConfig.LobbyQueue.Minimum,
+			if queue.deadline then math.max(0, math.ceil(queue.deadline - workspace:GetServerTimeNow())) else 0
+		)
+		if #selected == 0 then
+			return false
+		end
+		-- This entire selection/admission path is non-yielding. Only roots validated
+		-- in this exact sample are admitted; spawn loads happen asynchronously later.
+		for _, p in selected do
+			modes[p] = "Match"
+			lobbyReady[p] = false
+			CombatContext.set(p, "Reserved")
+			p:SetAttribute("Mode", "Match")
+			p:SetAttribute("Queued", false)
+			cancelRespawn(p)
+		end
+		TeamService.reshuffle(selected)
+		freezeAll(true)
+		return true
+	end
+
 	-- One loop drives the whole match: no competing timers.
 	local accumulator = 0
 	RunService.Heartbeat:Connect(function(dt)
 		accumulator += dt
-		if accumulator < 0.1 then
+		if accumulator < GameConfig.LobbyQueue.PollInterval then
 			return
 		end
 		local step = accumulator
 		accumulator = 0
-		local soloAllowed = GameConfig.Debug.AllowSoloMatchInStudio and RunService:IsStudio()
-		local events = MatchRules.step(match, step, { players = #matchPlayers(), soloAllowed = soloAllowed })
+		local admitted = stepQueue()
+		local events =
+			MatchRules.step(match, step, { players = #matchPlayers(), voluntary = true, admitted = admitted })
 		if #events > 0 then
 			handle(events)
 		end
@@ -585,10 +695,10 @@ function MatchService.start()
 			return
 		end
 		fallCheck = 0
-		local killY = MapService.killY()
 		for _, p in Players:GetPlayers() do
 			local character = p.Character
 			local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
+			local killY = if modes[p] == "Match" then MapService.killY() else -40
 			if character and root and root.Position.Y < killY and Combatants.isAlive(character) then
 				DamageService.kill(character)
 			end
@@ -596,6 +706,12 @@ function MatchService.start()
 	end)
 	-- Anyone who (re)spawns into the arena outside live play stays frozen until it starts
 	CharacterService.Spawned:Connect(function(player, character)
+		if modes[player] == "Match" and (match.state == "Starting" or inCombat() or match.state == "Results") then
+			CombatContext.set(player, "Match", match.matchNumber + (if match.state == "Starting" then 1 else 0))
+		else
+			CombatContext.refresh(player)
+		end
+		lobbyReady[player] = modes[player] == "Practice"
 		if TeamService.teamOf(player) and not inCombat() then
 			CharacterService.setFrozen(character, true)
 		end

@@ -1,0 +1,46 @@
+-- Temporary CLIENT LocalScript; engine integration, NOT physical multitouch.
+local p = game.Players.LocalPlayer
+local w = require(p.PlayerScripts.Client.Controllers.WeaponController)
+local Seq = require(game.ReplicatedStorage.Shared.Mobile.FireSequence)
+local s = Seq.new()
+local run = game:GetService("RunService")
+local function swap()
+	local slot = 3-w.state.equipped
+	return if w.equip(slot) then slot else nil
+end
+local connection = run.Heartbeat:Connect(function()
+	local ready, reason = w.mobileReady()
+	s:step(w.active, w.state.equipped, ready, reason, w.fireMobile)
+end)
+w.equip(1)
+task.wait(1.2)
+local before = w.state.shotCounter
+s:press(w.fireMobile)
+task.wait(1.25)
+assert(w.state.shotCounter==before+1, "Holding alone repeated or failed")
+print("[REVISION] INSTRUMENTED_HOLD_ONCE_PASS", w.state.shotCounter)
+s:release()
+task.wait(1.1)
+local baseline = w.state.shotCounter
+s:press(w.fireMobile)
+task.wait(0.03)
+assert(s:swipe(swap))
+task.wait(0.45)
+assert(w.state.shotCounter==baseline+2,"First swipe follow-up failed")
+assert(s:swipe(swap))
+task.wait(0.7)
+assert(w.state.shotCounter==baseline+3,"Return swipe follow-up failed")
+task.wait(0.8)
+assert(w.state.shotCounter==baseline+3,"Unexpected repeat")
+s:release()
+print("[REVISION] INSTRUMENTED_DOUBLE_PUMP_PASS", w.state.shotCounter)
+task.wait(1.1)
+s:press(w.fireMobile)
+local cancelBaseline = w.state.shotCounter
+task.wait(0.03)
+s:swipe(swap)
+s:release()
+task.wait(1.2)
+assert(w.state.shotCounter==cancelBaseline,"Release did not cancel follow-up")
+print("[REVISION] INSTRUMENTED_CANCEL_PASS",w.state.shotCounter)
+connection:Disconnect()

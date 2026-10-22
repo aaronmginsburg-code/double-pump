@@ -99,6 +99,8 @@ export type Context = {
 	players: number, -- players taking part (deployed)
 	teamCounts: { [string]: number }?,
 	soloAllowed: boolean?,
+	voluntary: boolean?, -- production: only a server-selected physical queue roster
+	admitted: boolean?, -- one-shot admission after the queue's final occupancy check
 }
 
 local function enough(m: Match, ctx: Context): boolean
@@ -113,8 +115,13 @@ function MatchRules.step(m: Match, dt: number, ctx: Context): { Event }
 	m.timeLeft = math.max(0, m.timeLeft - dt)
 
 	if s == "Waiting" then
-		if enough(m, ctx) then
-			enter(m, "Intermission", c.IntermissionTime, events)
+		if enough(m, ctx) and (not ctx.voluntary or ctx.admitted) then
+			enter(
+				m,
+				if ctx.voluntary then "Voting" else "Intermission",
+				if ctx.voluntary then c.VotingTime else c.IntermissionTime,
+				events
+			)
 		end
 	elseif s == "Intermission" then
 		if not enough(m, ctx) then
@@ -158,7 +165,7 @@ function MatchRules.step(m: Match, dt: number, ctx: Context): { Event }
 		end
 	elseif s == "Results" then
 		if m.timeLeft <= 0 then
-			enter(m, "Voting", c.VotingTime, events)
+			enter(m, if ctx.voluntary then "Waiting" else "Voting", if ctx.voluntary then 0 else c.VotingTime, events)
 		end
 	elseif s == "Voting" then
 		if m.timeLeft <= 0 then

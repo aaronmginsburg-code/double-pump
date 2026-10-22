@@ -43,6 +43,19 @@ function Combatants.isEnemy(attacker: Model, target: Model): boolean
 	if attacker == target then
 		return false
 	end
+	local ac, bc = attacker:GetAttribute("CombatContext"), target:GetAttribute("CombatContext")
+	if ac == "Lobby" then
+		return Combatants.isDummy(target) or bc == "Lobby"
+	end
+	if ac ~= nil or bc ~= nil then
+		if
+			ac ~= "Match"
+			or bc ~= "Match"
+			or attacker:GetAttribute("CombatMatchId") ~= target:GetAttribute("CombatMatchId")
+		then
+			return false
+		end
+	end
 	if Combatants.isDummy(target) then
 		return true
 	end

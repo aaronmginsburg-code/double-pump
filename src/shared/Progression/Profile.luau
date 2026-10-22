@@ -6,9 +6,11 @@
 local Challenges = require(script.Parent.Challenges)
 local Cosmetics = require(script.Parent.Cosmetics)
 
+local Preferences = require(script.Parent.Parent.Preferences)
+
 local Profile = {}
 
-Profile.Version = 1
+Profile.Version = 3
 Profile.MaxReceipts = 200
 
 export type Stats = {
@@ -73,7 +75,7 @@ function Profile.new(now: number): Data
 		equipped = { skin = "Default" },
 		daily = nil,
 		weekly = nil,
-		settings = {},
+		settings = { controlLayout = "right", weaponHand = "right", touchLayoutV2 = {} },
 		tutorialDone = false,
 		receipts = {},
 		createdAt = now,
@@ -134,6 +136,15 @@ function Profile.sanitize(raw: any, now: number): Data
 				p.settings[k] = v
 			end
 		end
+	end
+	-- v1 -> v2: preserve legacy button positions separately; new control roles use
+	-- a fresh layout so an old FIRE position cannot become an overlapping fire pad.
+	-- v2 -> v3: retain both sides of the old coupled preference, then save separately.
+	local presentation = Preferences.normalize(raw.settings)
+	p.settings.controlLayout = presentation.controlLayout
+	p.settings.weaponHand = presentation.weaponHand
+	if typeof(p.settings.touchLayoutV2) ~= "table" then
+		p.settings.touchLayoutV2 = {}
 	end
 	if typeof(raw.receipts) == "table" then
 		for _, id in raw.receipts do

@@ -1,3 +1,19 @@
+## 2026-10-21 - Lobby queue addition
+
+The physical queue uses only code-created Roblox parts, BillboardGui and text. No new mesh, image, sound, animation, external asset source or upload is required. Existing asset limitations remain unchanged. See `LOBBY_AND_MATCHMAKING_UPDATE.md`.
+
+## Marketing asset delivery — 2026-10-21
+
+Owner reports the latest mobile camera/independent-hand revision works properly.
+Created marketing-only assets: three icon concepts, six thumbnail concepts, one
+refined 512-square icon and three refined 1920x1080 thumbnails, with Studio captures,
+editable SVG typography, generated masters and source prompts. Files are under
+marketing/. No gameplay code, combat settings, maps, cloud version, access or
+monetization was changed; no promotional art was uploaded. 197 tests pass and all
+78 local scripts still match the previously verified candidate. See
+[marketing report](../marketing/MARKETING_ASSET_REPORT.md) for provenance, capture
+limitations, final files and upload instructions. Earlier sections are historical.
+
 # Asset sources and licensing record
 
 Every asset in Double Pump, where it came from, and what you may do with it. Nothing in

@@ -1,0 +1,34 @@
+2026-10-21T17:42:41.622Z,78.622055,6df4,6,Info [FLog::CreatorOutput] [RELEASE] OBSERVER_READY Player1 0
+2026-10-21T17:42:41.655Z,78.655060,6df4,6,Info [FLog::CreatorOutput] [RELEASE] COUNTERS Player1 client 0 server 0 reason nil
+2026-10-21T17:42:42.223Z,79.223114,6300,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player1 dot 1 spawn 63, 7.5, 30 active true
+2026-10-21T17:43:03.007Z,100.007729,125c,6,Info [FLog::CreatorOutput] [RELEASE] FIRED Player1 1 1
+2026-10-21T17:43:03.204Z,100.204330,1290,6,Info [FLog::CreatorOutput] [RELEASE] COUNTERS Player1 client 1 server 1 reason nil
+2026-10-21T17:43:32.510Z,129.510406,6300,6,Info [FLog::CreatorOutput] [RELEASE] RESET Player1 0
+2026-10-21T17:43:33.023Z,130.023071,6300,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player1 dot 1 spawn 63, 7.5, 30 active true
+2026-10-21T17:43:51.004Z,148.004501,125c,6,Info [FLog::CreatorOutput] [RELEASE] FIRED Player1 1 1
+2026-10-21T17:43:51.217Z,148.217926,1290,6,Info [FLog::CreatorOutput] [RELEASE] COUNTERS Player1 client 1 server 1 reason nil
+2026-10-21T17:44:20.060Z,177.060730,6300,6,Info [FLog::CreatorOutput] [RELEASE] RESET Player1 0
+2026-10-21T17:44:20.584Z,177.584915,6df4,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player1 dot 1 spawn -1254, 3.5, -30 active true
+2026-10-21T17:44:40.286Z,197.286591,1290,6,Info [FLog::CreatorOutput] [RELEASE] RESET Player1 0
+2026-10-21T17:44:40.800Z,197.800903,6df4,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player1 dot 1 spawn -1254, 3.5, -30 active true
+2026-10-21T17:44:51.024Z,208.024506,72e4,6,Info [FLog::CreatorOutput] [RELEASE] RESET Player1 0
+2026-10-21T17:44:51.616Z,208.616577,6300,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player1 dot 1 spawn -65, 3.5, 36 active true
+2026-10-21T17:42:41.577Z,79.577492,7ea4,6,Info [FLog::CreatorOutput] [RELEASE] OBSERVER_READY Player2 0
+2026-10-21T17:42:41.592Z,79.592522,7a1c,6,Info [FLog::CreatorOutput] [RELEASE] COUNTERS Player2 client 0 server 0 reason nil
+2026-10-21T17:42:42.193Z,80.193748,7ea4,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player2 dot 1 spawn -63, 7.5, -30 active true
+2026-10-21T17:44:51.130Z,209.130646,7a1c,6,Info [FLog::CreatorOutput] [RELEASE] RESET Player2 0
+2026-10-21T17:44:51.653Z,209.653625,40e8,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player2 dot 1 spawn 65, 3.5, 36 active true
+2026-10-21T17:44:51.856Z,209.856506,7a1c,6,Info [FLog::CreatorOutput] [RELEASE] FACING Player2 dot 1 spawn 65, 3.5, 36 active true
+2026-10-21T17:42:41.317Z,125.317978,4c28,6,Info [FLog::CreatorOutput] [RELEASE] TEAM Player1 Blue 63, 7.09631348, 30, -4.37113847e-08, 0, 1, 8.74227766e-08, 0.99999994, 3.82137051e-15, -1, 8.74227766e-08, -4.37113812e-08 63, 7.5, 30, 0, 0, 1, 0, 1, -0, -1, 0, -0
+2026-10-21T17:42:41.318Z,125.318993,4c28,6,Info [FLog::CreatorOutput] [RELEASE] TEAM Player2 Red -63, 7.09631348, -30, -4.37113847e-08, 8.74227766e-08, -1, 0, 0.99999994, 8.74227766e-08, 1, 0, -4.37113812e-08 -63, 7.5, -30, 0, 0, -1, 0, 1, -0, 1, 0, -0
+2026-10-21T17:38:28.546Z,29932.546875,6310,6,Info [FLog::CreatorOutput] [RELEASE] OBSERVER_READY supersnapstudios 0
+2026-10-21T17:38:29.164Z,29933.164062,7b0c,6,Info [FLog::CreatorOutput] [RELEASE] FACING supersnapstudios dot 0.9999755620956421 spawn -1254, 3.5, 0 active true
+2026-10-21T17:38:33.169Z,29937.169922,6f04,6,Info [FLog::CreatorOutput] [RELEASE] FIRED supersnapstudios 1 1
+2026-10-21T17:38:33.365Z,29937.365234,7b0c,6,Info [FLog::CreatorOutput] [RELEASE] COUNTERS supersnapstudios client 1 server 1 reason nil
+2026-10-21T17:38:42.482Z,29946.482422,6f04,6,Info [FLog::CreatorOutput] [RELEASE] FIRED supersnapstudios 2 2
+2026-10-21T17:38:42.677Z,29946.677734,6310,6,Info [FLog::CreatorOutput] [RELEASE] COUNTERS supersnapstudios client 2 server 2 reason nil
+2026-10-21T17:39:19.826Z,29983.826172,5e74,6,Info [FLog::CreatorOutput] [RELEASE] RESET supersnapstudios 0
+2026-10-21T17:39:39.845Z,30003.845703,6f04,6,Info [FLog::CreatorOutput] [RELEASE] FIRED supersnapstudios 1 1
+2026-10-21T17:40:20.060Z,30044.060547,3150,6,Info [FLog::CreatorOutput] [RELEASE] OBSERVER_READY supersnapstudios 1
+2026-10-21T17:40:20.107Z,30044.107422,82f4,6,Info [FLog::CreatorOutput] [RELEASE] COUNTERS supersnapstudios client 1 server 1 reason nil
+2026-10-21T17:40:20.675Z,30044.675781,7b0c,6,Info [FLog::CreatorOutput] [RELEASE] FACING supersnapstudios dot 0.940567135810852 spawn -1254, 3.5, 0 active true
