@@ -1,0 +1,31 @@
+{
+  "created": [
+    "01 - Projects/Roblox/Double Pump/Double Pump.md",
+    "01 - Projects/Roblox/Double Pump/AI Handoff.md",
+    "01 - Projects/Roblox/Double Pump/Decisions and History.md",
+    "01 - Projects/Roblox/Double Pump/Known Issues and Next Actions.md",
+    "01 - Projects/Roblox/Double Pump/Source Inventory.md",
+    "01 - Projects/Roblox/Double Pump/Documentation Workflow.md",
+    "05 - Journal/2026-10-22 0112 - Double Pump - Release Transition.md"
+  ],
+  "modified": [
+    "01 - Projects/Projects Index.md",
+    "00 - Dashboard/Dashboard.md",
+    "05 - Journal/Journal Index.md"
+  ],
+  "linksChecked": 76,
+  "formatCheck": "restricted YAML grammar, dates/types/quoted project links; no general YAML parser installed",
+  "unresolvedLinks": [],
+  "unrelatedChanged": [],
+  "missingBackupAllowlist": [
+    "01 - Projects/Roblox/Double Pump/Double Pump.md",
+    "01 - Projects/Roblox/Double Pump/AI Handoff.md",
+    "01 - Projects/Roblox/Double Pump/Decisions and History.md",
+    "01 - Projects/Roblox/Double Pump/Known Issues and Next Actions.md",
+    "01 - Projects/Roblox/Double Pump/Source Inventory.md",
+    "01 - Projects/Roblox/Double Pump/Documentation Workflow.md",
+    "05 - Journal/2026-10-22 0112 - Double Pump - Release Transition.md"
+  ],
+  "vaultCommittedOrPushed": false,
+  "backupConfigurationChanged": false
+}

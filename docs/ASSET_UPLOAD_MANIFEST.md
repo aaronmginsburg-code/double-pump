@@ -1,3 +1,7 @@
+## Release transition — 2026-10-22
+
+Implementation4505edef:245 automated tests and21/21 staged three-client Studio assertions pass; LSP/Selene/StyLua/Rojo clean.81scripts match saved Studio source. Published privately as version10; existing icon/five thumbnails preserved. No gameplay, balance, asset uploads or Public change. See RELEASE_RECORD.md for fresh evidence and unverified live/device boundaries. Earlier entries are historical.
+
 ## 2026-10-21 - Lobby queue addition
 
 The physical queue uses only code-created Roblox parts, BillboardGui and text. No new mesh, image, sound, animation, external asset source or upload is required. Existing asset limitations remain unchanged. See `LOBBY_AND_MATCHMAKING_UPDATE.md`.

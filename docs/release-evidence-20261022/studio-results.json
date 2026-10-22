@@ -1,0 +1,174 @@
+[
+  {
+    "test": "population does not auto-start",
+    "pass": true,
+    "data": {
+      "players": 3
+    }
+  },
+  {
+    "test": "ten existing practice targets",
+    "pass": true,
+    "data": 10
+  },
+  {
+    "test": "nonlethal body feedback agrees with authoritative pellet sum",
+    "pass": true,
+    "data": {
+      "expected": {
+        "target": "Player2",
+        "pellets": 10,
+        "headshot": false,
+        "amount": 81.89999999999999
+      },
+      "health": 100,
+      "hit": {
+        "headshot": false,
+        "damage": 82,
+        "killed": false,
+        "pellets": 10
+      }
+    }
+  },
+  {
+    "test": "nonlethal headshot feedback and full health",
+    "pass": true,
+    "data": {
+      "expected": {
+        "target": "Player2",
+        "pellets": 10,
+        "headshot": true,
+        "amount": 157.5
+      },
+      "health": 100,
+      "hit": {
+        "headshot": true,
+        "damage": 158,
+        "killed": false,
+        "pellets": 10
+      }
+    }
+  },
+  {
+    "test": "lobby hits grant no kills deaths score or XP",
+    "pass": true,
+    "data": []
+  },
+  {
+    "test": "one queued player waits",
+    "pass": true,
+    "data": 1
+  },
+  {
+    "test": "two players begin countdown",
+    "pass": true,
+    "data": {
+      "ends": 1792655405.50427
+    }
+  },
+  {
+    "test": "leaving cancels countdown",
+    "pass": true,
+    "data": {
+      "count": 1
+    }
+  },
+  {
+    "test": "physical queue admits roster round 1",
+    "pass": true,
+    "data": {
+      "elapsed": 14.989982843399048,
+      "outsider": "Practice"
+    }
+  },
+  {
+    "test": "waiting queue remains lobby while arena reserved",
+    "pass": true,
+    "data": {
+      "count": 1
+    }
+  },
+  {
+    "test": "arena loaded Warehouse",
+    "pass": true,
+    "data": {
+      "players": 2,
+      "actual": "Warehouse"
+    }
+  },
+  {
+    "test": "match PvP eliminates and scores",
+    "pass": true,
+    "data": {
+      "kills": 1,
+      "health": 0,
+      "scores": {
+        "Blue": 1,
+        "Red": 0
+      }
+    }
+  },
+  {
+    "test": "match respawn completes",
+    "pass": true,
+    "data": []
+  },
+  {
+    "test": "return to lobby round 1",
+    "pass": true,
+    "data": {
+      "queued": 1
+    }
+  },
+  {
+    "test": "physical queue admits roster round 2",
+    "pass": true,
+    "data": {
+      "elapsed": 14.802586793899536,
+      "outsider": "Match"
+    }
+  },
+  {
+    "test": "arena loaded DustTown",
+    "pass": true,
+    "data": {
+      "players": 3,
+      "actual": "DustTown"
+    }
+  },
+  {
+    "test": "return to lobby round 2",
+    "pass": true,
+    "data": {
+      "queued": 0
+    }
+  },
+  {
+    "test": "physical queue admits roster round 3",
+    "pass": true,
+    "data": {
+      "elapsed": 14.846569061279297,
+      "outsider": "Match"
+    }
+  },
+  {
+    "test": "arena loaded Rooftops",
+    "pass": true,
+    "data": {
+      "players": 3,
+      "actual": "Rooftops"
+    }
+  },
+  {
+    "test": "return to lobby round 3",
+    "pass": true,
+    "data": {
+      "queued": 0
+    }
+  },
+  {
+    "test": "final lobby does not auto-requeue returning players",
+    "pass": true,
+    "data": []
+  }
+]

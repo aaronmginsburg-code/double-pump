@@ -1,0 +1,9 @@
+2026-10-22T07:54:04.522Z,7738.522461,2990,6,Info [FLog::CreatorOutput] Sent message to server to publish.
+2026-10-22T07:54:05.997Z,7739.997070,54c0,6,Info [FLog::StudioPublishStatusLabel] Publish succeeded for placeId 82505574993280; marking as published (refreshing menu label to "Publish latest version")
+2026-10-22T07:54:05.999Z,7739.999512,0cb8,6,Info [FLog::CreatorOutput] 
+2026-10-22T07:54:05.999Z,7739.999512,0cb8,6,Info [FLog::CreatorOutput] Quick Links:
+2026-10-22T07:54:05.999Z,7739.999512,0cb8,6,Info [FLog::CreatorOutput] → Add publish notes to v10
+2026-10-22T07:54:05.999Z,7739.999512,0cb8,6,Info [FLog::CreatorOutput] → Edit experience details & audience
+2026-10-22T07:54:06.000Z,7740.000488,0cb8,6,Info [FLog::CreatorOutput] → View performance
+2026-10-22T07:54:06.000Z,7740.000488,0cb8,6,Info [FLog::CreatorOutput] → View error reports
+2026-10-22T07:54:06.015Z,7740.015137,0cb8,6,Info [FLog::CreatorOutput] Published new changes in "Double Pump [Private Test]" to Roblox.

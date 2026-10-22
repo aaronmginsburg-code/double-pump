@@ -1,0 +1,106 @@
+2026-10-22T07:49:13.565Z,0.565490,4fc4,6,Warning [FLog::Output] Session GUID is D282DB8D-BFC9-44F9-9D8E-70F8DCCF4391
+2026-10-22T07:49:13.565Z,0.565490,4fc4,6,Warning [FLog::Output] Machine GUID is 2D76E84C-D1B6-4CE2-B56B-CF98CF6C80C7
+2026-10-22T07:49:13.565Z,0.565490,4fc4,6,Warning [FLog::Output] Studio Launch Intent is StartServer
+2026-10-22T07:49:13.565Z,0.565490,4fc4,6,Warning [FLog::Output] Is Studio Configured User Id Present: true
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World CLI-226594
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello world, CLI-208683!
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello world, CLI-207485!
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello again, world 206748!
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello world CLI-206426!
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello world ...!
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello 198367!
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World! **CLI-199819**
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World! from CLI-206127
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World! CLI210530
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World CLI-212185!
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World! CLI-222132
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World <3 CLI-225598
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World CLI-226375
+2026-10-22T07:49:14.374Z,1.374864,298c,6,Warning [FLog::Output] Hello World! CLI-226477
+2026-10-22T07:49:16.965Z,3.965920,3704,6,Info [FLog::CreatorOutput] Loading Lua Ribbon, was enabled? true
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World CLI-226594
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello world, CLI-208683!
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello world, CLI-207485!
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello again, world 206748!
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello world CLI-206426!
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello world ...!
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello 198367!
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World! **CLI-199819**
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World! from CLI-206127
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World! CLI210530
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World CLI-212185!
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World! CLI-222132
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World <3 CLI-225598
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World CLI-226375
+2026-10-22T07:49:18.152Z,5.152720,3704,6,Warning [FLog::Output] Hello World! CLI-226477
+2026-10-22T07:49:19.610Z,6.610288,4190,6,Info [FLog::CreatorOutput] [Double Pump] server ready
+2026-10-22T07:49:34.822Z,21.822441,6b64,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player1 false 100
+2026-10-22T07:49:35.135Z,22.135189,3704,6,Warning [FLog::Output] Wrap-deformer fetching meshes resulted in error.  Skipping follow-on stages.
+2026-10-22T07:49:36.050Z,23.050253,7230,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:49:36.081Z,23.081110,7230,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player3 false 100
+2026-10-22T07:49:36.087Z,23.087082,7230,6,Warning [FLog::Output] Wrap-deformer fetching meshes resulted in error.  Skipping follow-on stages.
+2026-10-22T07:49:36.087Z,23.087082,7230,6,Warning [FLog::Output] Wrap-deformer fetching meshes resulted in error.  Skipping follow-on stages.
+2026-10-22T07:49:40.182Z,27.182518,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"population does not auto-start","pass":true,"data":{"players":3}}
+2026-10-22T07:49:40.183Z,27.183517,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"ten existing practice targets","pass":true,"data":10}
+2026-10-22T07:49:44.532Z,31.532925,1678,6,Info [FLog::CreatorOutput] [LOBBY_SERVER_SHOT] Player3 1 10 1792655385.042511
+2026-10-22T07:49:44.551Z,31.551907,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"nonlethal body feedback agrees with authoritative pellet sum","pass":true,"data":{"expected":{"target":"Player2","pellets":10,"headshot":false,"amount":81.89999999999999},"health":100,"hit":{"headshot":false,"damage":82,"killed":false,"pellets":10}}}
+2026-10-22T07:49:46.482Z,33.482342,3704,6,Info [FLog::CreatorOutput] [LOBBY_SERVER_SHOT] Player3 2 10 1792655386.992782
+2026-10-22T07:49:46.568Z,33.568329,6b64,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"nonlethal headshot feedback and full health","pass":true,"data":{"expected":{"target":"Player2","pellets":10,"headshot":true,"amount":157.5},"health":100,"hit":{"headshot":true,"damage":158,"killed":false,"pellets":10}}}
+2026-10-22T07:49:46.569Z,33.569328,6b64,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"lobby hits grant no kills deaths score or XP","pass":true,"data":[]}
+2026-10-22T07:49:49.599Z,36.599815,298c,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player3 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":4}
+2026-10-22T07:49:49.993Z,36.993973,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"one queued player waits","pass":true,"data":1}
+2026-10-22T07:49:50.402Z,37.402565,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"two players begin countdown","pass":true,"data":{"ends":1792655405.50427}}
+2026-10-22T07:49:50.816Z,37.816410,1678,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"leaving cancels countdown","pass":true,"data":{"count":1}}
+2026-10-22T07:49:51.138Z,38.138645,6b64,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 1 Player3 -1253, 3.5, 36 true false
+2026-10-22T07:49:51.138Z,38.138645,6b64,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 1 Player2 -1250, 3.5, 36 true false
+2026-10-22T07:49:51.138Z,38.138645,6b64,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 1 Player1 -1255, 3.5, 8 false false
+2026-10-22T07:50:06.128Z,53.128025,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"physical queue admits roster round 1","pass":true,"data":{"elapsed":14.989982843399048,"outsider":"Practice"}}
+2026-10-22T07:50:06.172Z,53.172356,6b64,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:50:06.533Z,53.533138,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"waiting queue remains lobby while arena reserved","pass":true,"data":{"count":1}}
+2026-10-22T07:50:18.110Z,65.110947,7230,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:50:18.111Z,65.111946,7230,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player3 false 100
+2026-10-22T07:50:23.272Z,70.272377,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"arena loaded Warehouse","pass":true,"data":{"players":2,"actual":"Warehouse"}}
+2026-10-22T07:50:25.849Z,72.849571,298c,6,Info [FLog::CreatorOutput] [LOBBY_SERVER_SHOT] Player3 1 10 1792655426.360131
+2026-10-22T07:50:25.865Z,72.865524,7230,6,Info [FLog::CreatorOutput] [LOBBY_DIED] Player2 true 0
+2026-10-22T07:50:26.373Z,73.373497,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"match PvP eliminates and scores","pass":true,"data":{"kills":1,"health":0,"scores":{"Blue":1,"Red":0}}}
+2026-10-22T07:50:28.974Z,75.974503,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:50:28.993Z,75.993637,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"match respawn completes","pass":true,"data":[]}
+2026-10-22T07:50:28.994Z,75.994644,298c,6,Warning [FLog::Output] Wrap-deformer fetching meshes resulted in error.  Skipping follow-on stages.
+2026-10-22T07:50:38.385Z,85.385475,7230,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:50:38.386Z,85.386475,7230,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player3 false 100
+2026-10-22T07:50:38.858Z,85.858780,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"return to lobby round 1","pass":true,"data":{"queued":1}}
+2026-10-22T07:50:38.947Z,85.947533,7230,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player3 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:50:39.292Z,86.292130,298c,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:50:39.292Z,86.292130,298c,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:50:39.292Z,86.292130,298c,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 2 Player3 -1253, 3.5, 36 true false
+2026-10-22T07:50:39.292Z,86.292130,298c,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 2 Player2 -1250, 3.5, 36 true false
+2026-10-22T07:50:39.293Z,86.293121,298c,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 2 Player1 -1247, 3.5, 36 true false
+2026-10-22T07:50:54.097Z,101.097504,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"physical queue admits roster round 2","pass":true,"data":{"elapsed":14.802586793899537,"outsider":"Match"}}
+2026-10-22T07:51:06.105Z,113.105286,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player1 false 100
+2026-10-22T07:51:06.106Z,113.106285,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:51:06.106Z,113.106285,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player3 false 100
+2026-10-22T07:51:11.507Z,118.507294,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"arena loaded DustTown","pass":true,"data":{"players":3,"actual":"DustTown"}}
+2026-10-22T07:51:20.930Z,127.930092,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player1 false 100
+2026-10-22T07:51:20.930Z,127.930092,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:51:20.930Z,127.930092,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player3 false 100
+2026-10-22T07:51:21.401Z,128.401993,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"return to lobby round 2","pass":true,"data":{"queued":0}}
+2026-10-22T07:51:21.446Z,128.446274,7230,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player3 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:51:21.446Z,128.446274,7230,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:51:21.602Z,128.602142,298c,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:51:21.782Z,128.782455,3704,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 3 Player3 -1253, 3.5, 36 true false
+2026-10-22T07:51:21.782Z,128.782455,3704,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 3 Player2 -1250, 3.5, 36 true false
+2026-10-22T07:51:21.782Z,128.782455,3704,6,Info [FLog::CreatorOutput] [LOBBY_STAGED] 3 Player1 -1247, 3.5, 36 true false
+2026-10-22T07:51:36.629Z,143.629120,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"physical queue admits roster round 3","pass":true,"data":{"elapsed":14.846569061279297,"outsider":"Match"}}
+2026-10-22T07:51:48.514Z,155.514191,4190,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player1 false 100
+2026-10-22T07:51:48.515Z,155.515182,4190,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:51:48.516Z,155.516190,4190,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player3 false 100
+2026-10-22T07:51:53.729Z,160.729034,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"arena loaded Rooftops","pass":true,"data":{"players":3,"actual":"Rooftops"}}
+2026-10-22T07:52:03.079Z,170.079163,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player1 false 100
+2026-10-22T07:52:03.079Z,170.079163,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player2 false 100
+2026-10-22T07:52:03.079Z,170.079163,298c,6,Info [FLog::CreatorOutput] [LOBBY_SPAWN] Player3 false 100
+2026-10-22T07:52:03.999Z,170.999985,7230,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"return to lobby round 3","pass":true,"data":{"queued":0}}
+2026-10-22T07:52:04.087Z,171.087524,4190,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player3 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:52:04.240Z,171.240753,3704,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:52:04.241Z,171.241745,3704,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":5,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-22T07:52:06.065Z,173.065765,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"final lobby does not auto-requeue returning players","pass":true,"data":[]}
+2026-10-22T07:52:06.065Z,173.065765,298c,6,Info [FLog::CreatorOutput] [LOBBY_TEST_COMPLETE] failures=0

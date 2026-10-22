@@ -9,8 +9,9 @@ Double Pump is a Roblox game in a Rojo project. Start with
 1. **Inspect the actual source.** Docs and notes can be stale. Read the files you'll
    touch, `src/server/init.server.luau` and `src/shared/Config/` first. If a doc
    disagrees with the code, the code is the fact; fix the doc and say so.
-2. Check which branch you're on. Until PR #2 is merged, the game lives on
-   `claude/full-game-build-3jb3hx`, not `main`.
+2. Verify branch, HEAD and dirty state. Current implementation is on
+   `feat/mobile-controls` (checkpoint4505edef), not scaffold `main` or older PR#2.
+   Read docs/RELEASE_RECORD.md; preserve later work.
 3. Run the checks and confirm they match `docs/TESTING.md` before you start:
 
    ```sh
