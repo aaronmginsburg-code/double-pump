@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-22",
+  "ownerLiveClientConfirmation": "it is working",
+  "scope": "Owner-reported firing range, weapons and queue; no agent-controlled live test claimed",
+  "approvedPaths": [
+    "01 - Projects/Roblox/Double Pump/Double Pump.md",
+    "01 - Projects/Roblox/Double Pump/AI Handoff.md",
+    "01 - Projects/Roblox/Double Pump/Decisions and History.md",
+    "01 - Projects/Roblox/Double Pump/Known Issues and Next Actions.md",
+    "01 - Projects/Roblox/Double Pump/Source Inventory.md",
+    "01 - Projects/Roblox/Double Pump/Documentation Workflow.md",
+    "05 - Journal/2026-10-22 0112 - Double Pump - Release Transition.md"
+  ],
+  "addedNow": [
+    "01 - Projects/Roblox/Double Pump/Double Pump.md",
+    "01 - Projects/Roblox/Double Pump/AI Handoff.md",
+    "01 - Projects/Roblox/Double Pump/Decisions and History.md",
+    "01 - Projects/Roblox/Double Pump/Known Issues and Next Actions.md",
+    "01 - Projects/Roblox/Double Pump/Source Inventory.md",
+    "01 - Projects/Roblox/Double Pump/Documentation Workflow.md",
+    "05 - Journal/2026-10-22 0112 - Double Pump - Release Transition.md"
+  ],
+  "previousCount": 38,
+  "newCount": 45,
+  "unrelatedConfigChanged": false,
+  "priorEntryOrderPreserved": true,
+  "scriptsTasksCheckpointsUnchanged": true,
+  "backupRunOrUploadPerformed": false,
+  "vaultNotesUpdated": [
+    "01 - Projects/Roblox/Double Pump/Double Pump.md",
+    "01 - Projects/Roblox/Double Pump/AI Handoff.md",
+    "01 - Projects/Roblox/Double Pump/Known Issues and Next Actions.md",
+    "05 - Journal/2026-10-22 0112 - Double Pump - Release Transition.md"
+  ],
+  "configSHA256": "1c119c54a77e32f8c39a86c260c705615b4d932852eeef5ed229aba042880636"
+}

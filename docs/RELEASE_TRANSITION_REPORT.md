@@ -42,3 +42,11 @@ ChatGPT Project → Codex → GitHub → testing → Roblox → updated technica
 No new development phase or speculative roadmap feature was implemented.
 
 Final cloud follow-up: independently reopened cloud scripts match81/81 and retrieved place starts in Studio with range/targets/100HP. This remains distinct from Roblox Player verification.
+
+## Owner live-client confirmation — 2026-10-22 PDT
+
+Aaron replied “it is working” to the request to launch the existing private experience in normal Roblox Player and check the firing range, weapons and queue. Those basic live-client behaviors are now **owner-reported working**. This is not agent-controlled Player verification or a claim of exhaustive multiplayer, every map, device performance, ten-player load or live-save/rejoin acceptance. No game build or audience setting changed.
+
+## Approved backup-path follow-up — 2026-10-22 PDT
+
+Aaron explicitly approved the seven exact Double Pump Markdown paths listed above. All seven were added to the existing runtime backup-config.json ApprovedPaths under the reviewed vault write lock. Entries increased38→45, preserving all previous entries/order and every other configuration field. Backup scripts, task/sync settings and baseline/last-success/pending/health state files were unchanged during the operation. This import's missing-path condition is resolved; no backup run, vault commit/push or completed external upload is claimed. Prior pending-approval paragraphs are historical, superseded by this dated approval. A pre-change configuration and affected-note copies are retained in ../release-transition-20261022/owner-confirmation-followup/.

@@ -44,3 +44,11 @@ No independent cold-start agent test was performed. Same-agent handoff review su
 Opened the new canonical Double Pump note in the existing Peronal Knowledge Base app. It renders its heading, project type, active status, ISO-date properties, Roblox/double-pump tags and content. Quick Switcher also lists the six project notes and dated session. Screenshot: release-evidence-20261022/obsidian-overview.jpg. This confirms actual application discovery/rendering for the overview, not a claim that every external URL was clicked.
 
 Final preservation check: Obsidian normalized line endings and inserted one blank line after the overview frontmatter when opening it. No semantic content changed; the app-formatted file was retained and its final hash recorded. All unrelated note hashes still match the baseline. No vault content was overwritten to force a hash match.
+
+## Owner live-client confirmation — 2026-10-22 PDT
+
+Aaron replied “it is working” to the request to launch the existing private experience in normal Roblox Player and check the firing range, weapons and queue. Those basic live-client behaviors are now **owner-reported working**. This is not agent-controlled Player verification or a claim of exhaustive multiplayer, every map, device performance, ten-player load or live-save/rejoin acceptance. No game build or audience setting changed.
+
+## Approved backup-path follow-up — 2026-10-22 PDT
+
+Aaron explicitly approved the seven exact Double Pump Markdown paths listed above. All seven were added to the existing runtime backup-config.json ApprovedPaths under the reviewed vault write lock. Entries increased38→45, preserving all previous entries/order and every other configuration field. Backup scripts, task/sync settings and baseline/last-success/pending/health state files were unchanged during the operation. This import's missing-path condition is resolved; no backup run, vault commit/push or completed external upload is claimed. Prior pending-approval paragraphs are historical, superseded by this dated approval. A pre-change configuration and affected-note copies are retained in ../release-transition-20261022/owner-confirmation-followup/.

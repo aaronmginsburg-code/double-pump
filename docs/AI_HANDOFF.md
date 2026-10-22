@@ -48,3 +48,7 @@ Fresh 2026-10-22:245/245 Lune tests; LSP no type errors; Selene0 errors/0 warnin
 Owner reports satisfied gameplay and prior iPhone17ProMax controls; this is user feedback, not exhaustive hardware certification. Automated normal Player launch produced no Player window. Fresh live multiplayer, saves/rejoin,10-player load and representative performance remain unverified. Studio API access is off; test profiles are session-only. Current guns are parts-based stand-ins with embedded animations;29 audio and3 map-card IDs remain blank/fallback. No new game-service blocker was observed in current staging.
 
 Next safe task: owner fresh-server desktop/mobile acceptance and public rating/audience decision. Read ROADMAP.md, TESTING.md, DEVELOPMENT_WORKFLOW.md and AGENTS.md. Preserve history, prototype, saves and backups; no force-push, Public change, purchase or asset upload by inference. ChatGPT uploaded files and Obsidian notes are snapshots/navigation, not automatic source synchronization.
+
+## Owner live-client confirmation — 2026-10-22 PDT
+
+Aaron replied “it is working” to the request to launch the existing private experience in normal Roblox Player and check the firing range, weapons and queue. Those basic live-client behaviors are now **owner-reported working**. This is not agent-controlled Player verification or a claim of exhaustive multiplayer, every map, device performance, ten-player load or live-save/rejoin acceptance. No game build or audience setting changed.

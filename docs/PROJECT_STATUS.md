@@ -32,3 +32,7 @@ Public rating is incomplete; broader Kids/Select reach cards remain unmet. Ident
 3. Review cosmetic asset/audio integration with scoped approval.
 
 2026-10-21: Studio blocker/respawn-camera repairs; mobile overhaul; independent hand/drag-aim revision; marketing assets; voluntary social range.2026-10-22: stable checkpoint/push, fresh tests/private v10, reference/workflow/vault setup. See RELEASE_RECORD.md and ROADMAP.md. Historical status retained in history/release-transition-20261022/PROJECT_STATUS.md.
+
+## Owner live-client confirmation — 2026-10-22 PDT
+
+Aaron replied “it is working” to the request to launch the existing private experience in normal Roblox Player and check the firing range, weapons and queue. Those basic live-client behaviors are now **owner-reported working**. This is not agent-controlled Player verification or a claim of exhaustive multiplayer, every map, device performance, ten-player load or live-save/rejoin acceptance. No game build or audience setting changed.

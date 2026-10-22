@@ -60,3 +60,7 @@ Follow DEVELOPMENT_WORKFLOW.md: verify actual source/Git/cloud identity, preserv
 Reopened Double Pump through Studio owned Experiences after publication, downloaded Cloud-version10.rbxl into the separate release-transition backup, and compared it to the production build. All 81 script paths/classes/source texts match after line-ending normalization; no extra test scripts. See release-evidence-20261022/cloud-source-comparison.log. This is cloud source verification, not a normal Player test.
 
 The independently retrieved cloud place also passed an actual Studio solo startup smoke test after publication: armed range, targets and100 HP with queue instruction HUD. Screenshot: release-evidence-20261022/retrieved-cloud-smoke.jpg. The local test was stopped afterward.
+
+## Owner live-client confirmation — 2026-10-22 PDT
+
+Aaron replied “it is working” to the request to launch the existing private experience in normal Roblox Player and check the firing range, weapons and queue. Those basic live-client behaviors are now **owner-reported working**. This is not agent-controlled Player verification or a claim of exhaustive multiplayer, every map, device performance, ten-player load or live-save/rejoin acceptance. No game build or audience setting changed.
