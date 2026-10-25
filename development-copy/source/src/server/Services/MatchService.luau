@@ -37,6 +37,9 @@ local DamageService = require(script.Parent.DamageService)
 local MapService = require(script.Parent.MapService)
 local TeamService = require(script.Parent.TeamService)
 
+local Actors = require(script.Parent.Participants)
+local TrainingPolicy = require(Shared.Training.Policy)
+local trainingRound = false
 local MatchService = {}
 
 export type Mode = "Menu" | "Match" | "Practice"
@@ -56,6 +59,7 @@ export type PlayerStats = {
 }
 
 export type MatchResult = {
+	training: boolean?,
 	winner: string?,
 	reason: string,
 	scores: { [string]: number },
@@ -90,7 +94,7 @@ local cueStates: { [Player]: LobbyCues.State } = {}
 local cueSerials: { [Player]: number } = {}
 local returningCharacters: { [Player]: Model } = {}
 local function lobbyCue(player: Player, cue: string)
-	if not player.Parent then
+	if Actors.isBot(player) or not Actors.exists(player) then
 		return
 	end
 	local serial = (cueSerials[player] or 0) + 1
@@ -101,7 +105,7 @@ local drawQueue: (string, number, number, number, number) -> ()
 
 local function sendParticipants(kind: string, data: any)
 	for player, mode in modes do
-		if mode == "Match" and player.Parent then
+		if mode == "Match" and not Actors.isBot(player) and Actors.exists(player) then
 			matchEvent:FireClient(player, kind, data)
 		end
 	end
@@ -135,11 +139,11 @@ end
 -- Scoreboard columns replicate as player attributes.
 local function publishStats(player: Player)
 	local s = statsOf(player)
-	player:SetAttribute("Kills", s.kills)
-	player:SetAttribute("Deaths", s.deaths)
-	player:SetAttribute("Assists", s.assists)
-	player:SetAttribute("Score", s.score)
-	player:SetAttribute("DoublePumps", s.doublePumps)
+	Actors.attribute(player, "Kills", s.kills)
+	Actors.attribute(player, "Deaths", s.deaths)
+	Actors.attribute(player, "Assists", s.assists)
+	Actors.attribute(player, "Score", s.score)
+	Actors.attribute(player, "DoublePumps", s.doublePumps)
 end
 
 local function inCombat(): boolean
@@ -148,7 +152,7 @@ end
 
 local function matchPlayers(): { Player }
 	local list = {}
-	for _, p in Players:GetPlayers() do
+	for _, p in Actors.all() do
 		if modes[p] == "Match" then
 			table.insert(list, p)
 		end
@@ -157,6 +161,7 @@ local function matchPlayers(): { Player }
 end
 
 local function publishState()
+	stateFolder:SetAttribute("TrainingMatch", trainingRound)
 	stateFolder:SetAttribute("State", match.state)
 	stateFolder:SetAttribute("EndsAt", workspace:GetServerTimeNow() + match.timeLeft)
 	stateFolder:SetAttribute("RedScore", match.scores.Red)
@@ -176,8 +181,8 @@ end
 
 local function enemyPositions(team: string?): { Vector3 }
 	local list = {}
-	for _, p in Players:GetPlayers() do
-		local character = p.Character
+	for _, p in Actors.all() do
+		local character = Actors.character(p)
 		local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
 		if
 			modes[p] == "Match"
@@ -202,6 +207,10 @@ local function lineOfSight(from: Vector3, to: Vector3): boolean
 end
 
 local function pickSpawn(player: Player): CFrame?
+	if Actors.isBot(player) and modes[player] ~= "Match" then
+		local pos = MapService.Registry.Range.origin + Vector3.new(-49, 0.5, if player.index == 1 then -9 else 9)
+		return CFrame.lookAt(pos, pos + Vector3.new(1, 0, 0))
+	end
 	local team = TeamService.teamOf(player)
 	local arenaPhase = match.state == "Starting"
 		or match.state == "Active"
@@ -236,7 +245,7 @@ local function pickSpawn(player: Player): CFrame?
 end
 
 local function spawnPlayer(player: Player, transfer: boolean?)
-	if not player.Parent or modes[player] == "Menu" or modes[player] == nil then
+	if not Actors.exists(player) or modes[player] == "Menu" or modes[player] == nil then
 		return
 	end
 	local cf = pickSpawn(player)
@@ -270,7 +279,7 @@ end
 
 local function freezeAll(frozen: boolean)
 	for _, p in matchPlayers() do
-		local character = p.Character
+		local character = Actors.character(p)
 		if character and TeamService.teamOf(p) then
 			CharacterService.setFrozen(character, frozen)
 		end
@@ -335,8 +344,9 @@ local function onMatchEnded(winner: string?, reason: string)
 	local board = {}
 	for p, info in participants do
 		table.insert(board, {
-			userId = p.UserId,
-			name = p.DisplayName,
+			userId = Actors.id(p),
+			botId = if Actors.isBot(p) then p.id else nil,
+			name = Actors.name(p),
 			team = info.team,
 			kills = info.stats.kills,
 			deaths = info.stats.deaths,
@@ -349,6 +359,7 @@ local function onMatchEnded(winner: string?, reason: string)
 		})
 	end
 	local result: MatchResult = {
+		training = trainingRound,
 		winner = winner,
 		reason = reason,
 		scores = table.clone(match.scores),
@@ -357,10 +368,18 @@ local function onMatchEnded(winner: string?, reason: string)
 		participants = participants,
 	}
 	sendParticipants("Ended", {
+		training = trainingRound,
 		winner = winner,
 		reason = reason,
 		scores = result.scores,
-		mvp = if mvp then { userId = mvp.UserId, name = mvp.DisplayName, team = TeamService.teamOf(mvp) } else nil,
+		mvp = if mvp
+			then {
+				userId = Actors.id(mvp),
+				botId = if Actors.isBot(mvp) then mvp.id else nil,
+				name = Actors.name(mvp),
+				team = TeamService.teamOf(mvp),
+			}
+			else nil,
 		board = board,
 		mapName = stateFolder:GetAttribute("MapName"),
 	})
@@ -398,22 +417,27 @@ end
 local function onWaiting()
 	for _, p in matchPlayers() do
 		-- Living transfers get a return cue; replacement characters use the existing Spawn cue.
-		returningCharacters[p] = p.Character
+		returningCharacters[p] = Actors.character(p)
 		cancelRespawn(p)
 		lobbyReady[p] = false
-		if p.Character then
-			DamageService.forget(p.Character)
+		if Actors.character(p) then
+			DamageService.forget(Actors.character(p))
 		end
 		modes[p] = "Practice"
 		TeamService.clear(p)
 		CombatContext.set(p, "Lobby")
-		p:SetAttribute("Mode", "Practice")
-		p:SetAttribute("Queued", false)
+		Actors.attribute(p, "Mode", "Practice")
+		Actors.attribute(p, "Queued", false)
 		stats[p] = newStats()
 		publishStats(p)
 		-- Character loading yields: never block the single match/queue clock.
 		task.spawn(spawnPlayer, p, true)
 	end
+	local owner = Actors.owner()
+	if owner then
+		CombatContext.stopTraining(owner)
+	end
+	trainingRound = false
 	MapService.useRangeLighting()
 end
 
@@ -456,14 +480,14 @@ function MatchService.setMode(player: Player, mode: Mode)
 	end
 	cancelRespawn(player)
 	lobbyReady[player] = false
-	if player.Character then
-		DamageService.forget(player.Character)
+	if Actors.character(player) then
+		DamageService.forget(Actors.character(player))
 	end
 	modes[player] = "Practice"
 	TeamService.clear(player)
 	CombatContext.set(player, "Lobby")
-	player:SetAttribute("Mode", "Practice")
-	player:SetAttribute("Queued", false)
+	Actors.attribute(player, "Mode", "Practice")
+	Actors.attribute(player, "Queued", false)
 	task.spawn(spawnPlayer, player, true)
 	publishState()
 end
@@ -550,6 +574,50 @@ local function onEliminated(elimination: DamageService.Elimination)
 	handle(MatchRules.addScore(match, killerTeam))
 end
 
+function MatchService.botQueueEligible(p: any, cf: CFrame): boolean
+	if not Actors.isBot(p) then
+		return true
+	end
+	local owner = p.owner
+	local c = Actors.character(owner)
+	local root = c and c:FindFirstChild("HumanoidRootPart")
+	if
+		modes[owner] ~= "Practice"
+		or not lobbyReady[owner]
+		or not c
+		or not root
+		or not Combatants.isAlive(c)
+		or not LobbyQueue.contains(cf, GameConfig.LobbyQueue.Size, root.Position)
+	then
+		return false
+	end
+	for _, bot in Actors.list() do
+		local model = bot.model
+		local r = model and model:FindFirstChild("HumanoidRootPart")
+		if not model or not r or not Combatants.isAlive(model) or modes[bot] ~= "Practice" then
+			return false
+		end
+	end
+	return true
+end
+function MatchService.registerBot(bot: any)
+	assert(Actors.isBot(bot))
+	publishStats(bot)
+	MatchService.setMode(bot, "Practice")
+end
+function MatchService.removeBot(bot: any)
+	cancelRespawn(bot)
+	modes[bot] = nil
+	lobbyReady[bot] = nil
+	stats[bot] = nil
+	votes[bot] = nil
+	cueStates[bot] = nil
+	cueSerials[bot] = nil
+	lastNotification[bot] = nil
+	returningCharacters[bot] = nil
+	CombatContext.forget(bot)
+	CombatService.forgetParticipant(bot)
+end
 function MatchService.start()
 	stateFolder = Instance.new("Folder")
 	stateFolder.Name = "MatchState"
@@ -573,7 +641,7 @@ function MatchService.start()
 		end
 	end)
 	CombatService.setCanFire(function(player)
-		local character = player.Character
+		local character = Actors.character(player)
 		if not character or character:GetAttribute("Frozen") == true then
 			return false
 		end
@@ -583,10 +651,12 @@ function MatchService.start()
 
 	CharacterService.Died:Connect(function(player, character)
 		local delay = GameConfig.Player.RespawnDelay
-		matchEvent:FireClient(player, "Respawning", { delay = delay })
+		if not Actors.isBot(player) then
+			matchEvent:FireClient(player, "Respawning", { delay = delay })
+		end
 		scheduleRespawn(player, delay)
 		task.delay(delay + 2, function()
-			if character.Parent and player.Character ~= character then
+			if character.Parent and Actors.character(player) ~= character then
 				character:Destroy()
 			end
 		end)
@@ -597,7 +667,7 @@ function MatchService.start()
 		MatchService.setMode(player, "Practice")
 	end
 	Players.PlayerAdded:Connect(onPlayerAdded)
-	for _, player in Players:GetPlayers() do
+	for _, player in Actors.all() do
 		task.spawn(onPlayerAdded, player)
 	end
 	Players.PlayerRemoving:Connect(function(player)
@@ -622,12 +692,12 @@ function MatchService.start()
 	drawQueue = QueueZone.build(range, zoneCFrame, GameConfig.LobbyQueue.Size)
 	local function stepQueue(): boolean
 		local occupants = {}
-		local candidates = Players:GetPlayers()
+		local candidates = Actors.all()
 		table.sort(candidates, function(a, b)
-			return a.UserId < b.UserId
+			return Actors.sortKey(a) < Actors.sortKey(b)
 		end)
 		for _, p in candidates do
-			local character = p.Character
+			local character = Actors.character(p)
 			local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
 			if
 				modes[p] == "Practice"
@@ -636,13 +706,41 @@ function MatchService.start()
 				and root
 				and Combatants.isAlive(character)
 				and LobbyQueue.contains(zoneCFrame, GameConfig.LobbyQueue.Size, root.Position)
+				and MatchService.botQueueEligible(p, zoneCFrame)
 			then
 				table.insert(occupants, p)
 			end
 		end
 		local previous = queueState
+
 		local selected, state =
 			LobbyQueue.step(queue, occupants, workspace:GetServerTimeNow(), match.state == "Waiting")
+		if #selected > 0 and #Actors.list() > 0 then
+			local complete = {}
+			for _, p in selected do
+				table.insert(complete, p)
+			end
+			for _, p in queue.order do
+				table.insert(complete, p)
+			end
+			local safe =
+				TrainingPolicy.selection(complete, Actors.owner(), Actors.list(), GameConfig.LobbyQueue.Capacity)
+			if #safe ~= #selected then
+				selected = safe
+				queue.order = {}
+				for i = #safe + 1, #complete do
+					table.insert(queue.order, complete[i])
+				end
+				queue.deadline = nil
+				state = if #safe > 0 then "Admitting" else "Waiting"
+				local owner = Actors.owner()
+				if owner and os.clock() - (lastNotification[owner] or -math.huge) > 3 then
+					Net.event("Notify")
+						:FireClient(owner, "Training pair must be alive and physically queued; waiting for capacity.")
+					lastNotification[owner] = os.clock()
+				end
+			end
+		end
 		queueState = state
 		for _, p in candidates do
 			local queued = table.find(queue.order, p) ~= nil
@@ -659,15 +757,24 @@ function MatchService.start()
 			if cue then
 				lobbyCue(p, cue)
 			end
-			if p:GetAttribute("Queued") ~= queued then
-				p:SetAttribute("Queued", queued)
+			if Actors.getAttribute(p, "Queued") ~= queued then
+				Actors.attribute(p, "Queued", queued)
 				local now = os.clock()
-				if not table.find(selected, p) and now - (lastNotification[p] or -math.huge) >= 1 then
+				if
+					not Actors.isBot(p)
+					and not table.find(selected, p)
+					and now - (lastNotification[p] or -math.huge) >= 1
+				then
 					Net.event("Notify"):FireClient(p, if queued then "Joined Match Queue" else "Left Match Queue")
 					lastNotification[p] = now
 				end
 			end
-			if queued and previous ~= state and (state == "Countdown" or state == "Waiting") then
+			if
+				not Actors.isBot(p)
+				and queued
+				and previous ~= state
+				and (state == "Countdown" or state == "Waiting")
+			then
 				Net.event("Notify"):FireClient(
 					p,
 					if state == "Countdown"
@@ -696,9 +803,15 @@ function MatchService.start()
 			lobbyReady[p] = false
 			CombatContext.set(p, "Reserved")
 			lobbyCue(p, "Admitted")
-			p:SetAttribute("Mode", "Match")
-			p:SetAttribute("Queued", false)
+			Actors.attribute(p, "Mode", "Match")
+			Actors.attribute(p, "Queued", false)
 			cancelRespawn(p)
+		end
+		trainingRound = false
+		for _, p in selected do
+			if Actors.isBot(p) then
+				trainingRound = true
+			end
 		end
 		TeamService.reshuffle(selected)
 		freezeAll(true)
@@ -735,8 +848,8 @@ function MatchService.start()
 			return
 		end
 		fallCheck = 0
-		for _, p in Players:GetPlayers() do
-			local character = p.Character
+		for _, p in Actors.all() do
+			local character = Actors.character(p)
 			local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
 			local killY = if modes[p] == "Match" then MapService.killY() else -40
 			if character and root and root.Position.Y < killY and Combatants.isAlive(character) then
@@ -752,6 +865,9 @@ function MatchService.start()
 			CombatContext.refresh(player)
 		end
 		lobbyReady[player] = modes[player] == "Practice"
+		if Actors.isBot(player) then
+			publishStats(player)
+		end
 		local returned = returningCharacters[player]
 		returningCharacters[player] = nil
 		if returned == character and lobbyReady[player] then

@@ -1,0 +1,66 @@
+[
+  {
+    "path": "ReplicatedStorage.Shared.Training.Beginner",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ReplicatedStorage.Shared.Training.Policy",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server",
+    "class": "Script"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.BotNavigation",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.CharacterService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.CombatContext",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.CombatService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.DamageService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.MatchService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.Participants",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.ProgressionService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.TeamService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.TrainingBotService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.Controllers.EffectsController",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.UI.Postgame",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.UI.Scoreboard",
+    "class": "ModuleScript"
+  }
+]

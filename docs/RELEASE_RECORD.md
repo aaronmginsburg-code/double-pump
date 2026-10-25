@@ -1,5 +1,19 @@
 # Double Pump — release record
 
+## Public release — 2026-10-22, approximately 11:18 PDT
+
+This entry supersedes the earlier private-access status below, which remains historical evidence. Owner explicitly confirmed public release of this existing experience. Creator Dashboard now reports **available to players ages 16+**. Manage access shows **Public selected, Friends unchecked**. Universe 10772275012 and place 82505574993280 are unchanged. No game binary was republished: the previously verified version 10 remains the release build, implementation 4505edef94f69a251d07a6b5c014c671fcbde675.
+
+Content questionnaire completed: **Mild; Violence (Repeated/Mild)**, no listed non-compliant regions in its result. Other content categories answered No based on the current implementation. Dust Town contains a CANTINA sign and counter but the experience primarily takes place in competitive arenas, with no implemented alcohol items/use. The rating does not itself remove Roblox's initial audience restrictions.
+
+Public name changed from Double Pump [Private Test] to **Double Pump**, and the obsolete Private development test sentence was removed from its description. Existing icon/thumbnails preserved. Refreshed Roblox game page displays Double Pump, Mild / Ages 16+, the updated description, Play control and server size 10. No spending, fee payment, monetization activation, gameplay changes or new experience creation.
+
+Broader under-16/region reach remains incomplete: Dashboard lists 250 highly engaged players (0 in displayed snapshot) and the 1,000 Robux Kids & Select fee as incomplete. No all-ages eligibility claim. See Roblox's current publishing documentation: https://create.roblox.com/docs/production/publishing/publish-games-and-places .
+
+Evidence: release-evidence-20261022/public-access-verified.png and public-game-page.png. Dashboard and game-page verification completed; no fresh normal Player gameplay or outsider-account join test this step. Earlier 245 automated tests, 21/21 staged Studio assertions and owner live-client confirmation remain prior evidence, not rerun results. Rollback binaries/history remain intact; access can be returned to Playtest through Manage access if authorized.
+
+Automatic approval review initially blocked Continue due to the old private-only restriction. Owner then explicitly reconfirmed Public for these IDs; the release succeeded afterward. Source checkout was clean at b90e77a3f2dc5238d4fc5d91b99eb35cbaa6018a before these documentation/evidence changes.
+
 ## Identity
 
 - Experience **Double Pump [Private Test]**, owner supersnapstudios.
@@ -64,3 +78,8 @@ The independently retrieved cloud place also passed an actual Studio solo startu
 ## Owner live-client confirmation — 2026-10-22 PDT
 
 Aaron replied “it is working” to the request to launch the existing private experience in normal Roblox Player and check the firing range, weapons and queue. Those basic live-client behaviors are now **owner-reported working**. This is not agent-controlled Player verification or a claim of exhaustive multiplayer, every map, device performance, ten-player load or live-save/rejoin acceptance. No game build or audience setting changed.
+
+
+## Private training-bot development record — 2026-10-24
+
+See [TRAINING_BOTS_UPDATE.md](TRAINING_BOTS_UPDATE.md) for the development-only source/deployment record, exact results and limitations. 424 tests pass, including26 bot regressions. This does not change the public release record above.

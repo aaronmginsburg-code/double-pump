@@ -1,3 +1,27 @@
+## Private development training bots — 2026-10-24
+
+The current development source is `development-copy/source`, branch `feat/development-training-bots`, based on `4f70b958`. Two authorized-session beginner NPCs reuse normal weapons, physical queue admission, match scoring and respawning. The developer and both bots form an intentional 1v2 roster; independently queued humans can join within normal team capacity. Bot rounds suppress all permanent progression. Human-versus-human range practice remains nonlethal. No production source, controls, combat balance, maps, profile schemas or assets were replaced.
+
+Read [TRAINING_BOTS_UPDATE.md](TRAINING_BOTS_UPDATE.md) for exact private deployment status, source revision, backups, tests, screenshots and acceptance limits. This is a private development feature, not a production release. The candidate has 123 permanent scripts, verified against the full-scene cloud base. 424 tests pass; Studio solo lifecycle checks covered all three arenas with shortened test clocks. Physical-device difficulty/performance acceptance remains pending. Older checkpoints below are historical.
+
+---
+
+## Private development audio — 2026-10-24
+
+Private universe10772492892/place139437092998076 is now **publishedv24**, adding the five owner-selected surface-footstep/landing cues (51 total configured audio cues). New presentation-only movement audio replaces default Running/Landing without layering; movement/combat configuration, controls, profiles and public game are unchanged. Current authority is development-copy/source, branch feat/mobile-controls @ b90e77a plus preserved uncommitted private changes. **377 tests pass**,89 scripts match clean Studio candidate; two-client Studio surface/jump/idle/respawn/queue/return checks completed. LSP/Selene dependencies remain blocked; full formatting has pre-existing differences. Live-device listening remains owner acceptance. [Release report](../development-copy/audio-batch07-20261024/AUDIO_RELEASE_REPORT.md) contains IDs, implementation, exact limitations, backups and rollbackv22. Older privatev9/blank-audio notes below are historical. Batch08 variations await owner review and must not be described as implemented.
+
+---
+## Private development shotgun build — 2026-10-22
+
+The original Blender shotgun is now imported **only in the separate private development experience**, universe10772492892 / place139437092998076, publishedv9. Both FP slots and TP use the recovered rig and all ten original baked animation clips. All16 skins are unlocked through exact-development-ID guarded overrides. Public production is not updated. See [development release report](../development-copy/DEVELOPMENT_RELEASE_REPORT.md) for source snapshot, imported assets, backups,306 passing tests, Studio evidence, owner Player confirmation and remaining limits. Earlier local-preparation notes below describe the prior checkpoint and are superseded for development deployment.
+
+---
+## Weapon presentation candidate — 2026-10-22
+
+Production still uses the documented parts-based shotgun. An uncommitted local loader adaptation and original Blender FP/TP exports are prepared, awaiting separately approved Roblox upload/import and runtime verification. Current skin IDs/palettes, independent Weapon Hand preference, combat rules and all timings are preserved. No redesign or gameplay-rule change. See [integration report](BLENDER_SHOTGUN_INTEGRATION.md).
+
+---
+
 # Double Pump — current game design
 
 Inspected 2026-10-22 at implementation 4505edef. Implemented rules are listed below; future opportunities are proposals. Source configuration overrides stale prose.

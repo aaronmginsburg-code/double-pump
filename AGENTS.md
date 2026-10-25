@@ -59,3 +59,8 @@ Never commit secrets (Open Cloud API keys go in `ROBLOX_API_KEY`, never in a fil
 The private source is `development-copy/source` on `feat/development-aim-assist`. Read `docs/AIM_ASSIST_TEST_REPORT.md` for the current release checkpoint. Developer tuning is restricted to universe10772492892/place139437092998076 and allowlisted UserIds. Production universe10772275012/place82505574993280 must never receive this development console or all-skin overrides.
 
 Keep the intact latest cloud place as the full-scene deployment base (feedback board geometry is not wholly in Rojo). Patch source, remove disposable test probes, compare all118 permanent sources, archive the intact candidate, then publish only after checking both IDs. Never publish INSPECTION_ONLY normalized files. The source-only Rojo build is a verification artifact. Run private tests with `lune run run-compat.luau` from `development-copy/source` when using the bundled Lune0.8.9 runner. Saved-only Studio drafts are not published versions.
+
+
+## Private training bots (2026-10-24)
+
+Current development branch is `feat/development-training-bots`; see docs/TRAINING_BOTS_UPDATE.md. The full-scene candidate contains123 permanent scripts. Exact DeveloperAccess IDs plus UserId allowlist are mandatory. NPC records are server-registered participants, never fake Players. Preserve physical FIFO/root-center queue admission, training-round progression suppression and ordinary nonlethal human lobby combat. Never copy development bot services or intentional1v2 team rules into production without separate approval. Remove every TemporaryBot probe and runtime-only negative Studio UserId grant before publishing; compare all123 sources with the archived candidate.

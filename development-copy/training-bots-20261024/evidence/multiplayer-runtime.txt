@@ -1,0 +1,18 @@
+2026-10-25T05:46:32.134Z,4.134765,42b8,6,Warning [FLog::CreatorWarning] Warning: Failed to apply StyleRule property 'CornerRadius' from '>> .RoundedCorner8 ::UICorner': Unable to cast string to UDim
+2026-10-25T05:46:32.134Z,4.134765,42b8,6,Warning [FLog::CreatorWarning] Warning: Failed to apply StyleRule property 'CornerRadius' from '>> .RoundedCorner8 ::UICorner': Unable to cast string to UDim
+2026-10-25T05:46:32.134Z,4.134765,42b8,6,Warning [FLog::CreatorWarning] Warning: Failed to apply StyleRule property 'CornerRadius' from '>> .RoundedCorner8 ::UICorner': Unable to cast string to UDim
+2026-10-25T05:46:32.134Z,4.134765,42b8,6,Warning [FLog::CreatorWarning] Warning: Failed to apply StyleRule property 'CornerRadius' from '>> .RoundedCorner8 ::UICorner': Unable to cast string to UDim
+2026-10-25T05:46:34.709Z,6.709930,80cc,6,Warning [FLog::CreatorWarning] Warning: [Feedback] Use the isolated review build for Studio testing
+2026-10-25T05:46:35.333Z,7.333540,8a18,6,Error [FLog::CreatorError] Error: DataStoreService: StudioAccessToApisNotAllowed: Studio access to APIs is not allowed. API: GetAsync, Data Store: DoublePump_Profiles_v1
+2026-10-25T05:46:35.333Z,7.333540,8a18,6,Warning [FLog::CreatorWarning] Warning: [DataService] DataStores unavailable (502: API Services rejected request with error. Error code: 7 Reason: Studio access to APIs is not allowed.); profiles are kept in memory only
+2026-10-25T05:46:35.336Z,7.336539,8a18,6,Info [FLog::CreatorOutput] [TrainingBots] private authorized-session controller ready
+2026-10-25T05:46:35.613Z,7.613957,9124,6,Warning [FLog::CreatorWarning] Warning: ContentId: rbxassetid://203785492 failed due to: Asset type does not match requested type
+2026-10-25T05:47:04.960Z,36.960751,8e50,6,Info [FLog::CreatorOutput] BOT_MULTI_PASSIVE 2
+2026-10-25T05:47:17.841Z,49.841427,8a18,6,Info [FLog::CreatorOutput] BOT_MULTI_HUMAN_NONLETHAL 100
+2026-10-25T05:47:26.494Z,58.494301,8e50,6,Info [FLog::CreatorOutput] BOT_MULTI_UNINVOLVED_SAFE 4 100
+2026-10-25T05:47:38.390Z,70.390755,8a18,6,Info [FLog::CreatorOutput] BOT_MULTI_OWNER_ONLY_QUEUE
+2026-10-25T05:48:14.999Z,106.999962,8e50,6,Info [FLog::CreatorOutput] BOT_MULTI_BALANCED_2V2 Rooftops
+2026-10-25T05:48:55.389Z,147.389282,8e50,6,Info [FLog::CreatorOutput] BOT_MULTI_RESULTS 0 2
+2026-10-25T05:49:07.873Z,159.873169,8e50,6,Info [FLog::CreatorOutput] BOT_MULTI_NO_PROFILE_REWARDS
+2026-10-25T05:49:07.874Z,159.874161,8e50,6,Info [FLog::CreatorOutput] BOT_MULTI_METRICS 986 22.23290002439171 18 23 0 0
+2026-10-25T05:49:18.989Z,170.989075,8a18,6,Info [FLog::CreatorOutput] BOT_MULTI_COMPLETE

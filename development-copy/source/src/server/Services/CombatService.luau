@@ -34,6 +34,7 @@ local CharacterService = require(script.Parent.CharacterService)
 local DamageService = require(script.Parent.DamageService)
 local CombatContext = require(script.Parent.CombatContext)
 
+local Actors = require(script.Parent.Participants)
 local CombatService = {}
 
 -- (player, slot, pelletsFired, pelletsHit, headshot)
@@ -410,7 +411,9 @@ function CombatService.start()
 
 	CharacterService.Spawned:Connect(function(player)
 		CombatService.resetPlayer(player)
-		weaponEvent:FireClient(player, "Reset")
+		if not Actors.isBot(player) then
+			weaponEvent:FireClient(player, "Reset")
+		end
 	end)
 	Players.PlayerRemoving:Connect(function(player)
 		states[player] = nil
@@ -442,4 +445,106 @@ function CombatService.start()
 	end)
 end
 
+-- Only server-registered NPC participants can enter this path. No client remote routes here.
+function CombatService.npcAction(bot: any, action: string, arg: any): boolean
+	if not Actors.isBot(bot) or not Actors.exists(bot) then
+		return false
+	end
+	local character = Actors.character(bot)
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local head = character and character:FindFirstChild("Head")
+	if
+		not character
+		or not humanoid
+		or not head
+		or humanoid.Health <= 0
+		or character:GetAttribute("Dead")
+		or character:GetAttribute("Frozen")
+	then
+		return false
+	end
+	local state = states[bot]
+	if not state then
+		return false
+	end
+	local now = os.clock()
+	if action == "Equip" then
+		if WeaponState.equip(state, arg, now) then
+			character:SetAttribute("EquippedSlot", arg)
+			return true
+		end
+	elseif action == "Reload" then
+		if WeaponState.startReload(state, now) then
+			character:SetAttribute("ReloadingAt", workspace:GetServerTimeNow())
+			return true
+		end
+	elseif action == "Fire" then
+		if
+			not canFireCheck
+			or not canFireCheck(bot)
+			or not ShotValidation.isFiniteVector(arg, 2)
+			or arg.Magnitude < 0.5
+		then
+			return false
+		end
+		local ok, _, number = WeaponState.fire(state, state.equipped, now, 0)
+		if not ok then
+			return false
+		end
+		local origin = head.Position
+		local aim = arg.Unit
+		CharacterService.endProtection(character)
+		local mult = Spread.stateMultiplier(
+			WeaponConfig.Spread,
+			character:GetAttribute("Crouching") == true,
+			isAirborne(humanoid)
+		)
+		local directions = Spread.directions(WeaponConfig.Spread, aim, number, mult)
+		local params = Collision.shotParams({ character })
+		local perTarget = {}
+		local hits = 0
+		for _, direction in directions do
+			local hit = workspace:Raycast(origin, direction * WeaponConfig.Damage.MaxRange, params)
+			if hit then
+				local target = Combatants.fromPart(hit.Instance)
+				local zone = Damage.zoneForPart(hit.Instance.Name)
+				if
+					target
+					and zone
+					and hit.Instance.Name ~= "HumanoidRootPart"
+					and CombatContext.resolve(bot, target) ~= "Blocked"
+				then
+					perTarget[target] = perTarget[target] or {}
+					table.insert(perTarget[target], { zone = zone, distance = (hit.Position - origin).Magnitude })
+					hits += 1
+				end
+			end
+		end
+		weaponEvent:FireAllClients(
+			"Shot",
+			character,
+			{ origin = origin, aim = aim, shot = number, mult = mult, slot = state.equipped }
+		)
+		for target, list in perTarget do
+			local amount, critical = Damage.total(WeaponConfig.Damage, list)
+			local nearest = math.huge
+			for _, hit in list do
+				nearest = math.min(nearest, hit.distance)
+			end
+			DamageService.apply(
+				bot,
+				target,
+				amount,
+				{ slot = state.equipped, headshot = critical, distance = nearest, origin = origin, pellets = #list }
+			)
+		end
+		CombatService.ShotFired:Fire(bot, state.equipped, #directions, hits, false)
+		return true
+	end
+	return false
+end
+function CombatService.forgetParticipant(bot: any)
+	states[bot] = nil
+	airborneSince[bot] = nil
+end
 return CombatService

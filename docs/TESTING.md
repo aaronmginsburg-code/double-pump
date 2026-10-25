@@ -1,6 +1,6 @@
 ## Development aim assist checkpoint — 2026-10-24
 
-**Private developmentv39 published and verified**, implementation commit `665d307` on `feat/development-aim-assist`: development-only aim assist and the authorized F6 tuning console. Production remains publishedv10. Real phone/controller feel and durable Save→rejoin→Load remain owner verification items; Studio DataStore access was disabled. The newer private cloudv29 source was reconciled: local private source now includes the feedback modules and GameFlow, with118 permanent scripts in the aim-assist candidate. Earlier warnings below about the89-script private tree are historical. Preserve full-scene cloud geometry; do not deploy the stand-alone Rojo source build over it.
+**Private developmentv39 published and verified**, implementation commit `665d307` on `feat/development-aim-assist`: development-only aim assist and the authorized F6 tuning console. Production remains publishedv10. The owner subsequently confirmed Save→rejoin→Load persistence in the published development build. This is owner-reported verification; Studio DataStore access remained disabled. Real phone/controller aiming and multitouch feel remain pending. The newer private cloudv29 source was reconciled: local private source now includes the feedback modules and GameFlow, with118 permanent scripts in the aim-assist candidate. Earlier warnings below about the89-script private tree are historical. Preserve full-scene cloud geometry; do not deploy the stand-alone Rojo source build over it.
 
 Read [aim-assist test/release report](AIM_ASSIST_TEST_REPORT.md) for actual publication status, source checkpoints,398 passing tests, Studio observations, screenshots and remaining hardware/cloud-persistence verification. Architecture and parameters are in AIM_ASSIST_IMPLEMENTATION.md and AIM_ASSIST_CONFIGURATION.md. This does not update the public game or promote any tuning configuration.
 
@@ -270,3 +270,8 @@ should be inferred passing from the automated tests. Keep solo override false.
 `lune run tests/run.luau`, `tools/typecheck.sh`, `stylua --check ...`, `selene src`,
 `rojo build`, `lune run tools/map_report.luau`, `python tools/upload_assets.py --user-id 1 --dry-run`.
 Run all of them after every change and record new results here with the date and commit.
+
+
+## Training bot verification — 2026-10-24
+
+See [TRAINING_BOTS_UPDATE.md](TRAINING_BOTS_UPDATE.md) for the development-only source/deployment record, exact results and limitations. 424 tests pass, including26 bot regressions. This does not change the public release record above.

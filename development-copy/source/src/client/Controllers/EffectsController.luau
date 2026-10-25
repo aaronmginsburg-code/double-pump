@@ -5,6 +5,7 @@
 -- and a "reduced effects" setting.
 
 local Players = game:GetService("Players")
+local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
@@ -518,6 +519,16 @@ function EffectsController.start()
 		other.CharacterAdded:Connect(track)
 		if other.Character then
 			track(other.Character)
+		end
+	end
+	CollectionService:GetInstanceAddedSignal(Combatants.TAG):Connect(function(model)
+		if model:IsA("Model") and model:GetAttribute("TrainingBot") then
+			track(model)
+		end
+	end)
+	for _, model in CollectionService:GetTagged(Combatants.TAG) do
+		if model:IsA("Model") and model:GetAttribute("TrainingBot") then
+			track(model)
 		end
 	end
 	Players.PlayerAdded:Connect(watchPlayer)

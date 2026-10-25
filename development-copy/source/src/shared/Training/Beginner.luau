@@ -1,0 +1,26 @@
+--!strict
+-- Decision delays/error only. Weapon/health/movement rules remain in their existing configs.
+return table.freeze({
+	Count = 2,
+	ThinkInterval = 0.1,
+	PerceptionInterval = 0.25,
+	ReactionMin = 0.65,
+	ReactionMax = 1.15,
+	AimErrorDegrees = 4.5,
+	MovingAimErrorDegrees = 3,
+	AimTrackingSpeed = 3.5,
+	TurnRadiansPerSecond = 2.3,
+	MovementDecisionInterval = 1.3,
+	PreferredDistance = 20,
+	RepositionFrequency = 2.4,
+	SwitchDelayMin = 0.22,
+	SwitchDelayMax = 0.48,
+	InefficientSwitchChance = 0.22,
+	ReloadDecisionDelay = 0.7,
+	AcquisitionRange = 110,
+	TargetPersistence = 2.2,
+	PathInterval = 1.5,
+	WaypointTimeout = 3,
+	QueueNavigationTimeout = 20,
+	TargetFieldOfView = 150,
+})

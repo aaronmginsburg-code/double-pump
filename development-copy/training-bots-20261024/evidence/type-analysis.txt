@@ -1,0 +1,1 @@
+Cannot load definitions file C:/Users/aaron/tools/globalTypes.d.luau: path does not exist

@@ -1,6 +1,14 @@
+## Private development training bots — 2026-10-24
+
+The current development source is `development-copy/source`, branch `feat/development-training-bots`, based on `4f70b958`. Two authorized-session beginner NPCs reuse normal weapons, physical queue admission, match scoring and respawning. The developer and both bots form an intentional 1v2 roster; independently queued humans can join within normal team capacity. Bot rounds suppress all permanent progression. Human-versus-human range practice remains nonlethal. No production source, controls, combat balance, maps, profile schemas or assets were replaced.
+
+Read [TRAINING_BOTS_UPDATE.md](TRAINING_BOTS_UPDATE.md) for exact private deployment status, source revision, backups, tests, screenshots and acceptance limits. This is a private development feature, not a production release. The candidate has 123 permanent scripts, verified against the full-scene cloud base. 424 tests pass; Studio solo lifecycle checks covered all three arenas with shortened test clocks. Physical-device difficulty/performance acceptance remains pending. Older checkpoints below are historical.
+
+---
+
 ## Development aim assist checkpoint — 2026-10-24
 
-**Private developmentv39 published and verified**, implementation commit `665d307` on `feat/development-aim-assist`: development-only aim assist and the authorized F6 tuning console. Production remains publishedv10. Real phone/controller feel and durable Save→rejoin→Load remain owner verification items; Studio DataStore access was disabled. The newer private cloudv29 source was reconciled: local private source now includes the feedback modules and GameFlow, with118 permanent scripts in the aim-assist candidate. Earlier warnings below about the89-script private tree are historical. Preserve full-scene cloud geometry; do not deploy the stand-alone Rojo source build over it.
+**Private developmentv39 published and verified**, implementation commit `665d307` on `feat/development-aim-assist`: development-only aim assist and the authorized F6 tuning console. Production remains publishedv10. The owner subsequently confirmed Save→rejoin→Load persistence in the published development build. This is owner-reported verification; Studio DataStore access remained disabled. Real phone/controller aiming and multitouch feel remain pending. The newer private cloudv29 source was reconciled: local private source now includes the feedback modules and GameFlow, with118 permanent scripts in the aim-assist candidate. Earlier warnings below about the89-script private tree are historical. Preserve full-scene cloud geometry; do not deploy the stand-alone Rojo source build over it.
 
 Read [aim-assist test/release report](AIM_ASSIST_TEST_REPORT.md) for actual publication status, source checkpoints,398 passing tests, Studio observations, screenshots and remaining hardware/cloud-persistence verification. Architecture and parameters are in AIM_ASSIST_IMPLEMENTATION.md and AIM_ASSIST_CONFIGURATION.md. This does not update the public game or promote any tuning configuration.
 
