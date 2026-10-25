@@ -1,0 +1,28 @@
+{
+  "normalRobloxPlayerAcceptance": "Pending",
+  "branch": "feat/development-training-bots",
+  "implementationCommit": "3b2b25e348c0e9eb9edee0ba5a80c7863cadd7d0",
+  "protectedSourcesUnchanged": [
+    "ReplicatedStorage.Shared.Config.WeaponConfig",
+    "ReplicatedStorage.Shared.Config.GameConfig",
+    "ReplicatedStorage.Shared.Weapons.WeaponState",
+    "ReplicatedStorage.Shared.Weapons.Spread",
+    "ReplicatedStorage.Shared.Weapons.Damage",
+    "ReplicatedStorage.Shared.Weapons.ShotValidation",
+    "ReplicatedStorage.Shared.Progression.Profile",
+    "StarterPlayer.StarterPlayerScripts.Client.Controllers.InputController",
+    "StarterPlayer.StarterPlayerScripts.Client.Controllers.CameraController",
+    "StarterPlayer.StarterPlayerScripts.Client.UI.MobileControls"
+  ],
+  "developmentUniverse": 10772492892,
+  "candidateSHA256": "FA9016BB1032139175D831AA668073389A9F52438A3372E3801BF49A0C4C02EB",
+  "automatedPassed": 424,
+  "developmentPlace": 139437092998076,
+  "productionPublishedVersion": 10,
+  "publishedAtUtc": "2026-10-25T05:52:46.941Z",
+  "hardwareAcceptance": "Pending",
+  "publishedVersion": 48,
+  "permanentScripts": 123,
+  "automatedFailed": 0,
+  "sourceDigest": 3907900398
+}

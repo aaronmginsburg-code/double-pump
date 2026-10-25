@@ -1,6 +1,6 @@
 # Private development training bots
 
-2026-10-24 local date. Development branch: `feat/development-training-bots`, based on `4f70b958f96ad57510f03c62f4cfceb17b11d3bc`. Publication status is recorded below only after verification. Public deployment is outside this change.
+2026-10-24 local date. **Published privately as development v48.** Implementation commit `3b2b25e348c0e9eb9edee0ba5a80c7863cadd7d0`, branch `feat/development-training-bots`, based on `4f70b958f96ad57510f03c62f4cfceb17b11d3bc`. Public production remains published v10.
 
 ## Operation and isolation
 
@@ -60,7 +60,7 @@ The private Luau compile check passes. Rojo source build passes and is not a dep
 
 Actual Studio solo tests completed Warehouse, Dust Town and Rooftops through physical bot admission, team assignment, live client firing/server damage, bot shots/eliminations, normal respawns, results and passive range return without automatic requeue. The disposable harness shortened each match clock only after 35 seconds of genuine combat; these were not full five-minute endurance matches. Observed alternating bot shot intervals included 0.538, 0.666 and 0.750 seconds, enforced through normal WeaponState eligibility. A real ground-waypoint/root-height navigation issue found during testing was corrected and given regression coverage.
 
-The first multiplayer harness timed out during slow client startup; another first-shot staging check was inconclusive. Disposable probes are excluded from deployment. Final two-client outcomes, performance measurement, archive comparison and deployment are appended after the run completes.
+The first multiplayer harness timed out during slow client startup; another first-shot staging check was inconclusive. A fixed two-second wait for a staged owner walk-out also finished before queue cancellation was observed; the final harness waited for actual occupancy to clear. Disposable probes are excluded from deployment. Final results follow.
 
 ### Completed two-client Studio acceptance
 
@@ -75,6 +75,20 @@ Visual evidence is in `development-copy/training-bots-20261024/evidence/`: `two-
 Final changed-file StyLua check passes. All123 permanent script paths and source texts in the intact archived candidate exactly match the local manifest; digest3907900398. The archive has no TemporaryBot scripts or negative-ID authorization. The new humanoid rigs are generated at runtime, not saved test models. See `solo-runtime.txt`, `multiplayer-runtime.txt`, `automated-tests-final.txt`, `compile-final.txt`, `selene.txt` and `type-analysis.txt` for evidence and blocked-tool details.
 
 Known acceptance limits: real phone/controller performance and subjective beginner difficulty need owner playtesting; ten-participant load, long-session memory behavior and all navigation failure permutations have not been certified. Procedural avatar locomotion/reload presentation reuses existing rigs; no new uploaded animation clips were created. Studio API access is disabled, so test profiles are in-memory fallbacks, not production inventories.
+
+Studio observed owner disconnect cleanup after results, not a mid-round disconnect. Full-queue partial-group selection, capacity, wrong-context denial and production guards have automated coverage; full-capacity runtime admission, disconnect at the final countdown tick, failed avatar-generation/network requests and all dead-bot admission races remain manual reliability tests. No physical phone/controller test or normal Roblox Player acceptance of this feature is claimed.
+
+## Verified development publication
+
+- Universe10772492892 / place139437092998076, unchanged private access: only owner and collaborators.
+- Published **v48**, Studio success logged2026-10-25T05:52:46.941Z (October24local). Creator Dashboard's **Show published only** lists48; its version timestamp displays October24 at10:51PM, corresponding to the saved version that was then published.
+- Reopened the cloud place and checked `game.PlaceVersion==48`, both IDs, all123 permanent paths/source texts and digest3907900398. No test probes remained. A fresh Studio Play from that cloud copy started the training service and normal range/weapons; it was stopped afterward to release game input. This is Studio verification, not an independent live Roblox Player session.
+- Public place82505574993280 still shows latest publishedv10 after this deployment. All81 production-source file hashes match the pre-task snapshot; its pre-existing dirty ShotgunModel file was preserved.
+- No asset upload, access change, purchase, monetization activation or production publication occurred. No Git push was performed.
+
+Intact candidate: `development-copy/training-bots-20261024/backup/DoublePump_DEVELOPMENT_TRAINING_BOTS.rbxl` (417131bytes, SHA256 `FA9016BB1032139175D831AA668073389A9F52438A3372E3801BF49A0C4C02EB`). Previous stablev39 SHA256 `ED30FB50BE87D84BB222250906485770707BE1F47762BF422D66AE78239D603A`. Detailed source manifests, runtime logs and Dashboard screenshots accompany this report in the task evidence folder.
+
+Owner acceptance: join a fresh private development server as supersnapstudios, shoot a bot for the range duel, then walk into MATCH QUEUE for1v2. Leave during countdown to cancel. A completed training match returns everyone to the range and requires a fresh voluntary queue entry. Existing public game is not the test destination.
 
 ## Backup, rollback and documentation
 

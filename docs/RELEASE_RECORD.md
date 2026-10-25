@@ -83,3 +83,5 @@ Aaron replied “it is working” to the request to launch the existing private 
 ## Private training-bot development record — 2026-10-24
 
 See [TRAINING_BOTS_UPDATE.md](TRAINING_BOTS_UPDATE.md) for the development-only source/deployment record, exact results and limitations. 424 tests pass, including26 bot regressions. This does not change the public release record above.
+
+Private development v48: implementation commit 3b2b25e348c0e9eb9edee0ba5a80c7863cadd7d0, universe10772492892/place139437092998076. Published2026-10-25T05:52:46Z; Dashboard published-only and reopened cloud PlaceVersion48 verified with123 matching sources. Owner/collaborator-only access retained. Public v10 unchanged. See TRAINING_BOTS_UPDATE.md for rollback and test boundaries.
