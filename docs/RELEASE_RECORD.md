@@ -1,3 +1,5 @@
+> Development-only update 2026-10-25: private **v63** published, all131cloud sources match implementation`80a1dca`. Public release remains publishedv10. [Developer console publication record](DEVELOPER_CONSOLE_PUBLISH_REPORT.md) contains exact IDs,backups,verification and remaining tests.
+
 # Double Pump — release record
 
 ## Public release — 2026-10-22, approximately 11:18 PDT

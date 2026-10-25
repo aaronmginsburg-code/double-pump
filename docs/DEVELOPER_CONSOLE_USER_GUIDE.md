@@ -1,6 +1,6 @@
 # Developer console user guide
 
-The owner approved this revision and authorized private development deployment on2026-10-25. See DEVELOPER_CONSOLE_PUBLISH_REPORT.md for the independently verified result.
+Private development **v63 is published and cloud-source verified** (2026-10-25). Production remains unchanged. See DEVELOPER_CONSOLE_PUBLISH_REPORT.md for evidence and acceptance limits.
 
 1. Authorized developer: use DEV CONSOLE or F6 on desktop; tap DEV beside the ammo HUD at the bottom on mobile. Click the shortcut chip to cycle F6/F7/F8 for this session. X/HIDE closes immediately; header dragging repositions within the safe viewport. Normal movement, shooting and camera input are fenced while open.
 2. Choose Movement, Aiming, Auto Fire, Weapons or Audio. Scroll the setting list. Drag/tap a track or enter a precise number; toggles and dropdowns apply through the server. Per-row RESET restores its default.

@@ -15,10 +15,14 @@ Use RESET with scope ALL, or restart the local test server to recover defaults. 
 
 Restore the intact previous place using Studio and publish only after verifying development universe10772492892/place139437092998076 and receiving the required approval. Alternatively use Creator Dashboard version history to restore the verified previous development version. Production place82505574993280 is excluded.
 
-No current rollback publication is needed: this revision is awaiting UI approval and has not been published.
+Private developmentv63 is now published after explicit UI approval. The previous stable development version is50; rollback requires the development-only steps above.
 
 The schema2 console store is a separate namespace; reverting to v50 simply stops reading it. Do not delete stores, reset player profiles or copy experimental values into production. Legacy aim store remains readable by v50. Keep schema2 preset data for subsequent compatible development builds.
 
 ## Local review candidate
 
 Final intact place: `development-copy/developer-console-20261025/evidence/DoublePump_DEVELOPER_CONSOLE_FINAL_REVIEW.rbxl`. All131 source containers compared in Studio. SHA256`7a932eb9422a3a75df8fba87a91bcc520e19af90c62fb094b1996eb31e160562`. Source/docs snapshot: `development-copy/developer-console-20261025/backup/DEVELOPER_CONSOLE_LOCAL_REVIEW_SOURCE.zip` (CRC integrity checked). Baseline archive also CRC checked. No Git commit or deployment yet.
+
+## Published source checkpoint
+
+v63 uses implementation commit`80a1dca7b2c29bec7503ebdb8b98a514daab367d`. Approved archive: `development-copy/developer-console-20261025/publication/DoublePump_APPROVED_DEVELOPER_CONSOLE.rbxl`. Prior FINAL_REVIEW archive predates the mobile launcher revision. Previous source/docs zip and intactv50 place remain preserved.

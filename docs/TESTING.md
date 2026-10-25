@@ -1,4 +1,4 @@
-> 2026-10-25 local development candidate: five-category developer console implemented in `development-copy/source`; **owner approved desktop/mobile UI and authorized private development publication; deployment verification in progress**. See [test report](DEVELOPER_CONSOLE_TEST_REPORT.md), [architecture](DEVELOPER_CONSOLE_ARCHITECTURE.md) and [user guide](DEVELOPER_CONSOLE_USER_GUIDE.md). Public gameplay/configuration remains unchanged. Schema2 cloud persistence and physical-device acceptance are pending. Historical published records below remain historical.
+> 2026-10-25: **private development v63 published and cloud-source verified**, implementation `80a1dca` on `feat/development-training-bots`. Five-category console plus approved bottom mobile DEV launcher.463tests pass. Public publishedv10 unchanged. New-schema cloud persistence and physical-device acceptance remain pending. See [publication report](DEVELOPER_CONSOLE_PUBLISH_REPORT.md).
 
 ## Development aim assist checkpoint — 2026-10-24
 

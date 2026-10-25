@@ -1,6 +1,6 @@
 # Developer console test report — 2026-10-25
 
-**Local review candidate only. Not committed or published. Owner screenshot approval is required before either action.**
+**Owner-approved implementation committed as80a1dca and published privately asv63. See DEVELOPER_CONSOLE_PUBLISH_REPORT.md.**
 
 ## Source and preservation
 
@@ -75,5 +75,9 @@ New docs: expansion audit,architecture,configuration,audio inventory,test report
 
 ## Mobile launcher revision (owner-requested)
 
-Moved only the mobile DEV launcher from the upper-right corner to the bottom, eight logical pixels left of the ammo HUD and bottom-aligned with it. Tracks actual HUD bounds for resizing. Desktop launcher and all gameplay controls retain their positions. Compile and changed-file StyLua checks passed. Review screenshots are Studio device emulation; this revision remains unpublished. The previously archived FINAL_REVIEW place predates this launcher-only revision; regenerate the clean candidate before any approved publication.
+Moved only the mobile DEV launcher from the upper-right corner to the bottom, eight logical pixels left of the ammo HUD and bottom-aligned with it. Tracks actual HUD bounds for resizing. Desktop launcher and all gameplay controls retain their positions. Compile and changed-file StyLua checks passed. Review screenshots are Studio device emulation; this revision is included in private developmentv63. The earlier FINAL_REVIEW archive predates this launcher-only revision. The approved publication archive includes it; see publication/DoublePump_APPROVED_DEVELOPER_CONSOLE.rbxl.
 
+
+## Post-publication verification
+
+Fresh cloud place63 matched all131 approved source texts (digest2381679486). Studio Play from that copy opened all five categories, confirmed Auto Fire OFF and the new mobile launcher, and ordinary firing provoked the existing training duel/death path. Respawn restored 100 HP and 5+5 shells; Pump B manual equip/fire and reload back to five shells were observed. Dashboard confirms private access and production publishedv10. Normal Player did not launch through browser automation; schema2 cloud persistence, physical phone/controller input and a new full multiplayer match remain unverified.

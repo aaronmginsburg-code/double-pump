@@ -68,3 +68,5 @@ Current development branch is `feat/development-training-bots`; see docs/TRAININ
 ## Developer console candidate (2026-10-25)
 
 Read docs/DEVELOPER_CONSOLE_TEST_REPORT.md and DEVELOPER_CONSOLE_PUBLISH_REPORT.md. Private candidate has131 permanent sources. Shared.DeveloperConsole Registry/Config/Runtime/ProfileStore extend the existing service. Schema2 presets use DoublePump_DevConsole_v2/u10772492892, never production profiles. Preserve legacy aim reads. Safe-boundary weapon revisions must not refill ammunition or reset action deadlines. Public src stays unchanged. Owner requires actual desktop/mobile screenshot approval BEFORE commit or publication. Remove temporary probes/grants and compare every131 source before deployment.
+
+Private console v63 was approved,published and all131cloud sources verified on2026-10-25; implementation80a1dca. See docs/DEVELOPER_CONSOLE_PUBLISH_REPORT.md. Future changes/publication still require task-specific owner authorization. Public deployment remains excluded.
