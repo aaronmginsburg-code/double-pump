@@ -1,6 +1,6 @@
 # Aim assist — test and private release report
 
-2026-10-24 PDT. Branch `feat/development-aim-assist`; implementation started from `b90e77a3f2dc5238d4fc5d91b99eb35cbaa6018a`. Publication and final commit references are recorded below once verified.
+2026-10-24 PDT. Branch `feat/development-aim-assist`; implementation started from `b90e77a3f2dc5238d4fc5d91b99eb35cbaa6018a`. Implementation commit **665d3074ec62288542f656e5ef20fe640e7eee20**; publication verified below.
 
 ## Scope and source preservation
 
@@ -55,4 +55,16 @@ Final controlled two-client sequence passed. Server admitted Red/Blue through th
 
 ## Publication and checkpoint
 
-Pending final clean archive, source comparison, scoped commit and verified private publication. Do not infer publication from saved-only Studio drafts.
+**Published private development version39**, verified Studio publication success at2026-10-25T04:38:32Z (October24,21:38PDT), and Creator Dashboard with Show published only enabled. Dashboard labels this version last-updated October24,21:37; this is the saved revision time, not a fabricated publication time. Previous published rollback isv29; saved-only intermediate revisions30–38 are not stable release checkpoints.
+
+Destination: https://www.roblox.com/games/139437092998076/ ; universe10772492892/place139437092998076. Audience freshly verified **Only available to you and your collaborators**. No access or monetization changes. Public published history freshly verified stillv10; newer publicv11 is saved-only. All81 production root source hashes unchanged.
+
+Closed the editor place and reopened the development experience from Roblox after publication. The fresh cloud place asserted the exact private IDs,118 permanent source containers, no Temporary-prefixed scripts and digest964445724, matching local source/archive. The final intact candidate was also independently extracted and compared against all118 expected source strings, not merely counted.
+
+Final intact place: `development-copy/aim-assist-20261024/DoublePump_AIM_ASSIST_VERIFIED.rbxl` (408252bytes; SHA256ed30fb50be87d84bb222250906485770707be1f47762bf422d66ae78239d603a). Pre-changev29 rollback SHA25616aaa2f20ac338e1a23aee7b3af935397ad8f7ab889f2af26379637500afdf61. Both archives and source checkpoint ZIP are recoverable in implementation commit665d307 on feat/development-aim-assist. No push, merge or history rewrite. Previously untracked private source/feedback/asset templates were included as a complete private source checkpoint; unrelated dirty public source/docs/assets remain untouched and outside that commit.
+
+Evidence: private-published-v39.png, private-access.png, production-published-unchanged.png, publication-log.txt and RELEASE_MANIFEST.json in the evidence folder.
+
+Browser Play reached Roblox's loading dialog but **did not open a Roblox Player window**. Published-client behavior and real DataStore durability are not claimed as verified. Owner test requested: join private game as supersnapstudios, open F6/DEV TUNING, Load the selected slot, change a value, Save→Confirm, rejoin and explicitly Load. On phone/controller, test moving targets, release/drag-away, walls, teammate filtering, simultaneous combat controls and respawn. Do not change Studio API settings or production to bypass this verification limit.
+
+To roll back, open the intact pre-change cloudv29 archive, assert both development IDs, then publish to this same private experience after owner authorization. Never choose production or an INSPECTION_ONLY archive. Saved tuning profiles are separate from game profiles; resetting live settings does not erase a saved profile.

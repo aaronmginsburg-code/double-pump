@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "datePDT": "2026-10-24",
+  "sourceCommit": "665d3074ec62288542f656e5ef20fe640e7eee20",
+  "branch": "feat/development-aim-assist",
+  "development": {
+    "universeId": 10772492892,
+    "placeId": 139437092998076,
+    "publishedVersion": 39,
+    "access": "Only available to you and your collaborators (verified Creator Dashboard)",
+    "url": "https://www.roblox.com/games/139437092998076/"
+  },
+  "production": {
+    "universeId": 10772275012,
+    "placeId": 82505574993280,
+    "publishedVersionUnchanged": 10,
+    "rootSourceFilesUnchanged": 81
+  },
+  "cloudReopen": {
+    "sourceContainers": 118,
+    "sourceDigest": 964445724,
+    "temporaryProbes": 0
+  },
+  "archives": {
+    "DoublePump_AIM_ASSIST_VERIFIED.rbxl": {
+      "bytes": 408252,
+      "sha256": "ed30fb50be87d84bb222250906485770707be1f47762bf422d66ae78239d603a"
+    },
+    "backup/DoublePump_CLOUD_BEFORE_AIM.rbxl": {
+      "bytes": 398940,
+      "sha256": "16aaa2f20ac338e1a23aee7b3af935397ad8f7ab889f2af26379637500afdf61"
+    },
+    "backup/PRIVATE_SOURCE_BEFORE_AIM.zip": {
+      "bytes": 386502,
+      "sha256": "6af6e82eb1aeb48e9f237289e9eb6eed08cb5bdfb14c5e843e0874365fdc18f3"
+    }
+  }
+}
