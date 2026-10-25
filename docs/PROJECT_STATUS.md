@@ -1,3 +1,5 @@
+> 2026-10-25 local development candidate: five-category developer console implemented in `development-copy/source`; **owner approved desktop/mobile UI and authorized private development publication; deployment verification in progress**. See [test report](DEVELOPER_CONSOLE_TEST_REPORT.md), [architecture](DEVELOPER_CONSOLE_ARCHITECTURE.md) and [user guide](DEVELOPER_CONSOLE_USER_GUIDE.md). Public gameplay/configuration remains unchanged. Schema2 cloud persistence and physical-device acceptance are pending. Historical published records below remain historical.
+
 ## Private development correction — October 24, 2026
 
 Development **v50 is published and cloud-source verified**, commit `b32ed9f` on `feat/development-training-bots`. The firing-range duel now ends when the owner dies: both bots clear hostility and stay passive after respawn until a fresh hit. Match deaths are excluded. **426 tests pass** and the genuine Studio death/respawn/reprovocation check passed. Public production remains unchanged. See [TRAINING_BOTS_PASSIVE_RESET.md](TRAINING_BOTS_PASSIVE_RESET.md). Older release checkpoints follow.

@@ -64,3 +64,7 @@ Keep the intact latest cloud place as the full-scene deployment base (feedback b
 ## Private training bots (2026-10-24)
 
 Current development branch is `feat/development-training-bots`; see docs/TRAINING_BOTS_UPDATE.md. The full-scene candidate contains123 permanent scripts. Exact DeveloperAccess IDs plus UserId allowlist are mandatory. NPC records are server-registered participants, never fake Players. Preserve physical FIFO/root-center queue admission, training-round progression suppression and ordinary nonlethal human lobby combat. Never copy development bot services or intentional1v2 team rules into production without separate approval. Remove every TemporaryBot probe and runtime-only negative Studio UserId grant before publishing; compare all123 sources with the archived candidate.
+
+## Developer console candidate (2026-10-25)
+
+Read docs/DEVELOPER_CONSOLE_TEST_REPORT.md and DEVELOPER_CONSOLE_PUBLISH_REPORT.md. Private candidate has131 permanent sources. Shared.DeveloperConsole Registry/Config/Runtime/ProfileStore extend the existing service. Schema2 presets use DoublePump_DevConsole_v2/u10772492892, never production profiles. Preserve legacy aim reads. Safe-boundary weapon revisions must not refill ammunition or reset action deadlines. Public src stays unchanged. Owner requires actual desktop/mobile screenshot approval BEFORE commit or publication. Remove temporary probes/grants and compare every131 source before deployment.

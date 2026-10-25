@@ -121,4 +121,5 @@ start("GameFlow", GameFlow.start)
 
 -- Development-only modules are absent from production's project.
 start("AimAssist", require(Controllers.AimAssistController).start)
+start("DeveloperConsole", require(Controllers.DeveloperConsoleController).start)
 start("DeveloperPanel", require(UI.DeveloperPanel).start)

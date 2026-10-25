@@ -177,6 +177,12 @@ L.Instance = {
 L.task = table.clone(savedTask)
 L.task.delay = function() end
 L.services.SoundService = {}
+L.services.Workspace = {
+	GetDescendants = function()
+		return {}
+	end,
+	DescendantAdded = { Connect = function() end },
+}
 L.services.Debris = { AddItem = function() end }
 L.services.TweenService = {}
 L.services.ContentProvider = {
@@ -235,14 +241,19 @@ T.describe("Actual private AudioController routing (offline mocks)", function()
 		local sound = audio.play("Fire")
 		T.expect(sound.SoundId).toBe("rbxassetid://76270373964419")
 		T.expect(sound.Volume).toBe(0.9)
-		T.expect(sound.SoundGroup.Name).toBe("Effects")
+		T.expect(sound.SoundGroup.Name).toBe("Cue_Fire")
+		T.expect(sound.SoundGroup.Parent.Name).toBe("DevMix_Gunshots")
+		T.expect(sound.SoundGroup.Parent.Parent.Name).toBe("DevMix_Weapons")
+		T.expect(sound.SoundGroup.Parent.Parent.Parent.Name).toBe("Effects")
+		T.expect(sound.SoundGroup.Volume).toBe(1)
 		T.expect(sound.Parent).toBe(L.services.SoundService)
 		T.expect(sound.played).toBe(true)
 	end)
 	T.it("routes the approved UI click through UI at the existing gain", function()
 		local sound = audio.play("UIClick")
 		T.expect(sound.SoundId).toBe("rbxassetid://97692260400881")
-		T.expect(sound.SoundGroup.Name).toBe("UI")
+		T.expect(sound.SoundGroup.Name).toBe("Cue_UIClick")
+		T.expect(sound.SoundGroup.Parent.Parent.Name).toBe("UI")
 		T.expect(sound.Volume).toBe(0.45)
 	end)
 	T.it("keeps result and reward cues in the existing Effects mix", function()
@@ -258,7 +269,9 @@ T.describe("Actual private AudioController routing (offline mocks)", function()
 			}
 		do
 			local sound = audio.play(name)
-			T.expect(sound.SoundGroup.Name).toBe("Effects")
+			T.expect(sound.SoundGroup.Name).toBe("Cue_" .. name)
+			T.expect(sound.SoundGroup.Parent.Name).toBe("DevMix_Interface")
+			T.expect(sound.SoundGroup.Parent.Parent.Volume).toBe(1)
 			T.expect(sound.Volume).toBe(gain)
 		end
 	end)
@@ -276,7 +289,8 @@ T.describe("Actual batch-five confirmed UI audio routing", function()
 		networkListeners.ProfileEvent("Profile", { equipped = { skin = "gold" } })
 		T.expect(#made).toBe(before + 1)
 		T.expect(made[#made].Name).toBe("Confirm")
-		T.expect(made[#made].SoundGroup.Name).toBe("UI")
+		T.expect(made[#made].SoundGroup.Name).toBe("Cue_Confirm")
+		T.expect(made[#made].SoundGroup.Parent.Parent.Name).toBe("UI")
 		networkListeners.Notify("Bought skin", "good")
 		T.expect(#made).toBe(before + 1)
 	end)

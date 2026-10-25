@@ -99,6 +99,12 @@ local function shapeMovement(dt: number)
 	if not humanoid or not root then
 		return
 	end
+	if InputController.tuningOpen then
+		humanoid:Move(Vector3.zero, false)
+		humanoid.Jump = false
+		airVelocity = Vector3.zero
+		return
+	end
 	local airborne = humanoid.FloorMaterial == Enum.Material.Air
 	if airborne then
 		-- Limited air control: keep most of the take-off momentum, steer a little

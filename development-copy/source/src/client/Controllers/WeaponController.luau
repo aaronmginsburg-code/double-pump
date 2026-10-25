@@ -52,6 +52,7 @@ local player = Players.LocalPlayer
 local rules = WeaponState.rulesFromConfig(WeaponConfig)
 WeaponController.state = WeaponState.new(rules, os.clock())
 WeaponController.active = false -- alive and allowed to shoot
+WeaponController.tuningRevision = 0
 WeaponController.excluded = {} :: { Instance } -- extra instances pellets ignore (viewmodel, effects)
 
 local weaponAction: RemoteEvent
@@ -129,6 +130,7 @@ local function doFire(now: number)
 	local pellets, hits = castPellets(origin, directions)
 
 	weaponAction:FireServer("Fire", {
+		tuningRevision = WeaponController.tuningRevision,
 		slot = slot,
 		origin = origin,
 		aim = aim,

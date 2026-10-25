@@ -36,6 +36,11 @@ local CombatContext = require(script.Parent.CombatContext)
 
 local Actors = require(script.Parent.Participants)
 local CombatService = {}
+local ConsoleConfig = require(Shared.DeveloperConsole.Config)
+local ConsoleRuntime = require(Shared.DeveloperConsole.Runtime)
+local DeveloperAccess = require(script.Parent.DeveloperAccess)
+local weaponBaseline = ConsoleConfig.copy(WeaponConfig)
+CombatService.tuningRevision = 0
 
 -- (player, slot, pelletsFired, pelletsHit, headshot)
 CombatService.ShotFired = Signal.new() :: Signal.Signal<Player, number, number, number, boolean>
@@ -244,6 +249,13 @@ local function onFire(player: Player, payload: any)
 	if typeof(payload) ~= "table" then
 		return
 	end
+	if
+		DeveloperAccess.environment(game.GameId, game.PlaceId)
+		and payload.tuningRevision ~= CombatService.tuningRevision
+	then
+		sendSnapshot(player, "TuningRevision")
+		return
+	end
 	local slot, origin, aim = payload.slot, payload.origin, payload.aim
 	if typeof(slot) ~= "number" or not state.slots[slot] then
 		return
@@ -360,6 +372,8 @@ local function onFire(player: Player, payload: any)
 		anyHead = anyHead or headshot
 		local targetHead = target:FindFirstChild("Head") :: BasePart?
 		table.insert(results, {
+			distance = nearest,
+			falloff = Damage.falloff(WeaponConfig.Damage, nearest),
 			position = if targetHead then targetHead.Position else origin + aim * nearest,
 			damage = math.round(dealt),
 			pellets = #list,
@@ -542,6 +556,21 @@ function CombatService.npcAction(bot: any, action: string, arg: any): boolean
 		return true
 	end
 	return false
+end
+function CombatService.applyTuning(values: any): boolean
+	if not DeveloperAccess.environment(game.GameId, game.PlaceId) then
+		return false
+	end
+	if not ConsoleRuntime.safe(states, os.clock(), WeaponState) then
+		return false
+	end
+	ConsoleRuntime.weapons(values, WeaponConfig, weaponBaseline)
+	for _, state in states do
+		ConsoleRuntime.state(state, values.capacity)
+	end
+	rules.magazineSize = values.capacity
+	CombatService.tuningRevision += 1
+	return true
 end
 function CombatService.forgetParticipant(bot: any)
 	states[bot] = nil

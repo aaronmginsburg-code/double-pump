@@ -19,6 +19,75 @@ local ActionCues = require(Shared.Audio.ActionCues)
 local lastLobbySerial = 0
 
 local AudioController = {}
+local ConsoleConfig = require(Shared.DeveloperConsole.Config)
+local Catalog = require(Shared.DeveloperConsole.AudioCatalog)
+local tuning = ConsoleConfig.defaults().audio
+local buses: { [string]: SoundGroup } = {}
+local cueGroups: { [string]: SoundGroup } = {}
+local playing: { [Sound]: string } = setmetatable({}, { __mode = "k" })
+local spatialBaselines: { [Sound]: any } = setmetatable({}, { __mode = "k" })
+local function spatial(sound: Sound, name: string)
+	if tuning[name .. "_min"] and tuning[name .. "_spatial"] ~= false then
+		sound.RollOffMinDistance = tuning[name .. "_min"]
+		sound.RollOffMaxDistance = tuning[name .. "_max"]
+		sound.RollOffMode = Enum.RollOffMode[tuning[name .. "_rolloff"]]
+	elseif spatialBaselines[sound] then
+		local base = spatialBaselines[sound]
+		sound.RollOffMinDistance = base.minimum
+		sound.RollOffMaxDistance = base.maximum
+		sound.RollOffMode = base.mode
+	end
+end
+function AudioController.spatialBaseline(sound: Sound, minimum: number, maximum: number, mode: Enum.RollOffMode)
+	spatialBaselines[sound] = { minimum = minimum, maximum = maximum, mode = mode }
+	spatial(sound, sound.Name)
+end
+function AudioController.applyTuning(values: any)
+	tuning = table.clone(values)
+	for name, bus in buses do
+		bus.Volume = values["bus_" .. name] or 1
+	end
+	for _, entry in Catalog.Sounds do
+		local leaf = cueGroups[entry.name]
+		local base = ConsoleConfig.field("audio", entry.name .. "_volume").default
+		if leaf then
+			leaf.Volume = if values[entry.name .. "_mute"] then 0 else values[entry.name .. "_volume"] / base
+		end
+	end
+	for sound, name in playing do
+		if sound.Parent then
+			spatial(sound, name)
+		end
+	end
+end
+function AudioController.diagnostics(): { any }
+	local out = {}
+	local counts = {}
+	for sound, name in playing do
+		if sound.Parent and sound.IsPlaying then
+			local gain = sound.Volume
+			local group = sound.SoundGroup
+			while group do
+				gain *= group.Volume
+				group = if group.Parent and group.Parent:IsA("SoundGroup") then group.Parent else nil
+			end
+			table.insert(out, {
+				name = name,
+				assetId = sound.SoundId,
+				group = if sound.SoundGroup then sound.SoundGroup.Name else "none",
+				volume = sound.Volume,
+				effective = gain,
+				source = sound.Parent.Name,
+				state = if sound.IsPlaying then "Playing" elseif sound.IsPaused then "Paused" else "Stopped",
+			})
+			counts[name] = (counts[name] or 0) + 1
+		end
+	end
+	for _, entry in out do
+		entry.simultaneous = counts[entry.name]
+	end
+	return out
+end
 
 type Group = "Effects" | "UI" | "Music"
 
@@ -97,6 +166,13 @@ local ambienceWorker = false
 
 local function idFor(name: string): string?
 	local id = (AssetIds.Sounds :: any)[name]
+	if id == nil then
+		for _, entry in Catalog.Sounds do
+			if entry.name == name and entry.engineName then
+				return entry.id
+			end
+		end
+	end
 	if typeof(id) == "string" and id ~= "" then
 		if id:match("^%d+$") then
 			return "rbxassetid://" .. id
@@ -133,14 +209,21 @@ local function makeSound(name: string, group: Group): Sound?
 	local sound = Instance.new("Sound")
 	sound.Name = name
 	sound.SoundId = id
-	local mix = MIX[name]
+	local mix = MIX[name] or Catalog.Mix[name]
 	sound.Volume = if mix then mix.volume else 0.6
 	sound.SoundGroup = groups[group]
+	if cueGroups[name] then
+		sound.SoundGroup = cueGroups[name]
+	end
 	if mix and mix.rolloff then
 		sound.RollOffMaxDistance = mix.rolloff
 		sound.RollOffMinDistance = 8
 		sound.RollOffMode = Enum.RollOffMode.InverseTapered
 	end
+	playing[sound] = name
+	spatialBaselines[sound] =
+		{ minimum = sound.RollOffMinDistance, maximum = sound.RollOffMaxDistance, mode = sound.RollOffMode }
+	spatial(sound, name)
 	return sound
 end
 
@@ -275,6 +358,76 @@ function AudioController.start()
 		group.Parent = master
 		groups[name] = group
 	end
+	local top = Instance.new("SoundGroup")
+	top.Name = "DevMix_Master"
+	top.Parent = SoundService
+	master.Parent = top
+	buses.Master = top
+	local parents = {
+		Weapons = "Effects",
+		Gunshots = "Weapons",
+		Reload = "Weapons",
+		Switching = "Weapons",
+		Impacts = "Weapons",
+		Handling = "Weapons",
+		Movement = "Effects",
+		Footsteps = "Movement",
+		Landing = "Movement",
+		Environment = "Effects",
+		Ambience = "Environment",
+		Interface = "UI",
+		Music = "Music",
+		Jumping = "Movement",
+		OtherMovement = "Movement",
+	}
+	for _, name in Catalog.Groups do
+		if name ~= "Master" then
+			local bus = Instance.new("SoundGroup")
+			bus.Name = "DevMix_" .. name
+			bus.Parent = buses[parents[name]] or groups[parents[name]]
+			buses[name] = bus
+		end
+	end
+	for _, entry in Catalog.Sounds do
+		local leaf = Instance.new("SoundGroup")
+		leaf.Name = "Cue_" .. entry.name
+		leaf.Parent = buses[entry.group]
+		cueGroups[entry.name] = leaf
+	end
+	AudioController.applyTuning(tuning)
+	local function observeNative(item: Instance)
+		if not item:IsA("Sound") or playing[item] then
+			return
+		end
+		local root = item.Parent
+		if
+			not root
+			or root.Name ~= "HumanoidRootPart"
+			or not root.Parent
+			or not root.Parent:FindFirstChildOfClass("Humanoid")
+		then
+			return
+		end
+		for _, entry in Catalog.Sounds do
+			if entry.engineName == item.Name and entry.id == item.SoundId then
+				item.SoundGroup = cueGroups[entry.name]
+				playing[item] = entry.name
+				spatialBaselines[item] =
+					{ minimum = item.RollOffMinDistance, maximum = item.RollOffMaxDistance, mode = item.RollOffMode }
+				spatial(item, entry.name)
+				break
+			end
+		end
+	end
+	local world = game:GetService("Workspace")
+	for _, item in world:GetDescendants() do
+		observeNative(item)
+	end
+	world.DescendantAdded:Connect(function(item)
+		if item:IsA("Sound") then
+			task.defer(observeNative, item)
+		end
+	end)
 	applyVolumes()
 	Settings.Changed:Connect(applyVolumes)
 	Net.event("MatchEvent").OnClientEvent:Connect(function(kind, payload)

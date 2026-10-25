@@ -28,6 +28,7 @@ CameraController.mode = "Scenic" :: Mode
 CameraController.yaw = 0
 CameraController.pitch = 0
 CameraController.touchInputEnabled = false
+CameraController.tuningSensitivity = { Keyboard = 1, Touch = 1, Gamepad = 1 }
 CameraController.aimAssist = nil :: ((number, CFrame, string, boolean) -> (number, number, number))?
 
 local recoil = 0 -- current extra pitch from recoil (radians)
@@ -180,21 +181,29 @@ local function update(dt: number)
 			local aim = CFrame.new(root.Position + Vector3.new(0, C.EyeHeight, 0))
 				* CFrame.Angles(0, CameraController.yaw, 0)
 				* CFrame.Angles(CameraController.pitch, 0, 0)
-			slow, assistYaw, assistPitch =
-				CameraController.aimAssist(dt, aim, device, stick.Magnitude > 0 or touch.Magnitude > 0)
+			slow, assistYaw, assistPitch = CameraController.aimAssist(
+				dt,
+				aim,
+				device,
+				stick.Magnitude > 0 or touch.Magnitude > 0 or mouse.Magnitude > 0
+			)
 		end
 		if mouse.Magnitude > 0 then
-			local k = C.MouseRadiansPerPixel * values.sensitivity
+			local k = C.MouseRadiansPerPixel * values.sensitivity * CameraController.tuningSensitivity.Keyboard * slow
 			CameraController.yaw -= mouse.X * k
 			CameraController.pitch -= mouse.Y * k
 		end
 		if stick.Magnitude > 0 then
-			local k = C.GamepadRadiansPerSecond * values.gamepadSensitivity * dt * slow
+			local k = C.GamepadRadiansPerSecond
+				* values.gamepadSensitivity
+				* dt
+				* slow
+				* CameraController.tuningSensitivity.Gamepad
 			CameraController.yaw -= stick.X * k
 			CameraController.pitch += stick.Y * k
 		end
 		if touch.Magnitude > 0 then
-			local k = C.TouchRadiansPerPixel * values.touchSensitivity * slow
+			local k = C.TouchRadiansPerPixel * values.touchSensitivity * slow * CameraController.tuningSensitivity.Touch
 			CameraController.yaw -= touch.X * k
 			CameraController.pitch -= touch.Y * k
 		end

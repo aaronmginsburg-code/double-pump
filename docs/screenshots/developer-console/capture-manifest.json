@@ -1,0 +1,171 @@
+[
+  {
+    "file": "docs/screenshots/developer-console/desktop/movement.png",
+    "width": 1920,
+    "height": 1080,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/desktop-movement-studio.png",
+    "crop": [
+      215,
+      222,
+      2151,
+      1311
+    ],
+    "kind": "Actual Studio desktop"
+  },
+  {
+    "file": "docs/screenshots/developer-console/desktop/aiming.png",
+    "width": 1920,
+    "height": 1080,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/desktop-aiming-studio.png",
+    "crop": [
+      215,
+      222,
+      2151,
+      1311
+    ],
+    "kind": "Actual Studio desktop"
+  },
+  {
+    "file": "docs/screenshots/developer-console/desktop/auto-fire.png",
+    "width": 1920,
+    "height": 1080,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/desktop-auto-fire-studio.png",
+    "crop": [
+      215,
+      222,
+      2151,
+      1311
+    ],
+    "kind": "Actual Studio desktop"
+  },
+  {
+    "file": "docs/screenshots/developer-console/desktop/weapons.png",
+    "width": 1920,
+    "height": 1080,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/desktop-weapons-studio.png",
+    "crop": [
+      215,
+      222,
+      2151,
+      1311
+    ],
+    "kind": "Actual Studio desktop"
+  },
+  {
+    "file": "docs/screenshots/developer-console/desktop/audio.png",
+    "width": 1920,
+    "height": 1080,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/desktop-audio-studio.png",
+    "crop": [
+      215,
+      222,
+      2151,
+      1311
+    ],
+    "kind": "Actual Studio desktop"
+  },
+  {
+    "file": "docs/screenshots/developer-console/desktop/gameplay.png",
+    "width": 1920,
+    "height": 1080,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/desktop-gameplay-studio.png",
+    "crop": [
+      215,
+      222,
+      2151,
+      1311
+    ],
+    "kind": "Actual Studio desktop"
+  },
+  {
+    "file": "docs/screenshots/developer-console/mobile/movement.png",
+    "width": 2173,
+    "height": 1040,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/mobile-movement-studio.png",
+    "crop": [
+      97,
+      247,
+      2270,
+      1287
+    ],
+    "kind": "Actual Studio iPhone 17 Pro emulation, not hardware"
+  },
+  {
+    "file": "docs/screenshots/developer-console/mobile/aiming.png",
+    "width": 2173,
+    "height": 1040,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/mobile-aiming-studio.png",
+    "crop": [
+      97,
+      247,
+      2270,
+      1287
+    ],
+    "kind": "Actual Studio iPhone 17 Pro emulation, not hardware"
+  },
+  {
+    "file": "docs/screenshots/developer-console/mobile/auto-fire.png",
+    "width": 2173,
+    "height": 1040,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/mobile-auto-fire-studio.png",
+    "crop": [
+      97,
+      247,
+      2270,
+      1287
+    ],
+    "kind": "Actual Studio iPhone 17 Pro emulation, not hardware"
+  },
+  {
+    "file": "docs/screenshots/developer-console/mobile/weapons.png",
+    "width": 2173,
+    "height": 1040,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/mobile-weapons-studio.png",
+    "crop": [
+      97,
+      247,
+      2270,
+      1287
+    ],
+    "kind": "Actual Studio iPhone 17 Pro emulation, not hardware"
+  },
+  {
+    "file": "docs/screenshots/developer-console/mobile/audio.png",
+    "width": 2173,
+    "height": 1040,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/mobile-audio-studio.png",
+    "crop": [
+      97,
+      247,
+      2270,
+      1287
+    ],
+    "kind": "Actual Studio iPhone 17 Pro emulation, not hardware"
+  },
+  {
+    "file": "docs/screenshots/developer-console/mobile/gameplay.png",
+    "width": 2173,
+    "height": 1040,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/mobile-gameplay-studio.png",
+    "crop": [
+      97,
+      247,
+      2270,
+      1287
+    ],
+    "kind": "Actual Studio iPhone 17 Pro emulation, not hardware"
+  },
+  {
+    "file": "docs/screenshots/developer-console/mobile/presets.png",
+    "width": 2173,
+    "height": 1040,
+    "source": "development-copy/developer-console-20261025/evidence/screenshots/mobile-presets-studio.png",
+    "crop": [
+      97,
+      247,
+      2270,
+      1287
+    ],
+    "kind": "Actual Studio iPhone 17 Pro emulation, not hardware"
+  }
+]

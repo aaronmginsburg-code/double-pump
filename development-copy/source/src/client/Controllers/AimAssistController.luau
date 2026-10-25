@@ -115,6 +115,10 @@ function A.accept(state: any)
 	end
 	local clean = Config.validate(state.values)
 	if clean then
+		A.lastState = state
+		if A.consoleAccept then
+			A.consoleAccept(state)
+		end
 		A.values = clean
 		A.revision = state.revision
 		A.clear()
@@ -122,6 +126,17 @@ function A.accept(state: any)
 	end
 end
 function A.step(dt: number, cf: CFrame, device: string, aiming: boolean): (number, number, number)
+	local options = A.consoleValues
+		or {
+			touchEligible = true,
+			controllerEligible = true,
+			mouseEligible = false,
+			touchStrength = 1,
+			controllerStrength = 1,
+			mouseStrength = 1,
+		}
+	local prefix = if device == "Touch" then "touch" elseif device == "Gamepad" then "controller" else "mouse"
+	local eligible = options[prefix .. "Eligible"] and (prefix ~= "mouse" or A.authorized)
 	local char = player.Character
 	local revision = char and char:GetAttribute("SpawnRevision")
 	if char ~= identity or revision ~= spawnRevision then
@@ -139,7 +154,7 @@ function A.step(dt: number, cf: CFrame, device: string, aiming: boolean): (numbe
 		or Camera.cursorVisible()
 		or GuiService.MenuIsOpen
 		or UIS:GetFocusedTextBox()
-		or (device ~= "Touch" and device ~= "Gamepad")
+		or not eligible
 	then
 		A.clear()
 		return 1, 0, 0
@@ -186,8 +201,19 @@ function A.step(dt: number, cf: CFrame, device: string, aiming: boolean): (numbe
 		pitchError = math.asin(math.clamp(look.Y, -1, 1)) - Camera.pitch
 	end
 	local y, p
-	scale, y, p =
-		Policy.response(A.values, scale, if item then item.score else nil, dt, device, aiming, yawError, pitchError)
+	local effective = table.clone(A.values)
+	effective.slowdownStrength *= options[prefix .. "Strength"]
+	effective.rotationStrength *= options[prefix .. "Strength"]
+	scale, y, p = Policy.response(
+		effective,
+		scale,
+		if item then item.score else nil,
+		dt,
+		if device == "Keyboard" then "Gamepad" else device,
+		aiming,
+		yawError,
+		pitchError
+	)
 	A.stats.target = if item then item.id.Name else "none"
 	A.stats.distance = if item then item.distance else 0
 	A.stats.slowdown = scale

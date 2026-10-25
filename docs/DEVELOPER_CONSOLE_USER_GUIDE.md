@@ -1,0 +1,20 @@
+# Developer console user guide
+
+The owner approved this revision and authorized private development deployment on2026-10-25. See DEVELOPER_CONSOLE_PUBLISH_REPORT.md for the independently verified result.
+
+1. Authorized developer: use DEV CONSOLE or F6 on desktop; tap DEV beside the ammo HUD at the bottom on mobile. Click the shortcut chip to cycle F6/F7/F8 for this session. X/HIDE closes immediately; header dragging repositions within the safe viewport. Normal movement, shooting and camera input are fenced while open.
+2. Choose Movement, Aiming, Auto Fire, Weapons or Audio. Scroll the setting list. Drag/tap a track or enter a precise number; toggles and dropdowns apply through the server. Per-row RESET restores its default.
+3. On short phone viewports use PRESETS / SAVE / EXPORT to open the action drawer; BACK TO SETTINGS returns to sliders. The drawer shows preset name, scope, compare and all actions. Core Roblox controls and device safe areas remain reserved.
+4. Presets: enter a name (for example Mobile-Aim-Test). SCOPE toggles ALL/current category; changing tabs updates a category scope. LOAD an existing/empty slot first. Confirm LOAD again if there is no matching saved baseline or there are unsaved edits. Empty slots preserve active values and establish revision0.
+5. SAVE → SAVE again within five seconds writes the current selected scope. Existing revisions must match the last loaded revision. Saving Movement does not overwrite an Audio preset. No profile is silently loaded on joining.
+6. RESET → RESET again restores the selected scope (ALL or current category). Resetting active values does not overwrite the saved preset. COMPARE lists active/default/saved differences without applying anything.
+7. EXPORT opens selectable schema2 JSON for manual copying. BACK TO SETTINGS closes it. Use descriptive preset names to compare experiments by loading one at a time, or use COMPARE before replacing the active set.
+8. Aiming retains the existing algorithm. Touch/controller eligibility, strength scale and sensitivity are separate. Mouse assistance requires the explicit mouse override and authorized account. Legacy aim import buttons are at the bottom of Aiming; importing reads the old slot, then save explicitly as a new preset.
+9. Auto Fire defaults OFF. It fires ordinary requests only after stable visible acquisition and ordinary readiness. It does not swap or interrupt reloads. Empty weapons wait for the player's existing reload workflow. The configured interval is an additional minimum, never a way around the .4s authoritative global interval or gun cooldown.
+10. Weapons affects the shared Pump Shotgun definition used by both independent slots. WEAPONS PENDING means a reload/raise is still finishing. Capacity increases do not grant ammunition; decreases clamp it. Existing cooldown deadlines are preserved.
+11. Audio starts at Mixer. VIEW cycles sound families; LEVEL / DETAILS expands an entry. Preview plays an approved cue without firing a weapon; another preview stops the previous one. Mute and per-cue level apply through SoundGroups, preserving personal preferences and contextual fades. Spatial overrides are optional where source attenuation is inherited. Music is unavailable.
+12. DIAGNOSTICS enables the combined overlay when the console is closed: aim target/radius/response, auto-fire delay/reasons, weapon ammo/reload/raise/damage/cadence, and playing audio. Audio's PLAYING SOUNDS opens a complete snapshot including duplicate-cue counts; reopen to refresh.
+
+Sprint, sliding and custom ground acceleration/deceleration do not currently exist and are labeled unavailable. Experimental settings are development-session configuration, not permanent player profile changes.
+
+Approved production integration later requires an exported preset, validation, a separately reviewed source change, combat/device testing and explicit production approval. Saving or exporting never deploys anything.

@@ -125,6 +125,7 @@ local function update(player: Player, record: any, dt: number, excluded: { Insta
 		sound.RollOffMinDistance = mix.minimum
 		sound.RollOffMaxDistance = mix.maximum
 		sound.RollOffMode = mix.mode
+		Audio.spatialBaseline(sound, mix.minimum, mix.maximum, mix.mode)
 	end
 end
 
