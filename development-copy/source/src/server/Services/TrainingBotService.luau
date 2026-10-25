@@ -532,6 +532,25 @@ function Service.start()
 	table.insert(connections, Character.Spawned:Connect(prepared))
 	table.insert(
 		connections,
+		Character.Died:Connect(function(player)
+			-- A range duel ends with this life. Match opponents remain hostile through respawns.
+			if player ~= owner or Match.modeOf(player) ~= "Practice" then
+				return
+			end
+			Context.stopTraining(player)
+			for _, bot in Actors.list() do
+				Navigation.clear(bot)
+				Policy.resetRangeCombat(bot)
+				if live(bot.model) then
+					bot.model.Humanoid.AutoRotate = true
+					bot.model:SetAttribute("AimPitch", 0)
+					state(bot, "Passive")
+				end
+			end
+		end)
+	)
+	table.insert(
+		connections,
 		Damage.Damaged:Connect(function(attacker, target)
 			local hit = Actors.fromModel(target)
 			if

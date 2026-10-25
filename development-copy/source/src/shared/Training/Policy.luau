@@ -1,5 +1,32 @@
 --!strict
 local P = {}
+-- End a range duel without changing the NPC's health, inventory or weapon rules.
+function P.resetRangeCombat(bot: any)
+	for _, key in
+		{
+			"target",
+			"lastSeen",
+			"seenAt",
+			"seesTarget",
+			"movingTarget",
+			"alertUntil",
+			"reactAt",
+			"swapAt",
+			"error",
+			"nextError",
+			"nextMove",
+			"moveGoal",
+			"patrolGoal",
+			"nextPatrol",
+			"nextFire",
+			"nextPerception",
+			"nextDecision",
+		}
+	do
+		bot[key] = nil
+	end
+	bot.returning = false
+end
 function P.teams(list: { any }, owner: any, bots: { any }, capacity: number): any
 	if
 		not table.find(list, owner)

@@ -167,6 +167,47 @@ T.describe("Private server NPC integration", function()
 			expect(f.health.Health).toBe(100)
 		end)
 	end)
+	it("range reset removes target, pursuit and pending fire decisions without changing inventory", function()
+		local policy = L.require(L.Shared.Training.Policy)
+		local gun = { ammo = 3 }
+		local bot = {
+			target = {},
+			lastSeen = L.roblox.Vector3.one,
+			swapAt = 99,
+			moveGoal = L.roblox.Vector3.one,
+			patrolGoal = L.roblox.Vector3.one,
+			alertUntil = 99,
+			reactAt = 99,
+			seesTarget = true,
+			returning = true,
+			gun = gun,
+		}
+		policy.resetRangeCombat(bot)
+		for _, key in
+			{ "target", "lastSeen", "swapAt", "moveGoal", "patrolGoal", "alertUntil", "reactAt", "seesTarget" }
+		do
+			expect(bot[key]).toBe(nil)
+		end
+		expect(bot.returning).toBe(false)
+		expect(bot.gun).toBe(gun)
+		expect(gun.ammo).toBe(3)
+	end)
+	it("a reset range duel stays nonhostile after respawn until another legitimate hit", function()
+		fixture(function(f)
+			f.D.apply(f.owner, f.bots[1].model, 9, f.info)
+			f.D.apply(f.bots[1], f.owner.Character, 100, f.info)
+			f.C.stopTraining(f.owner)
+			f.health.Health = 100 -- isolated respawn stand-in; Studio verifies the real death callback
+			for _, bot in f.bots do
+				expect(f.C.resolve(bot, f.owner.Character)).toBe("Blocked")
+				expect(f.D.apply(bot, f.owner.Character, 20, f.info)).toBe(0)
+			end
+			f.D.apply(f.owner, f.bots[2].model, 9, f.info)
+			for _, bot in f.bots do
+				expect(f.C.resolve(bot, f.owner.Character)).toBe("Training")
+			end
+		end)
+	end)
 	it("one real owner hit enables retaliation for both bots", function()
 		fixture(function(f)
 			expect(f.D.apply(f.owner, f.bots[1].model, 9, f.info)).toBe(9)
