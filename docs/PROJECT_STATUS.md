@@ -1,3 +1,9 @@
+## Private development correction — October 24, 2026
+
+Development **v50 is published and cloud-source verified**, commit `b32ed9f` on `feat/development-training-bots`. The firing-range duel now ends when the owner dies: both bots clear hostility and stay passive after respawn until a fresh hit. Match deaths are excluded. **426 tests pass** and the genuine Studio death/respawn/reprovocation check passed. Public production remains unchanged. See [TRAINING_BOTS_PASSIVE_RESET.md](TRAINING_BOTS_PASSIVE_RESET.md). Older release checkpoints follow.
+
+---
+
 ## Private development training bots — 2026-10-24
 
 Private development **v48 is published and cloud-source verified**, implementation commit `3b2b25e348c0e9eb9edee0ba5a80c7863cadd7d0` on `feat/development-training-bots`. The current development source is `development-copy/source`; public production remains v10. Two authorized-session beginner NPCs reuse normal weapons, physical queue admission, match scoring and respawning. The developer and both bots form an intentional 1v2 roster; independently queued humans can join within normal team capacity. Bot rounds suppress all permanent progression. Human-versus-human range practice remains nonlethal. No production source, controls, combat balance, maps, profile schemas or assets were replaced.

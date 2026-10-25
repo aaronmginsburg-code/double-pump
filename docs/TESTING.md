@@ -275,3 +275,7 @@ Run all of them after every change and record new results here with the date and
 ## Training bot verification — 2026-10-24
 
 See [TRAINING_BOTS_UPDATE.md](TRAINING_BOTS_UPDATE.md) for the development-only source/deployment record, exact results and limitations. 424 tests pass, including26 bot regressions. This does not change the public release record above.
+
+## Training range death reset — October 24, 2026
+
+Commit b32ed9f:426 tests passed; compile/changed-file StyLua/Rojo passed. Actual Studio bot elimination, normal owner respawn, eight seconds of passive100HP safety and fresh-hit reprovocation passed. Selene API dump and LSP definitions remain blocked. See TRAINING_BOTS_PASSIVE_RESET.md. No new hardware or full-map-cycle certification.

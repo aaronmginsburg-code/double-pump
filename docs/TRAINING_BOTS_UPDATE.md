@@ -1,3 +1,5 @@
+Current follow-up: private **v50** fixes range-duel hostility after owner death. See [passive reset report](TRAINING_BOTS_PASSIVE_RESET.md). The originalv48 implementation record follows.
+
 # Private development training bots
 
 2026-10-24 local date. **Published privately as development v48.** Implementation commit `3b2b25e348c0e9eb9edee0ba5a80c7863cadd7d0`, branch `feat/development-training-bots`, based on `4f70b958f96ad57510f03c62f4cfceb17b11d3bc`. Public production remains published v10.

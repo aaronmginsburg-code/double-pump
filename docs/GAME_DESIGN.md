@@ -94,3 +94,7 @@ Three paid coin packs are defined but disabled, productIDs nil. No real purchase
 ## Balancing and future opportunities
 
 No timing/damage/movement changes authorized in release transition. Measure server-accepted cadence, rejection rates, network and device performance before tuning. Cosmetic mesh/audio integration, retention evaluation, analytics, readability/accessibility and new content require bounded approval and evidence. New weapons/ranked modes/additional maps are proposals, not implemented promises. See ROADMAP.md.
+
+## Development training duel reset — October 24, 2026
+
+In private developmentv50, owner death in the firing range ends the bot duel. Both bots stop pursuing/firing and remain passive after respawn until the owner shoots one again. Ordinary match deaths do not end bot combat. See TRAINING_BOTS_PASSIVE_RESET.md.

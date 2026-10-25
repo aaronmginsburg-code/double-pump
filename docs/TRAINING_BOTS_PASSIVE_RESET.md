@@ -27,3 +27,7 @@ Changed production-runtime modules, private copy only:
 Previous intact developmentv48: `development-copy/training-bots-passive-reset-20261024/backup/DoublePump_DEVELOPMENT_V48.rbxl`. Original two module sources are beside it. New intact candidate: `DoublePump_PASSIVE_RESET.rbxl` in the same folder. Source-only Rojo and normalized INSPECTION_ONLY files must not be published.
 
 Authorized destination remains universe10772492892/place139437092998076, https://www.roblox.com/games/139437092998076/. Production universe10772275012/place82505574993280 is excluded. Verified publication details are appended after deployment. Restore/publish the intactv48 backup only to the verified private destination to roll back this correction.
+
+## Publication verified
+
+Published development **v50**, implementation commit b32ed9f, on October24local. Creator Dashboard published-only history confirms50; reopened cloud game.PlaceVersion50 contains all123 expected sources (digest2499729693). Owner/collaborator-only access remains unchanged. All81 root production-source hashes match the pre-bot baseline. No production publishing, asset upload, profile migration or Git push occurred. Normal Roblox Player/device acceptance of this targeted fix remains owner verification.

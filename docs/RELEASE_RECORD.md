@@ -85,3 +85,7 @@ Aaron replied “it is working” to the request to launch the existing private 
 See [TRAINING_BOTS_UPDATE.md](TRAINING_BOTS_UPDATE.md) for the development-only source/deployment record, exact results and limitations. 424 tests pass, including26 bot regressions. This does not change the public release record above.
 
 Private development v48: implementation commit 3b2b25e348c0e9eb9edee0ba5a80c7863cadd7d0, universe10772492892/place139437092998076. Published2026-10-25T05:52:46Z; Dashboard published-only and reopened cloud PlaceVersion48 verified with123 matching sources. Owner/collaborator-only access retained. Public v10 unchanged. See TRAINING_BOTS_UPDATE.md for rollback and test boundaries.
+
+## Private development v50 — October 24, 2026
+
+Published only universe10772492892/place139437092998076; implementation b32ed9f. Range bots reset after owner death,426 passing tests and actual Studio acceptance. Cloud PlaceVersion50 and123-source digest2499729693 verified. Owner/collaborator access retained. Public source unchanged. Rollback: intactv48 backup documented in TRAINING_BOTS_PASSIVE_RESET.md.
