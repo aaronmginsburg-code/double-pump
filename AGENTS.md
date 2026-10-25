@@ -53,3 +53,9 @@ Double Pump is a Roblox game in a Rojo project. Start with
 - Changing repository visibility.
 
 Never commit secrets (Open Cloud API keys go in `ROBLOX_API_KEY`, never in a file).
+
+## Private development aim assist (2026-10-24)
+
+The private source is `development-copy/source` on `feat/development-aim-assist`. Read `docs/AIM_ASSIST_TEST_REPORT.md` for the current release checkpoint. Developer tuning is restricted to universe10772492892/place139437092998076 and allowlisted UserIds. Production universe10772275012/place82505574993280 must never receive this development console or all-skin overrides.
+
+Keep the intact latest cloud place as the full-scene deployment base (feedback board geometry is not wholly in Rojo). Patch source, remove disposable test probes, compare all118 permanent sources, archive the intact candidate, then publish only after checking both IDs. Never publish INSPECTION_ONLY normalized files. The source-only Rojo build is a verification artifact. Run private tests with `lune run run-compat.luau` from `development-copy/source` when using the bundled Lune0.8.9 runner. Saved-only Studio drafts are not published versions.

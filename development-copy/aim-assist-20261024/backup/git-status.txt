@@ -1,0 +1,22 @@
+ M docs/AI_HANDOFF.md
+ M docs/ASSET_PIPELINE.md
+ M docs/ASSET_SOURCES.md
+ M docs/ASSET_UPLOAD_MANIFEST.md
+ M docs/GAME_DESIGN.md
+ M docs/PROJECT_STATUS.md
+ M docs/RELEASE_RECORD.md
+ M docs/ROADMAP.md
+ M docs/TESTING.md
+ M src/shared/Weapons/ShotgunModel.luau
+?? asset-integration-20261022/
+?? audio-production/
+?? development-copy/
+?? docs/BLENDER_SHOTGUN_INTEGRATION.md
+?? docs/WEAPON_MASTERY_AND_COSMETIC_AUDIT.md
+?? docs/audio-audit-20261023/
+?? docs/cosmetic-audit-20261022/
+?? docs/release-evidence-20261022/public-access-verified.png
+?? docs/release-evidence-20261022/public-game-page.png
+?? marketing/advertising-launch-20261022/
+?? tests/fixtures/ImportedInstance.luau
+?? tests/shotgun_import.spec.luau

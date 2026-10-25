@@ -1,0 +1,1 @@
+local fs=require('@lune/fs');local L=require('@lune/luau');local function check(p)for _,n in fs.readDir(p)do local f=p..'/'..n;if fs.isDir(f)then check(f)elseif f:match('%.luau$')then local ok,e=pcall(L.load,fs.readFile(f));assert(ok,f..': '..tostring(e))end end end;check('src');print('All private Luau sources compile')

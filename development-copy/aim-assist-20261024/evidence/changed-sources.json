@@ -1,0 +1,54 @@
+[
+  {
+    "path": "ReplicatedStorage.Shared.AimAssist.Config",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ReplicatedStorage.Shared.AimAssist.Policy",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ReplicatedStorage.Shared.AimAssist.ProfileStore",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server",
+    "class": "Script"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.DeveloperAccess",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "ServerScriptService.Server.Services.DeveloperTuningService",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client",
+    "class": "LocalScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.Controllers.AimAssistController",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.Controllers.CameraController",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.Controllers.InputController",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.Controllers.WeaponController",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.UI.DeveloperPanel",
+    "class": "ModuleScript"
+  },
+  {
+    "path": "StarterPlayer.StarterPlayerScripts.Client.UI.MobileControls",
+    "class": "ModuleScript"
+  }
+]

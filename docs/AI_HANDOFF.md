@@ -1,3 +1,32 @@
+## Development aim assist checkpoint — 2026-10-24
+
+Development-only aim assist and the authorized F6 tuning console are implemented on `feat/development-aim-assist`. The newer private cloudv29 source was reconciled: local private source now includes the feedback modules and GameFlow, with118 permanent scripts in the aim-assist candidate. Earlier warnings below about the89-script private tree are historical. Preserve full-scene cloud geometry; do not deploy the stand-alone Rojo source build over it.
+
+Read [aim-assist test/release report](AIM_ASSIST_TEST_REPORT.md) for actual publication status, source checkpoints,398 passing tests, Studio observations, screenshots and remaining hardware/cloud-persistence verification. Architecture and parameters are in AIM_ASSIST_IMPLEMENTATION.md and AIM_ASSIST_CONFIGURATION.md. This does not update the public game or promote any tuning configuration.
+
+---
+
+## Private quieter-footstep release — 2026-10-24
+
+Approved .65 -> .13 footstep gains are now **published privately asv29**, based on newer cloudv26 and preserving its feedback system (111scripts).377 existing local tests passed; fresh Studio verified four gains and actual movement/rolloff. Public game unchanged. **Local development-copy/source lacks the newer cloud feedback additions**; use the archivedv29 cloud place/source snapshot as deployment authority until reconciled. Do not overwrite it with the older89-script Rojo build. See [publication report](../audio-production/footstep-level-review-20261024/publication/PRIVATE_RELEASE_REPORT.md) for exact delta, backups, test boundaries and known pre-existing Landing suppression.
+
+---
+## Private development audio — 2026-10-24
+
+Private universe10772492892/place139437092998076 is now **publishedv24**, adding the five owner-selected surface-footstep/landing cues (51 total configured audio cues). New presentation-only movement audio replaces default Running/Landing without layering; movement/combat configuration, controls, profiles and public game are unchanged. Current authority is development-copy/source, branch feat/mobile-controls @ b90e77a plus preserved uncommitted private changes. **377 tests pass**,89 scripts match clean Studio candidate; two-client Studio surface/jump/idle/respawn/queue/return checks completed. LSP/Selene dependencies remain blocked; full formatting has pre-existing differences. Live-device listening remains owner acceptance. [Release report](../development-copy/audio-batch07-20261024/AUDIO_RELEASE_REPORT.md) contains IDs, implementation, exact limitations, backups and rollbackv22. Older privatev9/blank-audio notes below are historical. Batch08 variations await owner review and must not be described as implemented.
+
+---
+## Private development shotgun build — 2026-10-22
+
+The original Blender shotgun is now imported **only in the separate private development experience**, universe10772492892 / place139437092998076, publishedv9. Both FP slots and TP use the recovered rig and all ten original baked animation clips. All16 skins are unlocked through exact-development-ID guarded overrides. Public production is not updated. See [development release report](../development-copy/DEVELOPMENT_RELEASE_REPORT.md) for source snapshot, imported assets, backups,306 passing tests, Studio evidence, owner Player confirmation and remaining limits. Earlier local-preparation notes below describe the prior checkpoint and are superseded for development deployment.
+
+---
+## Local Blender integration preparation — 2026-10-22
+
+Read [BLENDER_SHOTGUN_INTEGRATION.md](BLENDER_SHOTGUN_INTEGRATION.md) before asset work. Original master recovered from fdeae963; local ShotgunModel now supports segmented imported rigs and existing skin palette tinting. Prepared FP/TP exports, PBR maps, renders and upload checklist are in `asset-integration-20261022/`. **No Roblox upload/import or publication completed. Public version 10 still uses parts; the new Rojo candidate also falls back until templates exist.** 301 tests pass via documented Lune path shim; native runner path resolution, missing LSP definitions and Selene API collection are disclosed in the report. Keep upload and publication approvals separate. Combat/config/profiles/controls/animations are unchanged.
+
+---
+
 # Double Pump — AI handoff
 
 Updated 2026-10-22, America/Los_Angeles. Read PROJECT_STATUS.md and RELEASE_RECORD.md next. This is an existing playable game; preserve its working systems. Older accumulated notes remain in history/release-transition-20261022/ and Git history.
@@ -8,7 +37,7 @@ Current development repository: `C:\Users\aaron\Documents\double-pump-backups\20
 
 The original `C:\Users\aaron\Documents\double-pump` is an older dirty prototype (claude/project-thread-19b8zl, observed HEAD 6c77104); leave it untouched. Main is the scaffold. PR #2 at 14848886 is an ancestor, not the newest gameplay implementation. The asset branch claude/project-thread-lv25xu at fdeae96367f73ca408ad190e134cdebd235defaf contains Blender masters/FBX and must be preserved separately.
 
-Private experience: **Double Pump [Private Test]**, owner supersnapstudios, universe 10772275012, start place 82505574993280. https://www.roblox.com/games/82505574993280/Double-Pump . Version 10 published 2026-10-22 at 00:54PDT; private owner/collaborator access confirmed. RELEASE_RECORD.md holds exact evidence, rollback and public-release requirements. Public access requires separate final owner approval.
+Public experience: **Double Pump**, owner supersnapstudios, universe 10772275012, start place 82505574993280. https://www.roblox.com/games/82505574993280/Double-Pump . Version 10 published 2026-10-22 at 00:54PDT; later that day owner explicitly confirmed public release. Dashboard verifies Public selected / Friends unchecked, available ages 16+. Content questionnaire complete: Mild, Violence (Repeated/Mild). Broader under-16/region requirements remain unmet; no fee paid or monetization enabled. Public name/description no longer say Private Test. No new binary or gameplay changes for this release. RELEASE_RECORD.md holds evidence, rollback and remaining reach requirements. Future access/publication changes still require owner authorization.
 
 ## Game and core rules
 

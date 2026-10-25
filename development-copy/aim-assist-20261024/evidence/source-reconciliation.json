@@ -1,0 +1,94 @@
+[
+  {
+    "cloud": "ReplicatedStorage.FeedbackClient.BackendState",
+    "local": "development-copy\\source\\feedback\\client\\BackendState.luau"
+  },
+  {
+    "cloud": "ReplicatedStorage.FeedbackClient.FeedbackUI",
+    "local": "development-copy\\source\\feedback\\client\\FeedbackUI.luau"
+  },
+  {
+    "cloud": "ReplicatedStorage.FeedbackClient.Protocol",
+    "local": "development-copy\\source\\feedback\\client\\Protocol.luau"
+  },
+  {
+    "cloud": "ReplicatedStorage.FeedbackClient.ResponsiveLayout",
+    "local": "development-copy\\source\\feedback\\client\\ResponsiveLayout.luau"
+  },
+  {
+    "cloud": "ReplicatedStorage.FeedbackClient.Transport",
+    "local": "development-copy\\source\\feedback\\client\\Transport.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.FeedbackStart",
+    "local": "development-copy\\source\\feedback\\backend\\FeedbackStart.server.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.IntegrationConfig",
+    "local": "development-copy\\source\\feedback\\backend\\IntegrationConfig.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.Bootstrap",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\Bootstrap.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.BroadcastRecord",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\BroadcastRecord.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.Config",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\Config.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.FeedbackService",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\FeedbackService.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.Guard",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\Guard.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.ManifestMigration",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\ManifestMigration.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.ManifestService",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\ManifestService.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.NativePolicy",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\NativePolicy.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.RecordSize",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\RecordSize.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.RobloxStore",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\RobloxStore.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.StoreAccess",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\StoreAccess.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.TextFilter",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\TextFilter.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Server.Util",
+    "local": "development-copy\\source\\feedback\\backend\\Server\\Util.luau"
+  },
+  {
+    "cloud": "ServerScriptService.FeedbackBackend.Shared.Protocol",
+    "local": "development-copy\\source\\feedback\\backend\\Shared\\Protocol.luau"
+  },
+  {
+    "cloud": "StarterPlayer.StarterPlayerScripts.Client.Controllers.GameFlow",
+    "local": "development-copy\\source\\src\\client\\Controllers\\GameFlow.luau"
+  },
+  {
+    "cloud": "StarterPlayer.StarterPlayerScripts.Feedback",
+    "local": "development-copy\\source\\feedback\\Feedback.client.luau"
+  }
+]

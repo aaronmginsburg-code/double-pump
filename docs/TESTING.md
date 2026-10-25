@@ -1,3 +1,32 @@
+## Development aim assist checkpoint — 2026-10-24
+
+Development-only aim assist and the authorized F6 tuning console are implemented on `feat/development-aim-assist`. The newer private cloudv29 source was reconciled: local private source now includes the feedback modules and GameFlow, with118 permanent scripts in the aim-assist candidate. Earlier warnings below about the89-script private tree are historical. Preserve full-scene cloud geometry; do not deploy the stand-alone Rojo source build over it.
+
+Read [aim-assist test/release report](AIM_ASSIST_TEST_REPORT.md) for actual publication status, source checkpoints,398 passing tests, Studio observations, screenshots and remaining hardware/cloud-persistence verification. Architecture and parameters are in AIM_ASSIST_IMPLEMENTATION.md and AIM_ASSIST_CONFIGURATION.md. This does not update the public game or promote any tuning configuration.
+
+---
+
+## Private quieter-footstep release — 2026-10-24
+
+Approved .65 -> .13 footstep gains are now **published privately asv29**, based on newer cloudv26 and preserving its feedback system (111scripts).377 existing local tests passed; fresh Studio verified four gains and actual movement/rolloff. Public game unchanged. **Local development-copy/source lacks the newer cloud feedback additions**; use the archivedv29 cloud place/source snapshot as deployment authority until reconciled. Do not overwrite it with the older89-script Rojo build. See [publication report](../audio-production/footstep-level-review-20261024/publication/PRIVATE_RELEASE_REPORT.md) for exact delta, backups, test boundaries and known pre-existing Landing suppression.
+
+---
+## Private development audio — 2026-10-24
+
+Private universe10772492892/place139437092998076 is now **publishedv24**, adding the five owner-selected surface-footstep/landing cues (51 total configured audio cues). New presentation-only movement audio replaces default Running/Landing without layering; movement/combat configuration, controls, profiles and public game are unchanged. Current authority is development-copy/source, branch feat/mobile-controls @ b90e77a plus preserved uncommitted private changes. **377 tests pass**,89 scripts match clean Studio candidate; two-client Studio surface/jump/idle/respawn/queue/return checks completed. LSP/Selene dependencies remain blocked; full formatting has pre-existing differences. Live-device listening remains owner acceptance. [Release report](../development-copy/audio-batch07-20261024/AUDIO_RELEASE_REPORT.md) contains IDs, implementation, exact limitations, backups and rollbackv22. Older privatev9/blank-audio notes below are historical. Batch08 variations await owner review and must not be described as implemented.
+
+---
+## Private development shotgun build — 2026-10-22
+
+The original Blender shotgun is now imported **only in the separate private development experience**, universe10772492892 / place139437092998076, publishedv9. Both FP slots and TP use the recovered rig and all ten original baked animation clips. All16 skins are unlocked through exact-development-ID guarded overrides. Public production is not updated. See [development release report](../development-copy/DEVELOPMENT_RELEASE_REPORT.md) for source snapshot, imported assets, backups,306 passing tests, Studio evidence, owner Player confirmation and remaining limits. Earlier local-preparation notes below describe the prior checkpoint and are superseded for development deployment.
+
+---
+## Blender shotgun preparation — 2026-10-22
+
+Uncommitted candidate based on HEAD b90e77a3f2dc5238d4fc5d91b99eb35cbaa6018a. 301/301 assertions pass using `lune run docs/cosmetic-audit-20261022/tools/run-existing-compat.luau`; 56 new imported-model tests use stable synthetic Instances plus actual model/animation/catalog modules. Native Lune 0.8.9 runner has 15 path-resolution load failures; no assertions were weakened. StyLua and Rojo pass. LSP is blocked by missing globalTypes.d.luau; Selene by API standard-library collection. Blender FBX round-trip and texture validation pass. No replacement Studio, live-player, multiplayer or hardware tests claimed. Exact commands/logs and required runtime matrix: [integration report](BLENDER_SHOTGUN_INTEGRATION.md).
+
+---
+
 ## Release transition — 2026-10-22
 
 Implementation4505edef:245 automated tests and21/21 staged three-client Studio assertions pass; LSP/Selene/StyLua/Rojo clean.81scripts match saved Studio source. Published privately as version10; existing icon/five thumbnails preserved. No gameplay, balance, asset uploads or Public change. See RELEASE_RECORD.md for fresh evidence and unverified live/device boundaries. Earlier entries are historical.
@@ -6,7 +35,7 @@ Implementation4505edef:245 automated tests and21/21 staged three-client Studio a
 
 Implemented a server-owned physical FIFO queue (2-10 players, 15 seconds), selected-roster map voting, nonlethal range PvP using the existing pellet damage pipeline, and full-health/ammo return to the lobby. Healthy transfers retain the prepared avatar; real deaths retain normal respawns. Base a487de38 with existing mobile/camera changes preserved; no commit/push. 245 tests pass; staged three-client Studio cycles verified all three arenas, real match PvP and return/requeue, plus an actual fourth late join. See `LOBBY_AND_MATCHMAKING_UPDATE.md` and `docs/lobby-matchmaking-evidence/` for exact evidence, initial failed probes and limitations. Private publication is tracked in the report. Weapon balance, control implementations and arena source files remain unchanged.
 
-## Marketing asset delivery � 2026-10-21
+## Marketing asset delivery � 2026-10-21
 
 Owner reports the latest mobile camera/independent-hand revision works properly.
 Created marketing-only assets: three icon concepts, six thumbnail concepts, one
