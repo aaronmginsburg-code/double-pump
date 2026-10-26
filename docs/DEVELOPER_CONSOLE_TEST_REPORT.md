@@ -1,3 +1,5 @@
+> Latest development revision (2026-10-26): **v68 published**, commit7d6a8ba; responsive auto fire and optional Auto Swap Weapons.471tests pass; fresh cloud131-source verification and iPhone Studio smoke test passed. See [AUTO_FIRE_RESPONSIVENESS_UPDATE.md](AUTO_FIRE_RESPONSIVENESS_UPDATE.md). Earlier console release details follow.
+
 # Developer console test report — 2026-10-25
 
 **Owner-approved implementation committed as80a1dca and published privately asv63. See DEVELOPER_CONSOLE_PUBLISH_REPORT.md.**

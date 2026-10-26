@@ -1,3 +1,5 @@
+> Latest development revision (2026-10-26): **v68 published**, commit7d6a8ba; responsive auto fire and optional Auto Swap Weapons.471tests pass; fresh cloud131-source verification and iPhone Studio smoke test passed. See [AUTO_FIRE_RESPONSIVENESS_UPDATE.md](AUTO_FIRE_RESPONSIVENESS_UPDATE.md). Earlier console release details follow.
+
 # Developer console development publication - 2026-10-25
 
 **Published and independently cloud-source verified: development v63.** Owner approved desktop/mobile screenshots and the bottom-left-of-Pump-A mobile launcher, then explicitly authorized this deployment. No production publication or access change occurred.
