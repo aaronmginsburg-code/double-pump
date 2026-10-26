@@ -126,42 +126,49 @@ local function candidate(model: Model): any
 	if not char or not model:IsDescendantOf(workspace) or not Policy.context(status(char), status(model)) then
 		return nil
 	end
-	local p = model:FindFirstChild("UpperTorso")
-		or model:FindFirstChild("Torso")
-		or model:FindFirstChild("HumanoidRootPart")
-	if not p or not p:IsA("BasePart") then
-		return nil
-	end
 	local cf = Camera.aimCFrame()
-	local distance = (p.Position - cf.Position).Magnitude
-	if distance < 0.1 or distance > math.min(C.values.autoFire.maxDistance, WeaponConfig.Damage.MaxRange) then
-		return nil
-	end
 	local cam = workspace.CurrentCamera
-	local point, onScreen = cam:WorldToViewportPoint(p.Position)
-	if not onScreen or point.Z <= 0 then
-		return nil
-	end
-	local inside, score =
-		Policy.inRadius(point.X, point.Y, cam.ViewportSize.X, cam.ViewportSize.Y, C.values.autoFire.radius)
-	if not inside then
+	if not cam then
 		return nil
 	end
 	ray.FilterDescendantsInstances = { char, cam }
 	query.FilterDescendantsInstances = ray.FilterDescendantsInstances
-	C.stats.rays += 1
-	local hit = workspace:Raycast(cf.Position, p.Position - cf.Position, ray)
-	if hit and not hit.Instance:IsDescendantOf(model) then
-		return nil
-	end
-	if C.values.autoFire.lineOfSight then
-		C.stats.rays += 1
-		hit = workspace:Raycast(cf.Position, p.Position - cf.Position, query)
-		if hit and not hit.Instance:IsDescendantOf(model) then
-			return nil
+	local best = nil
+	-- Head and torso share a stable model identity: aiming upward no longer
+	-- repeatedly loses/reacquires the target just because its chest is off-center.
+	for _, name in { "UpperTorso", "Torso", "Head" } do
+		local p = model:FindFirstChild(name)
+		if not p or not p:IsA("BasePart") then
+			continue
 		end
+		local distance = (p.Position - cf.Position).Magnitude
+		if distance < 0.1 or distance > math.min(C.values.autoFire.maxDistance, WeaponConfig.Damage.MaxRange) then
+			continue
+		end
+		local point, onScreen = cam:WorldToViewportPoint(p.Position)
+		if not onScreen or point.Z <= 0 then
+			continue
+		end
+		local inside, score =
+			Policy.inRadius(point.X, point.Y, cam.ViewportSize.X, cam.ViewportSize.Y, C.values.autoFire.radius)
+		if not inside or (best and score >= best.score) then
+			continue
+		end
+		C.stats.rays += 1
+		local hit = workspace:Raycast(cf.Position, p.Position - cf.Position, ray)
+		if hit and not hit.Instance:IsDescendantOf(model) then
+			continue
+		end
+		if C.values.autoFire.lineOfSight then
+			C.stats.rays += 1
+			hit = workspace:Raycast(cf.Position, p.Position - cf.Position, query)
+			if hit and not hit.Instance:IsDescendantOf(model) then
+				continue
+			end
+		end
+		best = { id = model, score = score, position = p.Position, distance = distance }
 	end
-	return { id = model, score = score, position = p.Position, distance = distance }
+	return best
 end
 function C.start()
 	if game.GameId ~= 10772492892 or game.PlaceId ~= 139437092998076 then
@@ -206,7 +213,6 @@ function C.start()
 	Weapon.Rejected:Connect(function(reason)
 		C.auto.reason = "Server: " .. tostring(reason)
 	end)
-	local elapsed = 0
 	RunService.Heartbeat:Connect(function(dt)
 		local state = Weapon.state
 		if pending and Runtime.safe({ state }, os.clock(), WeaponState) then
@@ -218,11 +224,6 @@ function C.start()
 			pending = nil
 			C.changed:Fire()
 		end
-		elapsed += dt
-		if elapsed < 0.05 then
-			return
-		end
-		elapsed = 0
 		local now = os.clock()
 		local usable = active()
 		local device = if UIS:GetLastInputType().Name:find("Gamepad")
@@ -230,11 +231,15 @@ function C.start()
 			elseif Camera.touchInputEnabled then "Touch"
 			else "Keyboard"
 		local config = C.values.autoFire
-		local enabled = config.enabled and (device ~= "Keyboard" or A.authorized)
+		local eligible = if device == "Touch"
+			then config.touchEligible
+			elseif device == "Gamepad" then config.controllerEligible
+			else config.mouseEligible and A.authorized
+		local enabled = config.enabled and eligible
 		local item = nil
 		if enabled and usable then
 			if now >= nextScan then
-				nextScan = now + 0.1
+				nextScan = now + 1 / 30
 				local started = os.clock()
 				local list = {}
 				for model in targets do
@@ -254,7 +259,18 @@ function C.start()
 		end
 		C.autoPosition = if item then item.position else nil
 		C.autoTarget = if item then item.id.Name else "none"
-		local ready = Weapon.mobileReady()
+		if item then
+			local slot = Trigger.swapSlot(config, state, now)
+			if slot then
+				Weapon.equip(slot)
+			end
+		end
+		local ready, reason = Weapon.mobileReady()
+		-- Empty is not fire-ready: previously this could never enter fireMobile's
+		-- normal auto-reload branch, leaving automatic fire stalled forever.
+		if item and reason == "Empty" and not state.slots[state.equipped].reloading then
+			Weapon.fireMobile()
+		end
 		local reloading = state.slots[state.equipped].reloading
 		if
 			Trigger.step(

@@ -62,6 +62,10 @@ function C.validate(raw: any): (any, string?)
 	end
 	for _, field in Registry do
 		local value = raw[field.category] and raw[field.category][field.key]
+		-- Additive schema-2 field: old presets retain their manual swapping behavior.
+		if field.category == "autoFire" and field.key == "autoSwap" and value == nil then
+			value = false
+		end
 		if not C.value(field, value) then
 			return nil, "Invalid " .. field.label
 		end

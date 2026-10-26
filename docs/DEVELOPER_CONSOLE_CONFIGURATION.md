@@ -2,7 +2,7 @@
 
 Development only. All five categories are shared session configuration broadcast by the authorized server; camera/audio handlers apply locally to each test client. Diagnostics, window position and shortcut selection are session-local. Personal player settings remain separate. Presets are stored per developer/name/scope, never automatically loaded or promoted to production.
 
-Defaults preserve the verified build; auto fire and mouse assistance default OFF. Existing .4s global shot interval, headshot multipliers, equip time and validation tolerances are not tunable in this implementation. Both independent pumps share one weapon definition. Weapon changes wait for active reload/raise actions, preserve existing deadlines/counters, clamp reduced capacity and never refill increased capacity.
+Touch auto fire defaults ON with instant acquisition; Auto Swap Weapons defaults OFF. Mouse/controller auto fire remain OFF. Other defaults preserve the verified build. Existing .4s global shot interval, headshot multipliers, equip time and validation tolerances are not tunable in this implementation. Both independent pumps share one weapon definition. Weapon changes wait for active reload/raise actions, preserve existing deadlines/counters, clamp reduced capacity and never refill increased capacity.
 
 ## Validation and units
 
@@ -52,11 +52,12 @@ New pellet counts keep the original first ten pattern points; extra pellets use 
 
 | ID | Name | Default | Range / options | Unit | Availability |
 |---|---|---|---|---|---|
-| autoFire.enabled | Auto Fire Enabled | False | true / false |  | Available |
-| autoFire.radius | Activation Radius | 0.035 | 0.005–0.15 | short-screen fraction | Available |
-| autoFire.delay | Activation Delay | 0.25 | 0–2 | s | Available |
-| autoFire.maxDistance | Maximum Target Distance | 75 | 5–150 | studs | Available |
-| autoFire.persistence | Target Persistence | 0.15 | 0–1.5 | s | Available |
+| autoFire.enabled | Auto Fire Enabled | True | true / false |  | Available |
+| autoFire.autoSwap | Auto Swap Weapons | False | true / false | | Available |
+| autoFire.radius | Activation Radius | 0.1 | 0.005–0.15 | short-screen fraction | Available |
+| autoFire.delay | Activation Delay | 0 | 0–2 | s | Available |
+| autoFire.maxDistance | Maximum Target Distance | 150 | 5–150 | studs | Available |
+| autoFire.persistence | Target Persistence | 0 | 0–1.5 | s | Available |
 | autoFire.cooldown | Firing Cooldown | 0.4 | 0.4–3 | s | Available |
 | autoFire.lineOfSight | Strict Query Visibility | True | true / false |  | Available |
 | autoFire.touchEligible | Touchscreen | True | true / false |  | Available |

@@ -1,3 +1,5 @@
+> 2026-10-26 local development revision: instant touch auto fire, head/torso acquisition and optional **Auto Swap Weapons**. 471 tests pass; Studio/publication pending. See [AUTO_FIRE_RESPONSIVENESS_UPDATE.md](AUTO_FIRE_RESPONSIVENESS_UPDATE.md). Production unchanged.
+
 > 2026-10-25: **private development v63 published and cloud-source verified**, implementation `80a1dca` on `feat/development-training-bots`. Five-category console plus approved bottom mobile DEV launcher.463tests pass. Public publishedv10 unchanged. New-schema cloud persistence and physical-device acceptance remain pending. See [publication report](DEVELOPER_CONSOLE_PUBLISH_REPORT.md).
 
 ## Private development training bots — 2026-10-24

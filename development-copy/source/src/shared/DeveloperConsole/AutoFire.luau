@@ -1,5 +1,5 @@
 --!strict
--- Pure trigger state. No damage application, auto switching, buffering or reload interruption.
+-- Pure trigger and optional swap decisions. No damage, timing bypass or reload interruption.
 local A = {}
 function A.new(): any
 	return { target = nil, acquired = 0, lastShot = -math.huge, reason = "Disabled", remaining = 0 }
@@ -52,5 +52,21 @@ function A.step(
 	s.lastShot = now
 	s.reason = "Ordinary fire request"
 	return true
+end
+-- Only swap when doing so improves the earliest legal shot. No mid-raise
+-- ping-pong, reload cancellation, empty-to-empty swaps or cooldown resets.
+function A.swapSlot(c: any, state: any, now: number): number?
+	local slot = state.slots[state.equipped]
+	if not c.autoSwap or slot.reloading or now < state.readyAt then
+		return nil
+	end
+	local other = if state.equipped == 1 then 2 else 1
+	local incoming = state.slots[other]
+	if not incoming or incoming.reloading or incoming.ammo <= 0 then
+		return nil
+	end
+	local currentAt = if slot.ammo > 0 then math.max(now, state.nextShotTime, slot.nextFireTime) else math.huge
+	local otherAt = math.max(now + state.rules.timing.SwapTime, state.nextShotTime, incoming.nextFireTime)
+	return if otherAt + 0.001 < currentAt then other else nil
 end
 return A

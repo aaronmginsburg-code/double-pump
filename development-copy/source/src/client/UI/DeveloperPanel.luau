@@ -77,7 +77,7 @@ local titles =
 local summaries = {
 	movement = "SERVER SESSION  /  Live Humanoid tuning. Unsupported mechanics stay unavailable.",
 	aiming = "CLIENT PRESENTATION  /  Existing assist response; separate device eligibility and sensitivity.",
-	autoFire = "VALIDATED INPUT  /  Disabled by default. No auto swap, reload interruption or damage bypass.",
+	autoFire = "VALIDATED INPUT  /  Instant touch acquisition. Optional Auto Swap Weapons; normal reloads and server shot gates.",
 	weapons = "SERVER SESSION  /  Pump Shotgun - both slots. Changes wait for reload / raise boundaries.",
 	audio = "CLIENT MIX  /  Developer gains multiply personal volume preferences. No asset changes.",
 }

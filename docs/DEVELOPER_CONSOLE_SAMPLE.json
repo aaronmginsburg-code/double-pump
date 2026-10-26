@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "game": "DoublePump",
-  "name": "default-review",
-  "createdAt": "2026-10-25T21:52:17.296888+00:00",
+  "name": "responsive-touch-defaults",
+  "createdAt": "2026-10-26T09:35:57.328464+00:00",
   "environment": {
     "universe": 10772492892,
     "place": 139437092998076
@@ -246,14 +246,15 @@
     "autoFire": {
       "controllerEligible": false,
       "cooldown": 0.4,
-      "delay": 0.25,
-      "enabled": false,
+      "delay": 0,
+      "enabled": true,
       "lineOfSight": true,
-      "maxDistance": 75,
+      "maxDistance": 150,
       "mouseEligible": false,
-      "persistence": 0.15,
-      "radius": 0.035,
-      "touchEligible": true
+      "persistence": 0,
+      "radius": 0.1,
+      "touchEligible": true,
+      "autoSwap": false
     },
     "movement": {
       "acceleration": 0,

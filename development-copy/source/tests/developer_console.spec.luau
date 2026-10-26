@@ -102,10 +102,11 @@ T.describe("Five-category console registry", function()
 		end
 		assert(C.scope("all") and C.scope("audio") and not C.scope("production"))
 	end)
-	T.it("defaults auto fire and mouse assistance off", function()
+	T.it("defaults responsive touch auto fire on with optional swaps off", function()
 		local v = C.defaults()
 		assert(
-			not v.autoFire.enabled
+			v.autoFire.enabled
+				and not v.autoFire.autoSwap
 				and not v.aiming.mouseEligible
 				and v.aiming.touchEligible
 				and v.aiming.controllerEligible
@@ -187,11 +188,15 @@ T.describe("Auto fire ordinary trigger lifecycle", function()
 	local function config()
 		local v = C.defaults().autoFire
 		v.enabled = true
+		v.delay = 0.25
+		v.persistence = 0.15
 		return v
 	end
 	T.it("does nothing while disabled or mouse is ineligible", function()
 		local s = Trigger.new()
-		assert(not Trigger.step(s, C.defaults().autoFire, 1, "target", "Touch", true, true, false))
+		local disabled = config()
+		disabled.enabled = false
+		assert(not Trigger.step(s, disabled, 1, "target", "Touch", true, true, false))
 		assert(not Trigger.step(s, config(), 1, "target", "Keyboard", true, true, false))
 	end)
 	T.it("waits for both acquisition and persistence then fires once legally ready", function()
@@ -298,3 +303,94 @@ T.describe("Versioned scoped presets with compare-and-swap", function()
 	end)
 end)
 L.reset()
+
+T.describe("Responsive mobile auto fire and optional swaps", function()
+	T.it("sustains automatic alternating fire without violating either cooldown", function()
+		local state = Weapon.new(Weapon.rulesFromConfig(WeaponConfig), 0)
+		local c = C.defaults().autoFire
+		c.autoSwap = true
+		local trigger, shots = Trigger.new(), {}
+		for frame = 1, 150 do
+			local now = frame / 60
+			local other = Trigger.swapSlot(c, state, now)
+			if other then
+				assert(Weapon.equip(state, other, now))
+			end
+			local ready = Weapon.canFire(state, state.equipped, now)
+			if Trigger.step(trigger, c, now, "visible target", "Touch", true, ready, false) then
+				assert(Weapon.fire(state, state.equipped, now))
+				table.insert(shots, { time = now, slot = state.equipped })
+			end
+		end
+		assert(#shots >= 5)
+		local last = {}
+		for i, shot in shots do
+			if i > 1 then
+				assert(shot.slot ~= shots[i - 1].slot)
+				assert(shot.time - shots[i - 1].time >= 0.4 - 1e-9)
+			end
+			if last[shot.slot] then
+				assert(shot.time - last[shot.slot] >= 1 - 1e-9)
+			end
+			last[shot.slot] = shot.time
+		end
+	end)
+	T.it("acquires on the first eligible update without a held fire finger", function()
+		local s = Trigger.new()
+		assert(Trigger.step(s, C.defaults().autoFire, 0, "dummy", "Touch", true, true, false))
+		assert(not Trigger.step(s, C.defaults().autoFire, 0.1, "dummy", "Touch", true, true, false))
+	end)
+	T.it("new targets have no default dwell but still share the firing interval", function()
+		local s = Trigger.new()
+		local c = C.defaults().autoFire
+		assert(Trigger.step(s, c, 0, "A", "Touch", true, true, false))
+		assert(not Trigger.step(s, c, 0.1, "B", "Touch", true, true, false))
+		assert(Trigger.step(s, c, 0.4, "B", "Touch", true, true, false))
+	end)
+	T.it("defaults retain wall checks and desktop exclusion", function()
+		local c = C.defaults().autoFire
+		assert(c.lineOfSight and not c.mouseEligible and c.radius == 0.1 and c.maxDistance == 150)
+	end)
+	T.it("old schema2 presets load without auto-enabling weapon swapping", function()
+		local old = C.defaults()
+		old.autoFire.autoSwap = nil
+		old.autoFire.enabled = false
+		old.autoFire.delay = 0.25
+		local clean = C.validate(old)
+		assert(clean and not clean.autoFire.autoSwap and not clean.autoFire.enabled and clean.autoFire.delay == 0.25)
+	end)
+	T.it("old presets still reject all other missing or invalid fields", function()
+		local old = C.defaults()
+		old.autoFire.autoSwap = nil
+		old.autoFire.delay = nil
+		assert(not C.validate(old))
+	end)
+	T.it("swap selection is optional and only improves legal ready time", function()
+		local state = Weapon.new(Weapon.rulesFromConfig(WeaponConfig), 0)
+		local c = C.defaults().autoFire
+		assert(Weapon.fire(state, 1, 1))
+		assert(Trigger.swapSlot(c, state, 1) == nil)
+		c.autoSwap = true
+		assert(Trigger.swapSlot(c, state, 1) == 2)
+		assert(Weapon.equip(state, 2, 1))
+		assert(Trigger.swapSlot(c, state, 1.1) == nil)
+		assert(not Weapon.fire(state, 2, 1.15))
+		assert(Weapon.fire(state, 2, 1.4))
+		assert(Trigger.swapSlot(c, state, 1.4) == 1)
+		assert(Weapon.equip(state, 1, 1.4))
+		assert(not Weapon.fire(state, 1, 1.8))
+		assert(Weapon.fire(state, 1, 2))
+	end)
+	T.it("does not cancel reloads or switch to empty guns", function()
+		local state = Weapon.new(Weapon.rulesFromConfig(WeaponConfig), 0)
+		local c = C.defaults().autoFire
+		c.autoSwap = true
+		state.slots[1].ammo = 0
+		state.slots[2].ammo = 0
+		assert(Trigger.swapSlot(c, state, 1) == nil)
+		state.slots[2].ammo = 5
+		assert(Trigger.swapSlot(c, state, 1) == 2)
+		assert(Weapon.startReload(state, 1))
+		assert(Trigger.swapSlot(c, state, 1) == nil)
+	end)
+end)
