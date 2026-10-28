@@ -20,6 +20,8 @@ local ProfileClient = require(Controllers.ProfileClient)
 local AudioController = require(Controllers.AudioController)
 local InputController = require(Controllers.InputController)
 
+local LobbyCues = require(game:GetService("ReplicatedStorage").Shared.Audio.LobbyCues)
+
 local Postgame = {}
 
 local player = Players.LocalPlayer
@@ -154,18 +156,28 @@ local function showResults(data: any)
 			Image = "",
 			Parent = mvpCard,
 		}, { Theme.corner(65) })
-		task.spawn(function()
-			local ok, image = pcall(function()
-				return Players:GetUserThumbnailAsync(
-					data.mvp.userId,
-					Enum.ThumbnailType.HeadShot,
-					Enum.ThumbnailSize.Size150x150
-				)
+		if data.mvp.botId then
+			Theme.label({
+				Text = "BOT",
+				Size = UDim2.fromScale(1, 1),
+				FontFace = Theme.Fonts.Heavy,
+				TextSize = 30,
+				Parent = thumb,
+			})
+		else
+			task.spawn(function()
+				local ok, image = pcall(function()
+					return Players:GetUserThumbnailAsync(
+						data.mvp.userId,
+						Enum.ThumbnailType.HeadShot,
+						Enum.ThumbnailSize.Size150x150
+					)
+				end)
+				if ok then
+					thumb.Image = image
+				end
 			end)
-			if ok then
-				thumb.Image = image
-			end
-		end)
+		end
 		Theme.label({
 			Text = data.mvp.name,
 			Size = UDim2.new(1, -30, 0, 36),
@@ -175,7 +187,10 @@ local function showResults(data: any)
 			Parent = mvpCard,
 		})
 		for _, row in data.board or {} do
-			if row.userId == data.mvp.userId then
+			if
+				(data.mvp.botId and row.botId == data.mvp.botId)
+				or (not data.mvp.botId and row.userId == data.mvp.userId)
+			then
 				Theme.label({
 					Text = `{row.kills} elims  ·  {row.doublePumps} double pumps`,
 					Size = UDim2.new(1, -30, 0, 24),
@@ -289,7 +304,7 @@ local function showResults(data: any)
 		Parent = resultsFrame,
 	})
 	Theme.label({
-		Text = "REWARDS",
+		Text = if data.training then "TRAINING — NO REWARDS" else "REWARDS",
 		Size = UDim2.new(1, 0, 0, 46),
 		Position = UDim2.fromOffset(0, 18),
 		FontFace = Theme.Fonts.Display,
@@ -297,7 +312,10 @@ local function showResults(data: any)
 	})
 	Theme.label({
 		Name = "Pending",
-		Text = if myTeam then "Calculating..." else "Play a match to earn XP",
+		Text = if data.training
+			then "Training match: no permanent rewards or statistics"
+			elseif myTeam then "Calculating..."
+			else "Play a match to earn XP",
 		Size = UDim2.new(1, -30, 0, 24),
 		Position = UDim2.fromOffset(15, 120),
 		TextColor3 = C.TextDim,
@@ -359,10 +377,8 @@ local function showReward(reward: any)
 	end
 	if reward.levelAfter and reward.levelBefore and reward.levelAfter > reward.levelBefore then
 		line(53, "LEVEL UP!", `{reward.levelAfter}`, C.Gold)
-		AudioController.play("LevelUp")
-	else
-		AudioController.play("Reward")
 	end
+	AudioController.play(LobbyCues.rewardCue(reward))
 	local info = Levels.fromXp(reward.totalXp or 0)
 	local bar = new("Frame", {
 		Size = UDim2.new(1, -40, 0, 10),

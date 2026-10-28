@@ -1,3 +1,5 @@
+> **Public release v13 — 2026-10-28.** The owner-approved saved **Mobile** preset (schema 2, revision 3) is now the static public-source configuration. Version13 is published; read [PRODUCTION_MOBILE_PROMOTION.md](PRODUCTION_MOBILE_PROMOTION.md) for current evidence and final deployment outcome. Root `src/` is the public build; `development-copy/source/` remains the separate private development build. Older entries below describe historical checkpoints.
+
 # Asset pipeline: getting the shotgun, sounds and map art into Roblox
 
 The code runs without any of these steps. Until they're done the game uses:

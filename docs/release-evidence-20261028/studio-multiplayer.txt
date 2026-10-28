@@ -1,0 +1,36 @@
+2026-10-28T09:39:46.428Z,127.428215,94fc,6,Warning [FLog::CreatorWarning] Warning: [LOBBY_TEST_FATAL] ServerScriptService.TemporaryPublicServer:59: two ready clients required
+2026-10-28T09:44:53.250Z,434.250214,6430,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"population does not auto-start","pass":true,"data":{"players":2}}
+2026-10-28T09:44:53.251Z,434.251221,6430,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"ten existing practice targets","pass":true,"data":10}
+2026-10-28T09:44:54.714Z,435.714874,8c38,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"nonlethal body feedback agrees with authoritative pellet sum","pass":true,"data":{"expected":{"target":"Player1","pellets":10,"headshot":false,"amount":159.8},"health":100,"hit":{"headshot":false,"damage":160,"killed":false,"pellets":10}}}
+2026-10-28T09:44:55.681Z,436.681488,4dbc,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"nonlethal headshot feedback and full health","pass":true,"data":{"expected":{"target":"Player1","pellets":10,"headshot":true,"amount":297.5},"health":100,"hit":{"headshot":true,"damage":298,"killed":false,"pellets":10}}}
+2026-10-28T09:44:55.682Z,436.682495,4dbc,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"lobby hits grant no kills deaths score or XP","pass":true,"data":[]}
+2026-10-28T09:44:58.749Z,439.749115,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-28T09:44:58.749Z,439.749115,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":5}
+2026-10-28T09:44:59.114Z,440.114105,6430,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"one queued player waits","pass":true,"data":1}
+2026-10-28T09:44:59.514Z,440.514069,94fc,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"two players begin countdown","pass":true,"data":{"ends":1793180714.596154}}
+2026-10-28T09:44:59.932Z,440.932068,8c38,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"leaving cancels countdown","pass":true,"data":{"count":1}}
+2026-10-28T09:45:15.047Z,456.047363,8c38,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"physical queue admits roster round 1","pass":true,"data":{"elapsed":14.798558950424195}}
+2026-10-28T09:45:32.097Z,473.097778,94fc,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"arena loaded Warehouse","pass":true,"data":{"players":2,"actual":"Warehouse"}}
+2026-10-28T09:45:34.847Z,475.847595,8c38,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"match PvP eliminates and scores","pass":true,"data":{"kills":1,"health":0,"scores":{"Blue":1,"Red":0}}}
+2026-10-28T09:45:37.523Z,478.523193,6430,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"match respawn completes","pass":true,"data":[]}
+2026-10-28T09:45:46.965Z,487.965118,8c38,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"return to lobby round 1","pass":true,"data":{"queued":0}}
+2026-10-28T09:45:46.997Z,487.997375,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:45:46.998Z,487.998383,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:45:47.014Z,488.014526,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:45:47.014Z,488.014526,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:46:02.196Z,503.196747,1de0,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"physical queue admits roster round 2","pass":true,"data":{"elapsed":14.915865898132325}}
+2026-10-28T09:46:19.378Z,520.378540,1de0,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"arena loaded DustTown","pass":true,"data":{"players":2,"actual":"DustTown"}}
+2026-10-28T09:46:28.998Z,529.998535,6430,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"return to lobby round 2","pass":true,"data":{"queued":0}}
+2026-10-28T09:46:29.033Z,530.033691,94fc,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:46:29.033Z,530.033691,94fc,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:46:29.062Z,530.062561,8c38,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:46:29.067Z,530.067505,8c38,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:46:44.362Z,545.362793,8c38,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"physical queue admits roster round 3","pass":true,"data":{"elapsed":15.04990005493164}}
+2026-10-28T09:47:01.509Z,562.509705,94fc,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"arena loaded Rooftops","pass":true,"data":{"players":2,"actual":"Rooftops"}}
+2026-10-28T09:47:11.400Z,572.400208,94fc,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"return to lobby round 3","pass":true,"data":{"queued":0}}
+2026-10-28T09:47:11.426Z,572.426636,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:47:11.426Z,572.426636,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player1 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:47:11.486Z,572.486938,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:47:11.487Z,572.487976,6430,6,Info [FLog::CreatorOutput] [LOBBY_CLIENT_STATUS] Player2 {"ammoB":6,"active":true,"postgame":false,"mode":"Practice","ammoA":6}
+2026-10-28T09:47:13.413Z,574.413330,1de0,6,Info [FLog::CreatorOutput] [LOBBY_TEST] {"test":"final lobby does not auto-requeue returning players","pass":true,"data":[]}
+2026-10-28T09:47:13.415Z,574.415283,1de0,6,Info [FLog::CreatorOutput] [LOBBY_TEST_COMPLETE] failures=0

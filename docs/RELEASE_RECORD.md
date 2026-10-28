@@ -1,3 +1,5 @@
+> **Public release v13 — 2026-10-28.** The owner-approved saved **Mobile** preset (schema 2, revision 3) is now the static public-source configuration. Version13 is published; read [PRODUCTION_MOBILE_PROMOTION.md](PRODUCTION_MOBILE_PROMOTION.md) for current evidence and final deployment outcome. Root `src/` is the public build; `development-copy/source/` remains the separate private development build. Older entries below describe historical checkpoints.
+
 ## Private development v68 — 2026-10-26
 
 Responsive touch auto fire and independent Auto Swap Weapons published to universe10772492892/place139437092998076, implementation7d6a8ba.131cloud sources verified;471tests pass. Audience remains private. Public production remains publishedv10. See [AUTO_FIRE_RESPONSIVENESS_UPDATE.md](AUTO_FIRE_RESPONSIVENESS_UPDATE.md) for measured Studio results, backups, rollback and remaining owner acceptance.

@@ -99,7 +99,7 @@ local function updateVisibility()
 		return
 	end
 	local touchMode = InputController.LastInputKind == "Touch"
-	local show = editing or (wanted and touchMode)
+	local show = (editing or (wanted and touchMode)) and not InputController.tuningOpen
 	if gui.Enabled ~= show then
 		neutral()
 	end
@@ -222,7 +222,12 @@ local function began(name: string, input: InputObject)
 		end
 		return
 	end
-	if not wanted or GuiService.MenuIsOpen or not touches:begin(input, name, p.X, p.Y, os.clock()) then
+	if
+		not wanted
+		or InputController.tuningOpen
+		or GuiService.MenuIsOpen
+		or not touches:begin(input, name, p.X, p.Y, os.clock())
+	then
 		return
 	end
 	pressed(name, true)

@@ -109,4 +109,7 @@ GameConfig.Debug = {
 	ShowPelletDebug = false,
 }
 
+local approved = require(script.Parent.ReleasePreset)
+local runtime = require(script.Parent.Parent.DeveloperConsole.Runtime)
+runtime.movement(approved.values.movement, GameConfig)
 return GameConfig

@@ -47,8 +47,8 @@ export type ShotgunModel = typeof(setmetatable(
 		root: CFrame,
 		deltas: { [string]: CFrame },
 		-- imported asset
-		bones: { [string]: BoneEntry },
-		boneOrder: { string },
+		bones: { [Bone]: BoneEntry },
+		boneOrder: { Bone },
 		rootToPivot: CFrame,
 		-- stand-in
 		parts: { PartEntry },
@@ -278,6 +278,13 @@ local function setupImported(self: any, template: Model, clone: boolean)
 		for _, d in model:GetDescendants() do
 			if d:IsA("BasePart") then
 				prepPart(d, self.kind)
+				-- The prepared exports separate the original geometry into palette regions.
+				-- FBX custom properties are not guaranteed to survive Studio import.
+				local key = d.Name:match("^[FT]P_Region_(%a+)$")
+				if key == "metal" or key == "wood" or key == "accent" then
+					d:SetAttribute("ColorKey", key)
+					d.Material = if key == "wood" then Enum.Material.Wood else Enum.Material.Metal
+				end
 			elseif d:IsA("Bone") then
 				d.Transform = CFrame.identity
 			end
@@ -297,16 +304,20 @@ local function setupImported(self: any, template: Model, clone: boolean)
 		end
 	end
 
-	-- Index bones and compute their rest poses relative to ViewmodelRoot
-	local bonesByName: { [string]: Bone } = {}
+	-- A multi-mesh FBX can import with a separate copy of the rig below each mesh.
+	-- Index by instance so every copy receives the same model-space animation delta.
+	local allBones: { Bone } = {}
+	local rootBone: Bone? = nil
 	for _, d in model:GetDescendants() do
-		if d:IsA("Bone") and not bonesByName[d.Name] then
-			bonesByName[d.Name] = d
+		if d:IsA("Bone") then
+			table.insert(allBones, d)
+			if d.Name == "ViewmodelRoot" and not rootBone then
+				rootBone = d
+			end
 		end
 	end
-	local rootBone = bonesByName.ViewmodelRoot
 	local worlds: { [Bone]: CFrame } = {}
-	local order: { string } = {}
+	local order: { Bone } = {}
 	local function visit(bone: Bone)
 		local parent = bone.Parent
 		local parentWorld = if parent and parent:IsA("Bone")
@@ -314,27 +325,31 @@ local function setupImported(self: any, template: Model, clone: boolean)
 			elseif parent and parent:IsA("BasePart") then parent.CFrame
 			else CFrame.identity
 		worlds[bone] = parentWorld * bone.CFrame
-		table.insert(order, bone.Name)
+		table.insert(order, bone)
 		for _, child in bone:GetChildren() do
 			if child:IsA("Bone") then
 				visit(child)
 			end
 		end
 	end
-	if rootBone then
-		visit(rootBone)
+	for _, bone in allBones do
+		local parent = bone.Parent
+		if not parent or not parent:IsA("Bone") then
+			visit(bone)
+		end
 	end
-	local rootWorld = if rootBone then worlds[rootBone] else model:GetPivot()
+	local rootOffset = model:GetAttribute("AnimationRootOffset") or CFrame.identity
+	local rootWorld = if rootBone then worlds[rootBone] * rootOffset else model:GetPivot()
 	self.rootToPivot = rootWorld:ToObjectSpace(model:GetPivot())
 	self.bones = {}
-	for name, bone in bonesByName do
+	for _, bone in allBones do
 		local parent = bone.Parent
-		self.bones[name] = {
+		self.bones[bone] = {
 			bone = bone,
 			parentBone = if parent and parent:IsA("Bone") then parent else nil,
 			parentPart = if parent and parent:IsA("BasePart") then parent else nil,
 			rest = rootWorld:ToObjectSpace(worlds[bone] or rootWorld),
-			animated = table.find(ShotgunRig.Animated, name) ~= nil,
+			animated = table.find(ShotgunRig.Animated, bone.Name) ~= nil,
 		}
 	end
 	self.boneOrder = order
@@ -472,11 +487,11 @@ end
 function ShotgunModel._applyBones(self: ShotgunModel)
 	local root, deltas = self.root, self.deltas
 	local worlds: { [Bone]: CFrame } = {}
-	for _, name in self.boneOrder do
-		local entry = self.bones[name]
+	for _, indexedBone in self.boneOrder do
+		local entry = self.bones[indexedBone]
 		local bone = entry.bone
 		local parentWorld = partWorld(entry, worlds)
-		local d = if entry.animated then deltas[name] else nil
+		local d = if entry.animated then deltas[bone.Name] else nil
 		if d then
 			local desired = root * d * entry.rest
 			bone.Transform = (parentWorld * bone.CFrame):ToObjectSpace(desired)
@@ -531,7 +546,16 @@ function ShotgunModel.applySkin(self: ShotgunModel, skin: Skin?)
 	local s = skin or DEFAULT_SKIN
 	for _, d in self.model:GetDescendants() do
 		if d:IsA("SurfaceAppearance") then
-			(d :: any).Color = s.tint or Color3.new(1, 1, 1)
+			local parent = d.Parent
+			local key = if parent and parent:IsA("BasePart") then parent:GetAttribute("ColorKey") else nil
+			local color = if key == "metal"
+				then s.metal
+				elseif key == "wood" then s.wood
+				elseif key == "accent" then s.accent or DEFAULT_SKIN.accent :: Color3
+				else Color3.new(1, 1, 1)
+			local tint = s.tint or Color3.new(1, 1, 1)
+			local surface = d :: any
+			surface.Color = Color3.new(color.R * tint.R, color.G * tint.G, color.B * tint.B)
 		elseif d:IsA("BasePart") and d:GetAttribute("ColorKey") then
 			local key = d:GetAttribute("ColorKey")
 			if key == "metal" then

@@ -1,4 +1,6 @@
-## Release transition — 2026-10-22
+> **Public release v13 — 2026-10-28.** The owner-approved saved **Mobile** preset (schema 2, revision 3) is now the static public-source configuration. Version13 is published; read [PRODUCTION_MOBILE_PROMOTION.md](PRODUCTION_MOBILE_PROMOTION.md) for current evidence and final deployment outcome. Root `src/` is the public build; `development-copy/source/` remains the separate private development build. Older entries below describe historical checkpoints.
+
+## Release transition â€” 2026-10-22
 
 Implementation4505edef:245 automated tests and21/21 staged three-client Studio assertions pass; LSP/Selene/StyLua/Rojo clean.81scripts match saved Studio source. Published privately as version10; existing icon/five thumbnails preserved. No gameplay, balance, asset uploads or Public change. See RELEASE_RECORD.md for fresh evidence and unverified live/device boundaries. Earlier entries are historical.
 
@@ -6,7 +8,7 @@ Implementation4505edef:245 automated tests and21/21 staged three-client Studio a
 
 The physical queue uses only code-created Roblox parts, BillboardGui and text. No new mesh, image, sound, animation, external asset source or upload is required. Existing asset limitations remain unchanged. See `LOBBY_AND_MATCHMAKING_UPDATE.md`.
 
-## Marketing asset delivery � 2026-10-21
+## Marketing asset delivery — 2026-10-21
 
 Owner reports the latest mobile camera/independent-hand revision works properly.
 Created marketing-only assets: three icon concepts, six thumbnail concepts, one

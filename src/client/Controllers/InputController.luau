@@ -27,6 +27,7 @@ InputController.LastInputKind = "Keyboard" :: "Keyboard" | "Gamepad" | "Touch"
 InputController.InputKindChanged = Signal.new() :: Signal.Signal<string>
 
 -- When false (menus open) combat actions are ignored.
+InputController.tuningOpen = false -- private panel owns combat input while open
 InputController.combatEnabled = false
 InputController.wheelSwitching = true
 
@@ -60,7 +61,7 @@ local COMBAT: { [Action]: boolean } =
 local held: { [Action]: number } = {}
 
 local function emit(action: Action, pressed: boolean)
-	if COMBAT[action] and not InputController.combatEnabled and pressed then
+	if COMBAT[action] and (not InputController.combatEnabled or InputController.tuningOpen) and pressed then
 		return
 	end
 	if HOLD[action] then

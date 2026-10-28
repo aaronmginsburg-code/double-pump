@@ -15,6 +15,7 @@ local WeaponConfig = require(Shared.Config.WeaponConfig)
 local CharacterService = require(script.Parent.CharacterService)
 local CombatContext = require(script.Parent.CombatContext)
 
+local Actors = require(script.Parent.Participants)
 local DamageService = {}
 
 export type HitInfo = {
@@ -50,9 +51,9 @@ local function teamOf(model: Model?): string?
 end
 
 local function nameOf(model: Model): string
-	local player = Combatants.player(model)
+	local player = Actors.fromModel(model)
 	if player then
-		return player.DisplayName
+		return Actors.name(player)
 	end
 	return model.Name
 end
@@ -77,6 +78,9 @@ function DamageService.apply(
 			-- its full hypothetical value, without health changes, logs or signals.
 			return amount, false, false
 		end
+	end
+	if attacker then
+		CombatContext.beginTraining(attacker, target)
 	end
 	if CharacterService.isProtected(target) then
 		return 0, false, false
@@ -113,8 +117,8 @@ function DamageService.apply(
 	end
 
 	DamageService.Damaged:Fire(attacker, target, dealt, info)
-	local victimPlayer = Combatants.player(target)
-	if victimPlayer then
+	local victimPlayer = Actors.fromModel(target)
+	if victimPlayer and not Actors.isBot(victimPlayer) then
 		combatEvent:FireClient(victimPlayer, "Damaged", {
 			amount = dealt,
 			from = info.origin,
@@ -132,7 +136,7 @@ function DamageService.apply(
 			end
 		end
 		for player, total in seen do
-			if total >= GameConfig.Player.AssistMinDamage and player.Parent then
+			if total >= GameConfig.Player.AssistMinDamage and Actors.exists(player) then
 				table.insert(assists, player)
 			end
 		end
@@ -148,13 +152,13 @@ function DamageService.apply(
 			doublePump = doublePump,
 			distance = info.distance,
 		}
-		local attackerCharacter = attacker and attacker.Character
+		local attackerCharacter = attacker and Actors.character(attacker)
 		combatEvent:FireAllClients("Elimination", {
-			killer = if attacker then attacker.DisplayName else "",
-			killerUserId = if attacker then attacker.UserId else 0,
+			killer = if attacker then Actors.name(attacker) else "",
+			killerUserId = if attacker then Actors.id(attacker) else 0,
 			killerTeam = teamOf(attackerCharacter),
 			victim = nameOf(target),
-			victimUserId = if victimPlayer then victimPlayer.UserId else 0,
+			victimUserId = if victimPlayer then Actors.id(victimPlayer) else 0,
 			victimTeam = teamOf(target),
 			headshot = info.headshot,
 			doublePump = doublePump,
@@ -187,18 +191,20 @@ function DamageService.forget(model: Model)
 	end
 end
 
-function DamageService.start()
-	combatEvent = Net.event("CombatEvent")
-	Players.PlayerRemoving:Connect(function(player)
-		lastHits[player] = nil
-		for _, log in damageLog do
-			for i = #log, 1, -1 do
-				if log[i].attacker == player then
-					table.remove(log, i)
-				end
+function DamageService.forgetParticipant(player: any)
+	lastHits[player] = nil
+	for _, log in damageLog do
+		for i = #log, 1, -1 do
+			if log[i].attacker == player then
+				table.remove(log, i)
 			end
 		end
-	end)
+	end
+end
+
+function DamageService.start()
+	combatEvent = Net.event("CombatEvent")
+	Players.PlayerRemoving:Connect(DamageService.forgetParticipant)
 	CharacterService.Died:Connect(function(_, character)
 		task.delay(1, DamageService.forget, character)
 	end)

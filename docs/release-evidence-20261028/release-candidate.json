@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-28",
+  "productionUniverse": 10772275012,
+  "productionPlace": 82505574993280,
+  "sourceCount": 125,
+  "sourceDigest": 433540397,
+  "preset": "Mobile",
+  "presetRevision": 3,
+  "automatedTests": 399,
+  "studioMultiplayerAssertions": 20,
+  "candidateSHA256": "02E21C4F2022B485673514118D7B9E6FD995FF7067164C76CA7F33148B928FCA",
+  "publication": "waiting for owner asset-permission grant"
+}

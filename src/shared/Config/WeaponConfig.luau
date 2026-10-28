@@ -113,4 +113,7 @@ WeaponConfig.Slots = {
 	{ id = 2, name = "Pump B", short = "B" },
 }
 
+local approved = require(script.Parent.ReleasePreset)
+local runtime = require(script.Parent.Parent.DeveloperConsole.Runtime)
+runtime.weapons(approved.values.weapons, WeaponConfig, WeaponConfig)
 return WeaponConfig

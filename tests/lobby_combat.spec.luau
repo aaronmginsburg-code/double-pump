@@ -134,7 +134,7 @@ T.describe("Server-owned lobby combat", function()
 				table.insert(pellets, { zone = "Head", distance = 5 })
 			end
 			local amount, head = damage.total(config, pellets)
-			expect(amount).toBeNear(157.5)
+			expect(amount).toBeNear(297.5)
 			expect(head).toBe(true)
 			for _ = 1, 20 do
 				expect(f.damage.apply(f.a, f.b.Character, amount, f.info)).toBeNear(amount)

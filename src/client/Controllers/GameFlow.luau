@@ -21,13 +21,17 @@ local Scoreboard = require(UI.Scoreboard)
 local Postgame = require(UI.Postgame)
 local MobileControls = require(UI.MobileControls)
 
+local ActionCues = require(game:GetService("ReplicatedStorage").Shared.Audio.ActionCues)
+
 local GameFlow = {}
+GameFlow.feedbackOpen = false
 
 local player = Players.LocalPlayer
 local releaseCursor: (() -> ())? = nil
 local lastKiller: Model? = nil
 local alignedCharacter: Model? = nil
 local alignedRevision: any = nil
+local watched: { [Model]: boolean } = setmetatable({}, { __mode = "k" })
 
 local function alive(): boolean
 	local character = player.Character
@@ -62,7 +66,8 @@ end
 -- Re-evaluates everything. Cheap; called on any relevant change.
 function GameFlow.refresh()
 	local mode = MatchClient.mode()
-	local menuOpen = MainMenu.isOpen
+	local feedbackOpen = GameFlow.feedbackOpen
+	local menuOpen = MainMenu.isOpen or feedbackOpen
 	local isAlive = alive()
 	local inPostgame = postgame()
 	local playing = mode ~= "Menu" and isAlive and not inPostgame
@@ -99,7 +104,7 @@ function GameFlow.refresh()
 	if not InputController.combatEnabled then
 		InputController.releaseAll()
 	end
-	ViewmodelController.setEnabled(playing)
+	ViewmodelController.setEnabled(playing and not feedbackOpen)
 	MobileControls.setActive(InputController.combatEnabled)
 	Hud.setVisible(mode ~= "Menu" and not inPostgame and not menuOpen)
 	if isAlive or mode == "Menu" or inPostgame then
@@ -126,12 +131,15 @@ function GameFlow.refresh()
 		local arena = workspace:FindFirstChild("Arena")
 		local ambience = arena and arena:GetAttribute("Ambience")
 		AudioController.setAmbience(
-			if MatchClient.myTeam() and typeof(ambience) == "string" and ambience ~= "" then ambience else nil
+			ActionCues.ambience(mode, MatchClient.myTeam() ~= nil, MatchClient.state(), ambience)
 		)
 	end
 end
 
 function GameFlow.toggleMenu()
+	if GameFlow.feedbackOpen then
+		return
+	end
 	if MatchClient.mode() == "Menu" then
 		return -- the menu is the screen; nothing to close to
 	end
@@ -144,12 +152,28 @@ function GameFlow.toggleMenu()
 end
 
 local function onCharacter(character: Model)
+	if watched[character] then
+		return
+	end
+	watched[character] = true
 	lastKiller = nil
+	local function suppressDefaultDeath(child: Instance)
+		if child:IsA("Sound") and child.Name == "Died" and AudioController.configured("Death") then
+			child.Volume = 0
+		end
+	end
+	for _, child in character:GetDescendants() do
+		suppressDefaultDeath(child)
+	end
+	character.DescendantAdded:Connect(suppressDefaultDeath)
 	character:GetAttributeChangedSignal("SpawnCFrame"):Connect(GameFlow.refresh)
 	character:GetAttributeChangedSignal("SpawnRevision"):Connect(GameFlow.refresh)
 	local humanoid = character:WaitForChild("Humanoid", 10) :: Humanoid?
 	if humanoid then
-		humanoid.Died:Connect(function()
+		humanoid.Died:Once(function()
+			if player.Character ~= character then
+				return
+			end
 			AudioController.play("Death")
 			GameFlow.refresh()
 		end)
@@ -158,11 +182,32 @@ local function onCharacter(character: Model)
 	if MainMenu.isOpen and MatchClient.mode() ~= "Menu" then
 		MainMenu.close()
 	end
-	AudioController.play("Spawn")
+	if player.Character == character and humanoid and humanoid.Health > 0 then
+		AudioController.play("Spawn")
+	end
 	GameFlow.refresh()
 end
 
 function GameFlow.start()
+	-- Arena replication can arrive after phase/team attributes; retry bed selection
+	-- when the model or its cue attribute becomes available, without another timer.
+	local function watchArena(child: Instance)
+		if child.Name ~= "Arena" then
+			return
+		end
+		child:GetAttributeChangedSignal("Ambience"):Connect(GameFlow.refresh)
+		task.defer(GameFlow.refresh)
+	end
+	workspace.ChildAdded:Connect(watchArena)
+	workspace.ChildRemoved:Connect(function(child)
+		if child.Name == "Arena" then
+			GameFlow.refresh()
+		end
+	end)
+	local arena = workspace:FindFirstChild("Arena")
+	if arena then
+		watchArena(arena)
+	end
 	player.CharacterAdded:Connect(onCharacter)
 	player.CharacterRemoving:Connect(function()
 		task.defer(GameFlow.refresh)
@@ -192,7 +237,7 @@ function GameFlow.start()
 			Scoreboard.setVisible(pressed and MatchClient.myTeam() ~= nil and not MainMenu.isOpen and not postgame())
 		end
 	end)
-	-- Closing the menu with its ✕ button
+	-- Closing the menu with its ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ button
 	local wasOpen = MainMenu.isOpen
 	game:GetService("RunService").Heartbeat:Connect(function()
 		if MainMenu.isOpen ~= wasOpen then

@@ -114,6 +114,9 @@ local function rollChallenges(data: Profile.Data)
 end
 
 local function onMatchEnded(result: any)
+	if result.training == true then
+		return
+	end
 	local length = math.max(1, os.clock() - matchStartedAt)
 	for player, info in result.participants do
 		local data = DataService.get(player)
@@ -135,6 +138,7 @@ local function onMatchEnded(result: any)
 		}
 		local reward = Levels.matchReward(summary)
 		local levelBefore = Levels.fromXp(data.xp).level
+		local masteryBefore = Levels.mastery(data.masteryKills).tier
 		local completedChallenges = {}
 
 		DataService.update(player, function(d)
@@ -193,6 +197,9 @@ local function onMatchEnded(result: any)
 			challenges = completedChallenges,
 			idle = reward.idle,
 			levelBefore = levelBefore,
+			unlocks = #unlocked,
+			masteryBefore = masteryBefore,
+			masteryAfter = Levels.mastery(data.masteryKills).tier,
 			levelAfter = Levels.fromXp(data.xp).level,
 			totalXp = data.xp,
 		})

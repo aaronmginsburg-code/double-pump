@@ -19,6 +19,7 @@ local MatchClient = require(Controllers.MatchClient)
 local Settings = require(Controllers.Settings)
 local InputController = require(Controllers.InputController)
 local AudioController = require(Controllers.AudioController)
+local Feedback = require(game:GetService("ReplicatedStorage").Shared.Audio.Feedback)
 local MobileLayout = require(game:GetService("ReplicatedStorage").Shared.Mobile.Layout)
 
 local Hud = {}
@@ -790,24 +791,20 @@ function Hud.start()
 	Settings.Changed:Connect(drawCrosshair)
 
 	WeaponController.HitConfirmed:Connect(function(results)
-		local anyHead, anyKill, anyDouble = false, false, false
-		for _, r in results do
-			if r.protected then
-				continue
-			end
-			Hud.damageNumber(r.damage, r.headshot)
-			anyHead = anyHead or r.headshot
-			anyKill = anyKill or r.killed
-			anyDouble = anyDouble or r.doublePump
+		local hit = Feedback.hit(results)
+		if not hit.cue then
+			return
 		end
-		Hud.hitmarker(anyHead, anyKill)
-		if anyKill then
-			AudioController.play(if anyDouble then "DoublePumpElim" else "Elimination")
-		elseif anyHead then
-			AudioController.play("HitHead")
-		else
-			AudioController.play("HitBody")
+		for _, result in hit.hits do
+			Hud.damageNumber(result.damage, result.headshot)
 		end
+		Hud.hitmarker(hit.headshot, hit.killed)
+		local cue = hit.cue
+		-- Until separate elimination art is approved, a real kill still confirms its hit.
+		if hit.killed and not AudioController.configured(cue) then
+			cue = if hit.headshot then "HitHead" else "HitBody"
+		end
+		AudioController.play(cue)
 	end)
 	MatchClient.Elimination:Connect(function(data)
 		Hud.feed(data)

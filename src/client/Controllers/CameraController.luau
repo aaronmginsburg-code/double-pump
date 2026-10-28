@@ -28,6 +28,8 @@ CameraController.mode = "Scenic" :: Mode
 CameraController.yaw = 0
 CameraController.pitch = 0
 CameraController.touchInputEnabled = false
+CameraController.tuningSensitivity = { Keyboard = 1, Touch = 1, Gamepad = 1 }
+CameraController.aimAssist = nil :: ((number, CFrame, string, boolean) -> (number, number, number))?
 
 local recoil = 0 -- current extra pitch from recoil (radians)
 local recoilYaw = 0
@@ -158,25 +160,55 @@ local function update(dt: number)
 	UserInputService.MouseIconEnabled = not wantLock
 
 	if mode == "Combat" and root and humanoid then
-		-- Look input
-		if wantLock and not CameraController.touchInputEnabled then
-			local delta = UserInputService:GetMouseDelta()
-			local k = C.MouseRadiansPerPixel * values.sensitivity
-			CameraController.yaw -= delta.X * k
-			CameraController.pitch -= delta.Y * k
+		-- Private-development presentation hook. Mouse and weapon state are untouched.
+		local mouse = if wantLock and not CameraController.touchInputEnabled
+			then UserInputService:GetMouseDelta()
+			else Vector2.zero
+		local stick = if wantLock then applyDeadzone(gamepadLook) else Vector2.zero
+		local touch = if wantLock then touchDelta else Vector2.zero
+		touchDelta = Vector2.zero
+		local device = "Keyboard"
+		if mouse.Magnitude == 0 then
+			local last = UserInputService:GetLastInputType()
+			if stick.Magnitude > 0 or last.Name:find("Gamepad") then
+				device = "Gamepad"
+			elseif CameraController.touchInputEnabled and last == Enum.UserInputType.Touch then
+				device = "Touch"
+			end
 		end
-		local stick = applyDeadzone(gamepadLook)
+		local slow, assistYaw, assistPitch = 1, 0, 0
+		if CameraController.aimAssist then
+			local aim = CFrame.new(root.Position + Vector3.new(0, C.EyeHeight, 0))
+				* CFrame.Angles(0, CameraController.yaw, 0)
+				* CFrame.Angles(CameraController.pitch, 0, 0)
+			slow, assistYaw, assistPitch = CameraController.aimAssist(
+				dt,
+				aim,
+				device,
+				stick.Magnitude > 0 or touch.Magnitude > 0 or mouse.Magnitude > 0
+			)
+		end
+		if mouse.Magnitude > 0 then
+			local k = C.MouseRadiansPerPixel * values.sensitivity * CameraController.tuningSensitivity.Keyboard * slow
+			CameraController.yaw -= mouse.X * k
+			CameraController.pitch -= mouse.Y * k
+		end
 		if stick.Magnitude > 0 then
-			local k = C.GamepadRadiansPerSecond * values.gamepadSensitivity * dt
+			local k = C.GamepadRadiansPerSecond
+				* values.gamepadSensitivity
+				* dt
+				* slow
+				* CameraController.tuningSensitivity.Gamepad
 			CameraController.yaw -= stick.X * k
 			CameraController.pitch += stick.Y * k
 		end
-		if touchDelta.Magnitude > 0 then
-			local k = C.TouchRadiansPerPixel * values.touchSensitivity
-			CameraController.yaw -= touchDelta.X * k
-			CameraController.pitch -= touchDelta.Y * k
-			touchDelta = Vector2.zero
+		if touch.Magnitude > 0 then
+			local k = C.TouchRadiansPerPixel * values.touchSensitivity * slow * CameraController.tuningSensitivity.Touch
+			CameraController.yaw -= touch.X * k
+			CameraController.pitch -= touch.Y * k
 		end
+		CameraController.yaw += assistYaw
+		CameraController.pitch += assistPitch
 		CameraController.pitch = math.clamp(CameraController.pitch, -C.MaxPitch, C.MaxPitch)
 
 		-- Recoil springs back

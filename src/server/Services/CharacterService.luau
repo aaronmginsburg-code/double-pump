@@ -16,6 +16,7 @@ local RateLimiter = require(Shared.Util.RateLimiter)
 local ShotgunModel = require(Shared.Weapons.ShotgunModel)
 local Signal = require(Shared.Util.Signal)
 
+local Actors = require(script.Parent.Participants)
 local CharacterService = {}
 
 CharacterService.Spawned = Signal.new() :: Signal.Signal<Player, Model>
@@ -93,7 +94,7 @@ local function mountWorldGun(player: Player, character: Model)
 		return
 	end
 	local gun = ShotgunModel.new("ThirdPerson")
-	if skinProvider then
+	if skinProvider and not Actors.isBot(player) then
 		gun:applySkin(skinProvider(player))
 	end
 	local rootPart = gun:weldForThirdPerson()
@@ -259,7 +260,53 @@ end
 
 -- Spawns (or respawns) a player's character at `cframe`.
 function CharacterService.spawn(player: Player, cframe: CFrame)
-	if not player.Parent then
+	if Actors.isBot(player) then
+		if not Actors.exists(player) or not player.template then
+			return
+		end
+		local old = player.model
+		local character = player.template:Clone()
+		character.Name = player.name
+		character.Parent = player.folder
+		Actors.bind(player, character)
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		assert(humanoid)
+		humanoid.RequiresNeck = false
+		useClassicJoints(character)
+		setupHumanoid(humanoid)
+		prepareBody(character)
+		character:SetAttribute("TrainingBot", true)
+		character:SetAttribute("BotId", player.id)
+		character:SetAttribute("TrainingOwnerId", player.owner.UserId)
+		character:SetAttribute("Team", player.team)
+		character:SetAttribute("Dead", false)
+		character:SetAttribute("Frozen", false)
+		character:SetAttribute("EquippedSlot", 1)
+		character:SetAttribute("AimPitch", 0)
+		character:SetAttribute("SpawnRevision", 1)
+		character:PivotTo(cframe + Vector3.new(0, 3, 0))
+		local root = character:FindFirstChild("HumanoidRootPart")
+		if root then
+			root:SetNetworkOwner(nil)
+		end
+		CharacterService.protect(character, GameConfig.Player.SpawnProtection)
+		mountWorldGun(player, character)
+		CollectionService:AddTag(character, Combatants.TAG)
+		humanoid.Died:Once(function()
+			if not Actors.exists(player) or player.model ~= character or humanoid.Health > 0 then
+				return
+			end
+			character:SetAttribute("Dead", true)
+			ragdoll(character)
+			CharacterService.Died:Fire(player, character)
+		end)
+		CharacterService.Spawned:Fire(player, character)
+		if old then
+			old:Destroy()
+		end
+		return
+	end
+	if not Actors.exists(player) then
 		return
 	end
 	pendingSpawn[player] = cframe + Vector3.new(0, 3, 0)
@@ -283,7 +330,7 @@ end
 -- the prepared rig and its listeners; loading another avatar here can race the
 -- engine's old-character teardown and create delayed, stale death notifications.
 function CharacterService.transfer(player: Player, cframe: CFrame)
-	local character = player.Character
+	local character = Actors.character(player)
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 	local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
 	if not character or not humanoid or not root or humanoid.Health <= 0 or character:GetAttribute("Dead") == true then
@@ -309,9 +356,13 @@ end
 
 function CharacterService.despawn(player: Player)
 	pendingSpawn[player] = nil
-	local character = player.Character
+	local character = Actors.character(player)
 	if character then
-		player.Character = nil
+		if Actors.isBot(player) then
+			Actors.bind(player, nil)
+		else
+			player.Character = nil
+		end
 		character:Destroy()
 	end
 end
@@ -335,7 +386,7 @@ end
 
 -- Re-applies the skin to the gun other players see (after equipping a new skin).
 function CharacterService.refreshSkin(player: Player)
-	local character = player.Character
+	local character = Actors.character(player)
 	local model = character and character:FindFirstChild("WorldShotgun", true)
 	if skinProvider and model and model:IsA("Model") then
 		ShotgunModel.wrap(model):applySkin(skinProvider(player))
@@ -346,7 +397,7 @@ local function onPlayerAction(player: Player, action: any, value: any)
 	if not limiter:allow(player, os.clock()) then
 		return
 	end
-	local character = player.Character
+	local character = Actors.character(player)
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 	if not character or not humanoid or humanoid.Health <= 0 then
 		return

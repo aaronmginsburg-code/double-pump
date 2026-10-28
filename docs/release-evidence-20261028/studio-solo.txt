@@ -1,0 +1,18 @@
+2026-10-28T09:21:00.872Z,563.872070,73cc,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_ISOLATION_PASS
+2026-10-28T09:25:21.118Z,824.118347,97c8,6,Info [FLog::CreatorOutput] PUBLIC_TARGET_DEBUG 749, 381 374.5, 180.50025939941406, 12.0699462890625 true Workspace.Dummies.Training Bot.UpperTorso 100 Lobby 137
+2026-10-28T09:25:23.581Z,826.581787,9b08,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_ISOLATION_PASS
+2026-10-28T09:27:55.928Z,978.928406,73a0,6,Info [FLog::CreatorOutput] PUBLIC_TARGET_DEBUG 749, 381 374.5, 190.49990844726562, 12.06005859375 true Workspace.Dummies.Training Bot.UpperTorso 100 Lobby 139
+2026-10-28T09:27:58.643Z,981.643860,73a0,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_ISOLATION_PASS
+2026-10-28T09:27:58.744Z,981.744080,8090,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_AUTO_FIRE_PASS 0.001932899933308363 2.5496316000353545 2
+2026-10-28T09:27:59.611Z,982.611328,526c,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_WALL_PASS
+2026-10-28T09:28:00.225Z,983.225952,97c8,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_UI_FENCE_PASS
+2026-10-28T09:28:00.827Z,983.827026,8090,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_KEYBOARD_PASS
+2026-10-28T09:33:08.865Z,1291.865723,9b08,6,Info [FLog::CreatorOutput] PUBLIC_TARGET_DEBUG 749, 381 374.49993896484375, 190.49990844726562, 12.06005859375 true Workspace.Dummies.Training Bot.UpperTorso 10000 Lobby 139
+2026-10-28T09:33:09.568Z,1292.568237,73a0,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_AUTO_FIRE_PASS 0.0022299999836832285 0.4158783999737352 2
+2026-10-28T09:33:10.432Z,1293.432495,9b08,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_WALL_PASS
+2026-10-28T09:33:11.033Z,1294.033569,97c8,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_UI_FENCE_PASS
+2026-10-28T09:33:11.414Z,1294.414795,9b08,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_ISOLATION_PASS
+2026-10-28T09:33:11.649Z,1294.649170,9b08,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_KEYBOARD_PASS
+2026-10-28T09:33:16.817Z,1299.817505,9b08,6,Info [FLog::CreatorOutput] PUBLIC_RESPAWN_DEBUG {"state":{"rules":{"timing":{"FireCooldown":1,"EquipTime":0.35,"MinShotInterval":0.4,"InputBuffer":0.1,"ServerTolerance":0.08,"ReloadStartTime":0.3,"ReloadInsertTime":0.27,"ReloadEndTime":0.3,"SwapTime":0.15},"magazineSize":6},"slots":[{"nextFireTime":{"m":null,"t":"numeric","v":"-inf"},"lastFireTime":{"m":null,"t":"numeric","v":"-inf"},"reloadStartedAt":0,"reloadBaseAmmo":0,"ammo":6,"shotsFired":0,"reloading":false},{"nextFireTime":{"m":null,"t":"numeric","v":"-inf"},"lastFireTime":{"m":null,"t":"numeric","v":"-inf"},"reloadStartedAt":0,"reloadBaseAmmo":0,"ammo":6,"shotsFired":0,"reloading":false}],"nextShotTime":{"m":null,"t":"numeric","v":"-inf"},"lastSwapAt":{"m":null,"t":"numeric","v":"-inf"},"readyAt":1296.1129931999836,"equipped":1,"shotCounter":0},"health":100,"jump":14,"owned":1,"accepted":6,"walk":28.5}
+2026-10-28T09:33:16.817Z,1299.817505,9b08,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_RESPAWN_PASS 100 6
+2026-10-28T09:33:16.817Z,1299.817505,9b08,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_COMPLETE 0.3220998914912343

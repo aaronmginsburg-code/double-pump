@@ -9,17 +9,26 @@
       "Assets": {
         "$path": "assets/roblox",
         "$ignoreUnknownInstances": true
+      },
+      "FeedbackClient": {
+        "$path": "feedback/client"
       }
     },
     "ServerScriptService": {
       "Server": {
         "$path": "src/server"
+      },
+      "FeedbackBackend": {
+        "$path": "feedback/backend"
       }
     },
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "Client": {
           "$path": "src/client"
+        },
+        "Feedback": {
+          "$path": "feedback/Feedback.client.luau"
         }
       },
       "StarterCharacterScripts": {
@@ -29,7 +38,7 @@
         }
       },
       "$properties": {
-        "CharacterJumpHeight": 7.6,
+        "CharacterJumpHeight": 14,
         "CharacterUseJumpPower": false
       }
     },
@@ -43,6 +52,9 @@
         "FallenPartsDestroyHeight": -120,
         "Gravity": 196.2,
         "StreamingEnabled": false
+      },
+      "UniversalFeedbackBoard": {
+        "$path": "assets/scene/UniversalFeedbackBoard.rbxm"
       }
     },
     "SoundService": {

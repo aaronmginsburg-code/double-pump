@@ -29,7 +29,10 @@ local COLS = {
 	{ key = "Score", title = "SCORE", width = 100 },
 }
 
-local function attr(p: Player, key: string): number
+local function bot(p: any): boolean
+	return p:IsA("Model") and p:GetAttribute("TrainingBot") == true
+end
+local function attr(p: any, key: string): number
 	local v = p:GetAttribute(key)
 	return if typeof(v) == "number" then v else 0
 end
@@ -100,16 +103,26 @@ local function draw()
 				table.insert(members, p)
 			end
 		end
+		local npcs = workspace:FindFirstChild("TrainingBots")
+		if npcs then
+			for _, model in npcs:GetChildren() do
+				if model:IsA("Model") and model:GetAttribute("TrainingBot") and model:GetAttribute("Team") == team then
+					table.insert(members, model)
+				end
+			end
+		end
 		table.sort(members, function(a, b)
 			local sa, sb = attr(a, "Score"), attr(b, "Score")
 			if sa ~= sb then
 				return sa > sb
 			end
-			return a.UserId < b.UserId
+			return (if bot(a) then "z" .. a.Name else tostring(a.UserId))
+				< (if bot(b) then "z" .. b.Name else tostring(b.UserId))
 		end)
 		for i, p in members do
 			local mine = p == player
-			local alive = p.Character ~= nil and p.Character:GetAttribute("Dead") ~= true
+			local character = if bot(p) then p else p.Character
+			local alive = character ~= nil and character:GetAttribute("Dead") ~= true
 			local row = new("Frame", {
 				Size = UDim2.new(1, 0, 0, 46),
 				BackgroundColor3 = if mine then Theme.teamColor(team) else C.PanelLight,
@@ -118,7 +131,7 @@ local function draw()
 				Parent = list,
 			}, { Theme.corner(6) })
 			Theme.label({
-				Text = p.DisplayName,
+				Text = if bot(p) then p.Name .. " [BOT]" else p.DisplayName,
 				Size = UDim2.new(1, -330, 0, 26),
 				Position = UDim2.fromOffset(12, 10),
 				TextXAlignment = Enum.TextXAlignment.Left,

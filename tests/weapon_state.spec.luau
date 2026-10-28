@@ -7,6 +7,7 @@ local WeaponState = Loader.require(Shared.Weapons.WeaponState)
 
 local rules = WeaponState.rulesFromConfig(WeaponConfig)
 local timing = WeaponConfig.Timing
+local capacity = WeaponConfig.Ammo.MagazineSize
 local describe, it, expect = T.describe, T.it, T.expect
 
 -- A state whose gun is raised at t=0
@@ -20,8 +21,8 @@ describe("WeaponState", function()
 		local s = fresh()
 		expect(#s.slots).toBe(2)
 		expect(s.equipped).toBe(1)
-		expect(s.slots[1].ammo).toBe(5)
-		expect(s.slots[2].ammo).toBe(5)
+		expect(s.slots[1].ammo).toBe(capacity)
+		expect(s.slots[2].ammo).toBe(capacity)
 		expect(s.slots[1]).toBeTruthy()
 		expect(s.slots[1] ~= s.slots[2]).toBeTruthy()
 	end)
@@ -38,8 +39,8 @@ describe("WeaponState", function()
 		local s = fresh()
 		local ok = WeaponState.fire(s, 1, 0)
 		expect(ok).toBeTruthy()
-		expect(s.slots[1].ammo).toBe(4)
-		expect(s.slots[2].ammo).toBe(5)
+		expect(s.slots[1].ammo).toBe(capacity - 1)
+		expect(s.slots[2].ammo).toBe(capacity)
 	end)
 
 	it("enforces the per-gun cooldown", function()
@@ -126,7 +127,7 @@ describe("WeaponState", function()
 
 	it("reports Empty with no shells", function()
 		local s = fresh()
-		for i = 0, 4 do
+		for i = 0, capacity - 1 do
 			expect((WeaponState.fire(s, 1, i * 1.0))).toBeTruthy()
 		end
 		local ok, why = WeaponState.fire(s, 1, 10)
@@ -137,7 +138,7 @@ describe("WeaponState", function()
 
 	it("reloads one shell at a time", function()
 		local s = fresh()
-		for i = 0, 4 do
+		for i = 0, capacity - 1 do
 			WeaponState.fire(s, 1, i)
 		end
 		expect(WeaponState.startReload(s, 10)).toBeTruthy()
@@ -145,8 +146,8 @@ describe("WeaponState", function()
 		WeaponState.syncReload(s, 1, tStart + timing.ReloadInsertTime * 2 + 0.01)
 		expect(s.slots[1].ammo).toBe(2)
 		expect(s.slots[1].reloading).toBeTruthy()
-		WeaponState.syncReload(s, 1, tStart + timing.ReloadInsertTime * 5 + 0.01)
-		expect(s.slots[1].ammo).toBe(5)
+		WeaponState.syncReload(s, 1, tStart + timing.ReloadInsertTime * capacity + 0.01)
+		expect(s.slots[1].ammo).toBe(capacity)
 		expect(s.slots[1].reloading).toBeFalsy()
 	end)
 
@@ -157,7 +158,7 @@ describe("WeaponState", function()
 
 	it("firing interrupts a reload and keeps inserted shells", function()
 		local s = fresh()
-		for i = 0, 4 do
+		for i = 0, capacity - 1 do
 			WeaponState.fire(s, 1, i)
 		end
 		WeaponState.startReload(s, 10)
@@ -169,7 +170,7 @@ describe("WeaponState", function()
 
 	it("can't fire mid-reload before the first shell is in", function()
 		local s = fresh()
-		for i = 0, 4 do
+		for i = 0, capacity - 1 do
 			WeaponState.fire(s, 1, i)
 		end
 		WeaponState.startReload(s, 10)
@@ -185,8 +186,8 @@ describe("WeaponState", function()
 		WeaponState.startReload(s, 5)
 		WeaponState.equip(s, 2, 5 + timing.ReloadStartTime + timing.ReloadInsertTime + 0.01)
 		expect(s.slots[1].reloading).toBeFalsy()
-		expect(s.slots[1].ammo).toBe(4)
-		expect(s.slots[2].ammo).toBe(5)
+		expect(s.slots[1].ammo).toBe(capacity - 1)
+		expect(s.slots[2].ammo).toBe(capacity)
 	end)
 
 	it("reloading during a swap starts inserting once the gun is raised", function()
@@ -221,7 +222,7 @@ describe("WeaponState", function()
 		WeaponState.fire(s, 1, 0)
 		WeaponState.equip(s, 2, 0.1)
 		WeaponState.reset(s, 0.2)
-		expect(s.slots[1].ammo).toBe(5)
+		expect(s.slots[1].ammo).toBe(capacity)
 		expect(s.equipped).toBe(1)
 		expect(s.slots[1].nextFireTime).toBe(-math.huge)
 	end)
@@ -251,7 +252,7 @@ describe("WeaponState", function()
 		local v = WeaponState.view(s, 1, 0.5)
 		expect(v.cooldownFraction).toBeNear(0.5)
 		expect(v.ready).toBeFalsy()
-		expect(v.ammo).toBe(4)
+		expect(v.ammo).toBe(capacity - 1)
 		local v2 = WeaponState.view(s, 2, 0.5)
 		expect(v2.ready).toBeTruthy()
 	end)

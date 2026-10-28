@@ -225,6 +225,7 @@ local function makeEnv(scriptNode)
 		PhysicalProperties = roblox.PhysicalProperties,
 		Font = roblox.Font,
 		Random = Loader.Random,
+		RaycastParams = Loader.RaycastParams,
 		typeof = robloxTypeof,
 		task = Loader.task,
 		tick = os.clock,

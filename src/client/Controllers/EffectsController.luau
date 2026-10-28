@@ -5,6 +5,7 @@
 -- and a "reduced effects" setting.
 
 local Players = game:GetService("Players")
+local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
@@ -18,6 +19,8 @@ local Net = require(Shared.Net)
 local ShotgunModel = require(Shared.Weapons.ShotgunModel)
 local Spread = require(Shared.Weapons.Spread)
 local WeaponConfig = require(Shared.Config.WeaponConfig)
+local Feedback = require(Shared.Audio.Feedback)
+local ActionCues = require(Shared.Audio.ActionCues)
 
 local AudioController = require(script.Parent.AudioController)
 local Settings = require(script.Parent.Settings)
@@ -31,6 +34,16 @@ local folder: Folder
 local holePool: { BasePart } = {}
 local holeIndex = 0
 local MAX_HOLES = 60
+local localPumpSound: Sound? = nil
+local handlingSound: Sound? = nil
+local shells: { [BasePart]: { position: Vector3, falling: boolean } } = {}
+
+local function stopLocalPump()
+	AudioController.stop(localPumpSound)
+	localPumpSound = nil
+	AudioController.stop(handlingSound)
+	handlingSound = nil
+end
 
 ---------------------------------------------------------------------------------------
 -- Building blocks
@@ -207,23 +220,27 @@ local function spawnShell(at: CFrame)
 		+ camera.LookVector * -1
 	shell.AssemblyAngularVelocity = Vector3.new(math.random() * 20 - 10, 15, math.random() * 20 - 10)
 	Debris:AddItem(shell, 2.5)
-	task.delay(0.35, function()
-		if shell.Parent then
-			AudioController.play("ShellBounce", { position = shell.Position, pitch = 0.9 + math.random() * 0.2 })
-		end
-	end)
+	shells[shell] = { position = shell.Position, falling = false }
 end
 
 ---------------------------------------------------------------------------------------
 -- Local player's shots
 
+local function playImpacts(hits: { any })
+	for _, hit in ActionCues.impacts(hits) do
+		AudioController.play(hit.cue, { position = hit.position })
+	end
+end
+
 local function onLocalFired(info: WeaponController.FireInfo)
+	stopLocalPump()
 	local muzzle = ViewmodelController.muzzle(info.slot)
 	local from = if muzzle then muzzle.Position else info.origin + info.aim * 2
 	if muzzle then
 		muzzleFlash(muzzle, true)
 	end
 	AudioController.play("Fire", { pitch = 0.97 + math.random() * 0.06 })
+	playImpacts(info.pellets)
 	for _, pellet in info.pellets do
 		tracer(from, pellet.position)
 		if pellet.instance then
@@ -243,9 +260,17 @@ type Remote = {
 	swapDip: number, -- 1 right after a swap, decays to 0
 	kick: number,
 	crouch: number, -- 0..1 blended
+	audioEpoch: number,
+	pumpSound: Sound?,
 }
 
 local remotes: { [Model]: Remote } = {}
+
+local function stopRemotePump(entry: Remote)
+	entry.audioEpoch += 1
+	AudioController.stop(entry.pumpSound)
+	entry.pumpSound = nil
+end
 
 local function getRemote(character: Model): Remote?
 	if character == player.Character then
@@ -263,16 +288,34 @@ local function getRemote(character: Model): Remote?
 		swapDip = 0,
 		kick = 0,
 		crouch = 0,
+		audioEpoch = 0,
+		pumpSound = nil,
 	}
 	remotes[character] = entry
 	character:GetAttributeChangedSignal("EquippedSlot"):Connect(function()
 		local e = remotes[character]
 		if e then
 			e.swapDip = 1
-			AudioController.play("Swap", { parent = character.PrimaryPart })
+			e.slot = (character:GetAttribute("EquippedSlot") :: number?) or 1
+			stopRemotePump(e)
+			if character.PrimaryPart then
+				AudioController.play("Swap", { parent = character.PrimaryPart })
+			end
 		end
 	end)
+	for _, attribute in { "Dead", "SpawnRevision" } do
+		character:GetAttributeChangedSignal(attribute):Connect(function()
+			local current = remotes[character]
+			if current then
+				stopRemotePump(current)
+			end
+		end)
+	end
 	character.Destroying:Once(function()
+		local current = remotes[character]
+		if current then
+			stopRemotePump(current)
+		end
 		remotes[character] = nil
 	end)
 	return entry
@@ -298,6 +341,8 @@ local function onRemoteShot(character: Model, info: any)
 	if not entry then
 		return
 	end
+	stopRemotePump(entry)
+	local audioEpoch = entry.audioEpoch
 	entry.kick = 1
 	local gun = remoteGun(entry)
 	local muzzle = if gun then gun:point("Muzzle") else CFrame.new(info.origin)
@@ -309,21 +354,42 @@ local function onRemoteShot(character: Model, info: any)
 		if typeof(info.aim) == "Vector3" and typeof(info.origin) == "Vector3" and typeof(info.shot) == "number" then
 			local dirs = Spread.directions(WeaponConfig.Spread, info.aim, info.shot, info.mult or 1)
 			local params = Collision.shotParams({ character, folder })
+			local audioHits = {}
 			for _, d in dirs do
 				local result = workspace:Raycast(info.origin, d * WeaponConfig.Damage.MaxRange, params)
 				local to = if result then result.Position else info.origin + d * 80
 				tracer(muzzle.Position, to)
 				if result then
 					impact(result.Position, result.Normal, result.Material, Combatants.fromPart(result.Instance) ~= nil)
+					table.insert(audioHits, {
+						instance = result.Instance,
+						position = result.Position,
+						material = result.Material,
+						isCharacter = Combatants.fromPart(result.Instance) ~= nil,
+					})
 				end
 			end
+			playImpacts(audioHits)
 		end
 	end
 	-- Pump after the recoil, like the first-person model
 	task.delay(0.2, function()
-		if entry.character.Parent then
-			entry.anim:play("TP_Pump", { fadeIn = 0.03 })
-			AudioController.play("Pump", { parent = character.PrimaryPart })
+		if entry.character.Parent and character:GetAttribute("Dead") ~= true and entry.audioEpoch == audioEpoch then
+			entry.anim:play("TP_Pump", {
+				fadeIn = 0.03,
+				onEvent = function(event)
+					local cue = Feedback.pumpCue(event)
+					if
+						cue
+						and entry.audioEpoch == audioEpoch
+						and character:GetAttribute("Dead") ~= true
+						and character.PrimaryPart
+					then
+						AudioController.stop(entry.pumpSound)
+						entry.pumpSound = AudioController.play(cue, { parent = character.PrimaryPart })
+					end
+				end,
+			})
 		end
 	end)
 end
@@ -412,19 +478,32 @@ function EffectsController.start()
 		AudioController.play("EmptyClick")
 	end)
 	WeaponController.Equipped:Connect(function(_, _, isSpawn)
-		AudioController.play(if isSpawn then "Equip" else "Swap")
+		stopLocalPump()
+		handlingSound = AudioController.play(if isSpawn then "Equip" else "Swap")
 	end)
 	WeaponController.ReloadStarted:Connect(function()
-		AudioController.play("ReloadStart")
+		stopLocalPump()
+		handlingSound = AudioController.play("ReloadStart")
 	end)
 	WeaponController.ShellInserted:Connect(function()
-		AudioController.play("ShellInsert", { pitch = 0.95 + math.random() * 0.1 })
+		AudioController.stop(handlingSound)
+		handlingSound = AudioController.play("ShellInsert", { pitch = 0.95 + math.random() * 0.1 })
 	end)
 	ViewmodelController.ShellEjected:Connect(function(_, at)
 		spawnShell(at)
 	end)
-	ViewmodelController.PumpStarted:Connect(function(_, speed)
-		AudioController.play("Pump", { pitch = speed })
+	WeaponController.Reset:Connect(stopLocalPump)
+	player.CharacterRemoving:Connect(stopLocalPump)
+	ViewmodelController.AnimEvent:Connect(function(slot, event)
+		local cue = Feedback.pumpCue(event)
+		if event == "ReloadDone" and WeaponController.active and slot == WeaponController.state.equipped then
+			AudioController.stop(handlingSound)
+			handlingSound = AudioController.play("ReloadEnd")
+		end
+		if cue and WeaponController.active and slot == WeaponController.state.equipped then
+			stopLocalPump()
+			localPumpSound = AudioController.play(cue)
+		end
 	end)
 
 	Net.event("WeaponEvent").OnClientEvent:Connect(function(kind, a, b)
@@ -442,11 +521,52 @@ function EffectsController.start()
 			track(other.Character)
 		end
 	end
+	CollectionService:GetInstanceAddedSignal(Combatants.TAG):Connect(function(model)
+		if model:IsA("Model") and model:GetAttribute("TrainingBot") then
+			track(model)
+		end
+	end)
+	for _, model in CollectionService:GetTagged(Combatants.TAG) do
+		if model:IsA("Model") and model:GetAttribute("TrainingBot") then
+			track(model)
+		end
+	end
 	Players.PlayerAdded:Connect(watchPlayer)
 	for _, other in Players:GetPlayers() do
 		watchPlayer(other)
 	end
 	RunService.Stepped:Connect(function(_, dt)
+		if not WeaponController.active then
+			stopLocalPump()
+		end
+		local roots: { Instance } = { workspace.Terrain }
+		for _, name in { "Range", "Arena" } do
+			local root = workspace:FindFirstChild(name)
+			if root then
+				table.insert(roots, root)
+			end
+		end
+		local params = Collision.worldParams(roots)
+		params.CollisionGroup = Collision.EFFECTS
+		params.RespectCanCollide = true
+		for shell, state in shells do
+			if not shell.Parent then
+				shells[shell] = nil
+				continue
+			end
+			local position = shell.Position
+			local travel = position - state.position
+			local contact = if travel.Magnitude > 0.001 then workspace:Raycast(state.position, travel, params) else nil
+			contact = contact
+				or workspace:Raycast(position, Vector3.new(0, -shell.Size.Magnitude / 2 - 0.05, 0), params)
+			if contact and state.falling and contact.Normal.Y >= 0.5 then
+				shells[shell] = nil -- first floor contact only
+				AudioController.play("ShellBounce", { position = contact.Position, pitch = 0.9 + math.random() * 0.2 })
+			else
+				state.position = position
+				state.falling = state.falling or shell.AssemblyLinearVelocity.Y < -0.5
+			end
+		end
 		poseRemotes(dt)
 	end)
 end
