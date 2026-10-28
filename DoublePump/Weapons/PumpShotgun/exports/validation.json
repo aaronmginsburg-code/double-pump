@@ -1,0 +1,257 @@
+{
+  "blender": "5.2.2 LTS",
+  "triangles": {
+    "master_all_parts": 23922,
+    "fp_gun": 22962,
+    "fp_shells": 960,
+    "fp_total": 23922,
+    "tp": 5676
+  },
+  "textures": {
+    "textures/first_person/T_PumpShotgun_BaseColor.png": [
+      2048,
+      2048
+    ],
+    "textures/first_person/T_PumpShotgun_Metalness.png": [
+      2048,
+      2048
+    ],
+    "textures/first_person/T_PumpShotgun_Normal.png": [
+      2048,
+      2048
+    ],
+    "textures/first_person/T_PumpShotgun_Roughness.png": [
+      2048,
+      2048
+    ],
+    "textures/roblox_1024/T_PumpShotgun_BaseColor.png": [
+      1024,
+      1024
+    ],
+    "textures/roblox_1024/T_PumpShotgun_Metalness.png": [
+      1024,
+      1024
+    ],
+    "textures/roblox_1024/T_PumpShotgun_Normal.png": [
+      1024,
+      1024
+    ],
+    "textures/roblox_1024/T_PumpShotgun_Roughness.png": [
+      1024,
+      1024
+    ],
+    "textures/third_person/T_PumpShotgun_TP_BaseColor.png": [
+      1024,
+      1024
+    ],
+    "textures/third_person/T_PumpShotgun_TP_Metalness.png": [
+      1024,
+      1024
+    ],
+    "textures/third_person/T_PumpShotgun_TP_Normal.png": [
+      1024,
+      1024
+    ],
+    "textures/third_person/T_PumpShotgun_TP_Roughness.png": [
+      1024,
+      1024
+    ]
+  },
+  "size_m": [
+    0.0544,
+    1.0347,
+    0.1679
+  ],
+  "checks": [
+    {
+      "check": "blend opens",
+      "ok": true,
+      "detail": "blender/PumpShotgun_Master.blend"
+    },
+    {
+      "check": "required objects exist",
+      "ok": true,
+      "detail": "29 expected"
+    },
+    {
+      "check": "ejection port present in receiver",
+      "ok": true,
+      "detail": "boolean cut verified by renders"
+    },
+    {
+      "check": "FP bone names",
+      "ok": true,
+      "detail": "ViewmodelRoot, Weapon, Pump, SupportHand, Bolt, Trigger, ShellCarrier, ShellSpent, ShellLive, Grip, Muzzle, ShellEject, ShellLoad"
+    },
+    {
+      "check": "TP bone names",
+      "ok": true,
+      "detail": "ViewmodelRoot, Weapon, Pump, SupportHand, Grip, Muzzle, ShellEject"
+    },
+    {
+      "check": "required actions exist",
+      "ok": true,
+      "detail": "Idle=240f, Fire=18f, Pump=30f, ReloadStart=18f, ReloadInsert=36f, ReloadEnd=18f, Equip=24f, SwapIn=9f, Unequip=9f"
+    },
+    {
+      "check": "TP pump action exists",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "one material per game mesh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "game meshes triangulated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "single UV set inside 0-1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "no missing texture dependencies",
+      "ok": true,
+      "detail": "8 external images"
+    },
+    {
+      "check": "texture sets complete",
+      "ok": true,
+      "detail": "12 files"
+    },
+    {
+      "check": "FP triangles within 10k-25k",
+      "ok": true,
+      "detail": "23922 (gun 22962)"
+    },
+    {
+      "check": "TP triangles within 3k-8k",
+      "ok": true,
+      "detail": "5676"
+    },
+    {
+      "check": "master size ~1.02 m long",
+      "ok": true,
+      "detail": "0.054 x 1.035 x 0.168 m"
+    },
+    {
+      "check": "moving parts clear static parts on every sampled frame",
+      "ok": true,
+      "detail": "rest-pose contacts (ignored as baseline): {('Trigger', 'Receiver'): 14, ('Trigger', 'TriggerGuard'): 28} | RESULT: PASS"
+    },
+    {
+      "check": "reimport first_person/PumpShotgun_FP.fbx: hierarchy + bones",
+      "ok": true,
+      "detail": "armature=Rig_PumpShotgun, meshes=['FP_PumpShotgun', 'FP_Shell_Live', 'FP_Shell_Spent'], cameras/lights=0"
+    },
+    {
+      "check": "reimport first_person/PumpShotgun_FP.fbx: skinned + tri counts",
+      "ok": true,
+      "detail": "[22962, 440, 520]"
+    },
+    {
+      "check": "reimport first_person/PumpShotgun_FP.fbx: scale preserved",
+      "ok": true,
+      "detail": "0.054 x 1.035 x 0.168 m; FBX UnitScaleFactor=100.0"
+    },
+    {
+      "check": "reimport third_person/PumpShotgun_TP.fbx: hierarchy + bones",
+      "ok": true,
+      "detail": "armature=TP_Rig, meshes=['TP_PumpShotgun'], cameras/lights=0"
+    },
+    {
+      "check": "reimport third_person/PumpShotgun_TP.fbx: skinned + tri counts",
+      "ok": true,
+      "detail": "[5676]"
+    },
+    {
+      "check": "reimport third_person/PumpShotgun_TP.fbx: scale preserved",
+      "ok": true,
+      "detail": "0.054 x 1.033 x 0.167 m; FBX UnitScaleFactor=100.0"
+    },
+    {
+      "check": "reimport animation PumpShotgun_Equip",
+      "ok": true,
+      "detail": "frames [1, 25] (expected [0, 24])"
+    },
+    {
+      "check": "reimport animation PumpShotgun_Fire",
+      "ok": true,
+      "detail": "frames [1, 19] (expected [0, 18])"
+    },
+    {
+      "check": "reimport animation PumpShotgun_Idle",
+      "ok": true,
+      "detail": "frames [1, 241] (expected [0, 240])"
+    },
+    {
+      "check": "reimport animation PumpShotgun_Pump",
+      "ok": true,
+      "detail": "frames [1, 31] (expected [0, 30]); Pump bone travel at frame 11 = 0.0920 m (stroke 0.092)"
+    },
+    {
+      "check": "reimport animation PumpShotgun_ReloadEnd",
+      "ok": true,
+      "detail": "frames [1, 19] (expected [0, 18])"
+    },
+    {
+      "check": "reimport animation PumpShotgun_ReloadInsert",
+      "ok": true,
+      "detail": "frames [1, 37] (expected [0, 36])"
+    },
+    {
+      "check": "reimport animation PumpShotgun_ReloadStart",
+      "ok": true,
+      "detail": "frames [1, 19] (expected [0, 18])"
+    },
+    {
+      "check": "reimport animation PumpShotgun_SwapIn",
+      "ok": true,
+      "detail": "frames [1, 10] (expected [0, 9])"
+    },
+    {
+      "check": "reimport animation PumpShotgun_TP_Pump",
+      "ok": true,
+      "detail": "frames [1, 31] (expected None)"
+    },
+    {
+      "check": "reimport animation PumpShotgun_Unequip",
+      "ok": true,
+      "detail": "frames [1, 10] (expected [0, 9])"
+    },
+    {
+      "check": "first_person/PumpShotgun_FP.glb: muzzle points -Z (Roblox LookVector), +Y up",
+      "ok": true,
+      "detail": "Muzzle node at (0.000, 0.012, -0.605) m; 9 animations"
+    },
+    {
+      "check": "reimport first_person/PumpShotgun_FP.glb",
+      "ok": true,
+      "detail": "meshes=['FP_PumpShotgun', 'FP_Shell_Live', 'FP_Shell_Spent'], animations=['PumpShotgun_Idle', 'PumpShotgun_Fire', 'PumpShotgun_Pump', 'PumpShotgun_ReloadStart', 'PumpShotgun_ReloadInsert', 'PumpShotgun_ReloadEnd', 'PumpShotgun_Equip', 'PumpShotgun_SwapIn', 'PumpShotgun_Unequip']"
+    },
+    {
+      "check": "third_person/PumpShotgun_TP.glb: muzzle points -Z (Roblox LookVector), +Y up",
+      "ok": true,
+      "detail": "Muzzle node at (0.000, 0.012, -0.605) m; 1 animations"
+    },
+    {
+      "check": "reimport third_person/PumpShotgun_TP.glb",
+      "ok": true,
+      "detail": "meshes=['TP_PumpShotgun'], animations=['Animation']"
+    },
+    {
+      "check": "reimport props/Shell_Live.fbx",
+      "ok": true,
+      "detail": "0.0225 x 0.0700 x 0.0225 m"
+    },
+    {
+      "check": "reimport props/Shell_Spent.fbx",
+      "ok": true,
+      "detail": "0.0225 x 0.0720 x 0.0225 m"
+    }
+  ]
+}
