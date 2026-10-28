@@ -21,6 +21,7 @@ local InputController = require(Controllers.InputController)
 local AudioController = require(Controllers.AudioController)
 local Feedback = require(game:GetService("ReplicatedStorage").Shared.Audio.Feedback)
 local MobileLayout = require(game:GetService("ReplicatedStorage").Shared.Mobile.Layout)
+local WeaponConfig = require(game:GetService("ReplicatedStorage").Shared.Config.WeaponConfig)
 
 local Hud = {}
 
@@ -249,10 +250,12 @@ local function buildWeapons()
 			}),
 		})
 		local pips = {}
-		for i = 1, 5 do
+		local capacity = WeaponConfig.Ammo.MagazineSize
+		local pipWidth = math.min(30, (192 - 8 * (capacity - 1)) / capacity)
+		for i = 1, capacity do
 			local pip = new("Frame", {
 				LayoutOrder = i,
-				Size = UDim2.fromOffset(30, 26),
+				Size = UDim2.fromOffset(pipWidth, 26),
 				BackgroundColor3 = C.Hot,
 				Parent = pipRow,
 			}, {

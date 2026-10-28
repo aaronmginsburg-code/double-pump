@@ -31,6 +31,7 @@ local targets: { [Model]: boolean } = {}
 local selected: Model? = nil
 local nextScan = 0
 local lastShot = 0
+local pendingAutoSwap = false
 local function active(): boolean
 	local char = player.Character
 	local hum = char and char:FindFirstChildOfClass("Humanoid")
@@ -139,6 +140,12 @@ function C.start()
 		C.stats.shotInterval = if lastShot > 0 then now - lastShot else 0
 		lastShot = now
 	end)
+	Weapon.Reset:Connect(function()
+		pendingAutoSwap = false
+	end)
+	Weapon.Equipped:Connect(function()
+		pendingAutoSwap = false
+	end)
 	Weapon.HitConfirmed:Connect(function(results)
 		local damage, pellets = 0, 0
 		for _, hit in results do
@@ -191,10 +198,18 @@ function C.start()
 		end
 		C.autoPosition = if item then item.position else nil
 		C.autoTarget = if item then item.id.Name else "none"
-		if item then
+		if not usable or not enabled or not config.autoSwap then
+			pendingAutoSwap = false
+		end
+		-- A lethal automatic shot may remove the target before the next heartbeat.
+		-- Complete its one legal swap even then; acquiring a new target is still
+		-- mandatory before firing again.
+		if usable and enabled and (item or pendingAutoSwap) then
 			local slot = Trigger.swapSlot(config, state, now)
 			if slot then
-				Weapon.equip(slot)
+				if Weapon.equip(slot) then
+					pendingAutoSwap = false
+				end
 			end
 		end
 		local ready, reason = Weapon.mobileReady()
@@ -216,7 +231,9 @@ function C.start()
 				reloading
 			)
 		then
+			local before = state.shotCounter
 			Weapon.fireMobile()
+			pendingAutoSwap = state.shotCounter > before and config.autoSwap
 		end
 	end)
 end

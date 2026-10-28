@@ -1,0 +1,518 @@
+<?xml version='1.0' encoding='utf-8'?>
+<roblox version="4">
+  <Item class="Folder" referent="AudioReferences">
+    <Properties>
+      <string name="Name">AudioReferences</string>
+    </Properties>
+    <Item class="Sound" referent="Cue_Admitted">
+      <Properties>
+        <string name="Name">Admitted</string>
+        <Content name="SoundId">
+          <url>rbxassetid://73939245280780</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_AmbDustTown">
+      <Properties>
+        <string name="Name">AmbDustTown</string>
+        <Content name="SoundId">
+          <url>rbxassetid://130680677216207</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_AmbRooftops">
+      <Properties>
+        <string name="Name">AmbRooftops</string>
+        <Content name="SoundId">
+          <url>rbxassetid://127043544223367</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_AmbWarehouse">
+      <Properties>
+        <string name="Name">AmbWarehouse</string>
+        <Content name="SoundId">
+          <url>rbxassetid://95360702770922</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Assist">
+      <Properties>
+        <string name="Name">Assist</string>
+        <Content name="SoundId">
+          <url>rbxassetid://72366323452361</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Confirm">
+      <Properties>
+        <string name="Name">Confirm</string>
+        <Content name="SoundId">
+          <url>rbxassetid://119959350292311</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_CountdownTick">
+      <Properties>
+        <string name="Name">CountdownTick</string>
+        <Content name="SoundId">
+          <url>rbxassetid://95699893390042</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_DamageTaken">
+      <Properties>
+        <string name="Name">DamageTaken</string>
+        <Content name="SoundId">
+          <url>rbxassetid://103016997503788</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Death">
+      <Properties>
+        <string name="Name">Death</string>
+        <Content name="SoundId">
+          <url>rbxassetid://105465906827933</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Defeat">
+      <Properties>
+        <string name="Name">Defeat</string>
+        <Content name="SoundId">
+          <url>rbxassetid://74379053980430</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_DoublePumpElim">
+      <Properties>
+        <string name="Name">DoublePumpElim</string>
+        <Content name="SoundId">
+          <url>rbxassetid://83664872569347</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Elimination">
+      <Properties>
+        <string name="Name">Elimination</string>
+        <Content name="SoundId">
+          <url>rbxassetid://93718579667184</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_EmptyClick">
+      <Properties>
+        <string name="Name">EmptyClick</string>
+        <Content name="SoundId">
+          <url>rbxassetid://129023358510589</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Equip">
+      <Properties>
+        <string name="Name">Equip</string>
+        <Content name="SoundId">
+          <url>rbxassetid://76066705752904</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Error">
+      <Properties>
+        <string name="Name">Error</string>
+        <Content name="SoundId">
+          <url>rbxassetid://133238281799902</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Fire">
+      <Properties>
+        <string name="Name">Fire</string>
+        <Content name="SoundId">
+          <url>rbxassetid://76270373964419</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_HitBody">
+      <Properties>
+        <string name="Name">HitBody</string>
+        <Content name="SoundId">
+          <url>rbxassetid://122067256034974</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_HitHead">
+      <Properties>
+        <string name="Name">HitHead</string>
+        <Content name="SoundId">
+          <url>rbxassetid://105275885463350</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ImpactHard">
+      <Properties>
+        <string name="Name">ImpactHard</string>
+        <Content name="SoundId">
+          <url>rbxassetid://128202319714882</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ImpactMetal">
+      <Properties>
+        <string name="Name">ImpactMetal</string>
+        <Content name="SoundId">
+          <url>rbxassetid://82455709298224</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ImpactWood">
+      <Properties>
+        <string name="Name">ImpactWood</string>
+        <Content name="SoundId">
+          <url>rbxassetid://125794832817300</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Landing">
+      <Properties>
+        <string name="Name">Landing</string>
+        <Content name="SoundId">
+          <url>rbxassetid://119227276951004</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_LevelUp">
+      <Properties>
+        <string name="Name">LevelUp</string>
+        <Content name="SoundId">
+          <url>rbxassetid://130023511315158</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_MasteryMilestone">
+      <Properties>
+        <string name="Name">MasteryMilestone</string>
+        <Content name="SoundId">
+          <url>rbxassetid://85511675749835</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_MatchEnd">
+      <Properties>
+        <string name="Name">MatchEnd</string>
+        <Content name="SoundId">
+          <url>rbxassetid://128914040219922</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_MatchStart">
+      <Properties>
+        <string name="Name">MatchStart</string>
+        <Content name="SoundId">
+          <url>rbxassetid://100823336379034</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Overtime">
+      <Properties>
+        <string name="Name">Overtime</string>
+        <Content name="SoundId">
+          <url>rbxassetid://131993078530333</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_PumpBack">
+      <Properties>
+        <string name="Name">PumpBack</string>
+        <Content name="SoundId">
+          <url>rbxassetid://110029776273911</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_PumpForward">
+      <Properties>
+        <string name="Name">PumpForward</string>
+        <Content name="SoundId">
+          <url>rbxassetid://82334124029040</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_QueueCancel">
+      <Properties>
+        <string name="Name">QueueCancel</string>
+        <Content name="SoundId">
+          <url>rbxassetid://90412393185987</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_QueueCountdown">
+      <Properties>
+        <string name="Name">QueueCountdown</string>
+        <Content name="SoundId">
+          <url>rbxassetid://136743664945691</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_QueueJoin">
+      <Properties>
+        <string name="Name">QueueJoin</string>
+        <Content name="SoundId">
+          <url>rbxassetid://109535765491493</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_QueueLeave">
+      <Properties>
+        <string name="Name">QueueLeave</string>
+        <Content name="SoundId">
+          <url>rbxassetid://124530677310844</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_RangeAir">
+      <Properties>
+        <string name="Name">RangeAir</string>
+        <Content name="SoundId">
+          <url>rbxassetid://107314588536789</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ReloadEnd">
+      <Properties>
+        <string name="Name">ReloadEnd</string>
+        <Content name="SoundId">
+          <url>rbxassetid://91588700050239</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ReloadStart">
+      <Properties>
+        <string name="Name">ReloadStart</string>
+        <Content name="SoundId">
+          <url>rbxassetid://95926422694750</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ReturnToRange">
+      <Properties>
+        <string name="Name">ReturnToRange</string>
+        <Content name="SoundId">
+          <url>rbxassetid://111267390132943</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Reward">
+      <Properties>
+        <string name="Name">Reward</string>
+        <Content name="SoundId">
+          <url>rbxassetid://90581179107431</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ShellBounce">
+      <Properties>
+        <string name="Name">ShellBounce</string>
+        <Content name="SoundId">
+          <url>rbxassetid://85310208341495</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_ShellInsert">
+      <Properties>
+        <string name="Name">ShellInsert</string>
+        <Content name="SoundId">
+          <url>rbxassetid://102336135537532</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Spawn">
+      <Properties>
+        <string name="Name">Spawn</string>
+        <Content name="SoundId">
+          <url>rbxassetid://81574290995171</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_StepConcrete">
+      <Properties>
+        <string name="Name">StepConcrete</string>
+        <Content name="SoundId">
+          <url>rbxassetid://127480360069744</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_StepMetal">
+      <Properties>
+        <string name="Name">StepMetal</string>
+        <Content name="SoundId">
+          <url>rbxassetid://87968940009629</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_StepSand">
+      <Properties>
+        <string name="Name">StepSand</string>
+        <Content name="SoundId">
+          <url>rbxassetid://96114396174087</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_StepWood">
+      <Properties>
+        <string name="Name">StepWood</string>
+        <Content name="SoundId">
+          <url>rbxassetid://118025107093825</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Swap">
+      <Properties>
+        <string name="Name">Swap</string>
+        <Content name="SoundId">
+          <url>rbxassetid://120708988258180</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_TimeWarning">
+      <Properties>
+        <string name="Name">TimeWarning</string>
+        <Content name="SoundId">
+          <url>rbxassetid://107321103973404</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_UIClick">
+      <Properties>
+        <string name="Name">UIClick</string>
+        <Content name="SoundId">
+          <url>rbxassetid://97692260400881</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Unlock">
+      <Properties>
+        <string name="Name">Unlock</string>
+        <Content name="SoundId">
+          <url>rbxassetid://132043275280472</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Victory">
+      <Properties>
+        <string name="Name">Victory</string>
+        <Content name="SoundId">
+          <url>rbxassetid://128338264574038</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="Cue_Vote">
+      <Properties>
+        <string name="Name">Vote</string>
+        <Content name="SoundId">
+          <url>rbxassetid://83424934876088</url>
+        </Content>
+        <float name="Volume">0</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+    </Item>
+  </Item>
+</roblox>

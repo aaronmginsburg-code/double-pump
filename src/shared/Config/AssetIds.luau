@@ -6,8 +6,8 @@
 
 local AssetIds = {}
 
--- Fifty-one owner-selected ElevenLabs cues are enabled only in this private development source.
--- Unchanged prototype cues remain blank; production Config/AssetIds is untouched.
+-- Fifty-one owner-selected ElevenLabs cues promoted to public version13.
+-- AudioReferences retains concrete dependencies for experience permission checks.
 AssetIds.Sounds = {
 	StepConcrete = "127480360069744",
 	StepMetal = "87968940009629",

@@ -1,0 +1,15 @@
+{
+  "scripts": 125,
+  "checksum31": 2411606008,
+  "patches": 3,
+  "removed": [
+    "ServerScriptService.DevelopmentIdentity",
+    "ServerScriptService.DevelopmentSkins",
+    "ServerScriptService.Server.Services.BotNavigation",
+    "ServerScriptService.Server.Services.DeveloperTuningService",
+    "ServerScriptService.Server.Services.TrainingBotService",
+    "StarterPlayer.StarterPlayerScripts.Client.Controllers.DeveloperConsoleController",
+    "StarterPlayer.StarterPlayerScripts.Client.UI.DeveloperPanel",
+    "StarterPlayer.StarterPlayerScripts.DevelopmentSkinReady"
+  ]
+}

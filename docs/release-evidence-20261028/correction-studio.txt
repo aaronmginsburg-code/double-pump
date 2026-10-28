@@ -1,0 +1,11 @@
+2026-10-28T10:17:25.954Z,91.954201,0cb8,6,Info [FLog::CreatorOutput] [Double Pump Audio] approved cues ready: 51/51
+2026-10-28T10:17:34.255Z,100.255630,59a4,6,Info [FLog::CreatorOutput] PUBLIC_TARGET_DEBUG 749, 380 369.210693359375, 189.615966796875, 14.73297119140625 true Workspace.Dummies.Training Bot.UpperTorso 100 Lobby 124
+2026-10-28T10:17:34.290Z,100.290596,893c,6,Info [FLog::CreatorOutput] PUBLIC_DEAD_TARGET_SWAP_PASS 1 2 9
+2026-10-28T10:17:36.020Z,102.020149,0cb8,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_AUTO_FIRE_PASS 0.0019463000353425741 0.4170149000128731 2
+2026-10-28T10:17:36.304Z,102.304588,72a4,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_ISOLATION_PASS
+2026-10-28T10:17:36.888Z,102.888008,59a4,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_WALL_PASS
+2026-10-28T10:17:37.505Z,103.505142,59a4,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_UI_FENCE_PASS
+2026-10-28T10:17:38.121Z,104.121490,0668,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_KEYBOARD_PASS
+2026-10-28T10:17:43.339Z,109.339027,59a4,6,Info [FLog::CreatorOutput] PUBLIC_RESPAWN_DEBUG {"state":{"rules":{"timing":{"FireCooldown":1,"EquipTime":0.35,"MinShotInterval":0.4,"InputBuffer":0.1,"ServerTolerance":0.08,"ReloadStartTime":0.3,"ReloadInsertTime":0.27,"ReloadEndTime":0.3,"SwapTime":0.15},"magazineSize":10},"slots":[{"nextFireTime":{"m":null,"t":"numeric","v":"-inf"},"lastFireTime":{"m":null,"t":"numeric","v":"-inf"},"reloadStartedAt":0,"reloadBaseAmmo":0,"ammo":10,"shotsFired":0,"reloading":false},{"nextFireTime":{"m":null,"t":"numeric","v":"-inf"},"lastFireTime":{"m":null,"t":"numeric","v":"-inf"},"reloadStartedAt":0,"reloadBaseAmmo":0,"ammo":10,"shotsFired":0,"reloading":false}],"nextShotTime":{"m":null,"t":"numeric","v":"-inf"},"lastSwapAt":{"m":null,"t":"numeric","v":"-inf"},"readyAt":103.45475779999978,"equipped":1,"shotCounter":0},"health":100,"jump":14,"owned":1,"accepted":6,"walk":28.5}
+2026-10-28T10:17:43.339Z,109.339027,59a4,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_RESPAWN_PASS 100 10
+2026-10-28T10:17:43.339Z,109.339027,59a4,6,Info [FLog::CreatorOutput] PUBLIC_RUNTIME_COMPLETE 0.3109000390395522

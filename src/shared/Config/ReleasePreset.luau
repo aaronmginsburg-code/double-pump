@@ -1,6 +1,7 @@
 --!strict
 -- Owner-approved Mobile revision 3, read from Creator Dashboard 2026-10-28.
 -- Static release data. No runtime DataStore access or developer permissions.
+-- Owner clarified on 2026-10-28: magazine capacity must be ten, not the six in the saved record.
 local R = {
 	["name"] = "Mobile",
 	["revision"] = 3,
@@ -267,7 +268,7 @@ local R = {
 			["walk"] = 28.5,
 		},
 		["weapons"] = {
-			["capacity"] = 6,
+			["capacity"] = 10,
 			["cooldown"] = 1,
 			["damage"] = 17,
 			["falloffEnd"] = 45,

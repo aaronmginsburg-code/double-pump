@@ -1,0 +1,9 @@
+2026-10-28T10:21:21.012Z,327.012939,0cb8,6,Info [FLog::StudioPublishService] publishAs: currentUniverse=0 currentPlace=0 -> targetUniverse=10772275012 targetPlace=82505574993280 isPublish=1 (crossUniverse=0)
+2026-10-28T10:22:07.454Z,373.454559,1620,6 [FLog::AssetPrivacyPermissionsManager] Universe [10772275012] was granted access to 1 assets
+2026-10-28T10:22:07.712Z,373.712677,6924,6 [FLog::AssetPrivacyPermissionsManager] Universe [10772275012] was granted access to 50 assets
+2026-10-28T10:22:18.443Z,384.443756,5a00,6,Info [FLog::StudioPublishService] publishAs: currentUniverse=0 currentPlace=0 -> targetUniverse=10772275012 targetPlace=82505574993280 isPublish=1 (crossUniverse=0)
+2026-10-28T10:23:49.241Z,475.241455,5a00,6,Info [FLog::StudioPublishService] publishAs: currentUniverse=0 currentPlace=0 -> targetUniverse=10772275012 targetPlace=82505574993280 isPublish=1 (crossUniverse=0)
+2026-10-28T10:23:52.468Z,478.468109,59a4,6,Debug [FLog::PublishSessionStateController] Go to PublishSuccessful
+2026-10-28T10:23:52.561Z,478.561798,5a00,6 [FLog::Output] PublishToDifferentGame srcPlaceId=0, dstPlaceId=82505574993280, srcUniverse=0, dstUniverse=10772275012
+Dashboard Show published only:16, October28,2026 03:23PDT.
+Owner fresh public iPhone acceptance: yes to custom sounds, ten shells, auto swapping.

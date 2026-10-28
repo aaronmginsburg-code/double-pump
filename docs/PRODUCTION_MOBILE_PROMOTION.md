@@ -98,3 +98,8 @@ Normal Roblox Player launch was attempted through the verified public page, but 
 ## GitHub completion
 
 GitHub main was independently verified at **319722db4fcbf6d202b6dca51c5a58da0743e8e7** after the release and cloud-evidence commits. The release branch points to implementation **efa0344fc93626e6d0dfedc4d18743dd26247713**. Main integration was a fast-forward, with no conflict, force-push or rewritten history. This final documentation follow-up does not change the published source. Tracked working files were clean; only local release-artifacts and release-tools folders remain untracked intentionally. Existing dirty files in the original development checkout remain preserved.
+
+
+## Public correction v16
+
+The owner reported missing sounds, an incorrect ammo display and auto swap on iPhone. [PUBLIC_AUDIO_AND_MOBILE_CORRECTION.md](PUBLIC_AUDIO_AND_MOBILE_CORRECTION.md) records the correction: owner-clarified10shells, capacity-aware HUD, post-shot swap retention,51explicit sound dependencies and owner-granted production permissions. Version16 is published and fresh-cloud verified125scripts/checksum2411606008. Owner confirmed all three issues resolved in a fresh public iPhone session. The original saved preset evidence above remains unchanged at six shells.
