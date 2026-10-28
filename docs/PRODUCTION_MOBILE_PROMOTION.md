@@ -1,6 +1,6 @@
 # Mobile preset and development content promotion â€” 2026-10-28
 
-Status: validated release candidate. Roblox publication is waiting at its explicit asset-permission grant. GitHub integration is being completed; verified results are recorded below.
+Status: public version13 published and cloud-source verified. Implementation commit efa0344; release branch pushed and local main fast-forwarded. Final GitHub main verification follows below.
 
 Owner explicitly authorized applying the saved mobile settings and development content to the existing public Double Pump experience, committing, pushing and merging main. This supersedes prior task-specific development-only publication limits for this release. It does not make the developer console, training NPCs, all-skin overrides or development tuning storage public features.
 
@@ -86,3 +86,11 @@ Refresh AI_HANDOFF, PROJECT_STATUS, GAME_DESIGN, ROADMAP and RELEASE_RECORD in t
 **Public version13 was published on2026-10-28 at09:51:56Z (02:51:56 PDT)**. Creator Dashboard's **Show published only** list includes13 as current, then10/9/8/7/5/2. Owner completed the asset grant; Studio logged productionUniverse10772275012 granted access to26assets and PublishSuccessful. No new experience, audience change or monetization activation.
 
 Studio subsequently hit its known background script-version history rate-limit/close issue (HTTP429 frompublish/v1/Scripts). This does not invalidate the independently confirmed published-version record. Fresh cloud source parity and normal Player acceptance are checked separately; do not treat the success toast as runtime proof.
+
+## Fresh cloud verification and source integration
+
+A separate Studio cloud open on2026-10-28 at09:57:05Z confirms **Universe10772275012 / Place82505574993280 / version13**, **125scripts / digest433540397**. This independently matches the clean tested source and verifies both imported templates and feedback-board geometry. No temporary probes or private services remain.
+
+Implementation commit **efa0344** (`feat: promote Mobile preset, Blender shotgun and feedback to public build`) is pushed as `origin/release/mobile-live-20261028`. Remote main had no diverging commits; local main was fast-forwarded from bae36c9 to efa0344, preserving all23commits of development history. A subsequent documentation-only commit records this verification. Original private checkout and older prototype remain untouched.
+
+Normal Roblox Player launch was attempted through the verified public page, but automation did not open Double Pump. The owner was asked to join a fresh public session and acknowledged the request; **no new live-client acceptance result has been reported**. Physical phone/controller testing, live feedback submission/storage, production audio loading and multiplayer acceptance remain owner checks. No claim of new live-client gameplay verification.

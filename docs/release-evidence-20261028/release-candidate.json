@@ -9,5 +9,9 @@
   "automatedTests": 399,
   "studioMultiplayerAssertions": 20,
   "candidateSHA256": "02E21C4F2022B485673514118D7B9E6FD995FF7067164C76CA7F33148B928FCA",
-  "publication": "waiting for owner asset-permission grant"
+  "publication": "published version13, fresh cloud-source parity verified",
+  "publishedAtUTC": "2026-10-28T09:51:56Z",
+  "cloudVerifiedAtUTC": "2026-10-28T09:57:05Z",
+  "implementationCommit": "efa0344",
+  "liveClient": "awaiting owner gameplay confirmation"
 }

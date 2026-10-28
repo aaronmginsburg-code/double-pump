@@ -1,0 +1,3 @@
+2026-10-28T09:50:45.627Z,2348.627930,3ebc,6,Info [FLog::StudioPublishService] publishAs: currentUniverse=0 currentPlace=0 -> targetUniverse=10772275012 targetPlace=82505574993280 isPublish=1 (crossUniverse=0)
+2026-10-28T09:51:53.289Z,2416.289551,1224,6 [FLog::AssetPrivacyPermissionsManager] Universe [10772275012] was granted access to 26 assets
+2026-10-28T09:51:56.653Z,2419.653809,8090,6,Debug [FLog::PublishSessionStateController] Go to PublishSuccessful

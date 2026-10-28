@@ -1,6 +1,6 @@
 > **Public release v13 — 2026-10-28.** The owner-approved saved **Mobile** preset (schema 2, revision 3) is now the static public-source configuration. Version13 is published; read [PRODUCTION_MOBILE_PROMOTION.md](PRODUCTION_MOBILE_PROMOTION.md) for current evidence and final deployment outcome. Root `src/` is the public build; `development-copy/source/` remains the separate private development build. Older entries below describe historical checkpoints.
 
-## Release transition â€” 2026-10-22
+## Release transition — 2026-10-22
 
 Implementation4505edef:245 automated tests and21/21 staged three-client Studio assertions pass; LSP/Selene/StyLua/Rojo clean.81scripts match saved Studio source. Published privately as version10; existing icon/five thumbnails preserved. No gameplay, balance, asset uploads or Public change. See RELEASE_RECORD.md for fresh evidence and unverified live/device boundaries. Earlier entries are historical.
 
@@ -20,7 +20,7 @@ monetization was changed; no promotional art was uploaded. 197 tests pass and al
 [marketing report](../marketing/MARKETING_ASSET_REPORT.md) for provenance, capture
 limitations, final files and upload instructions. Earlier sections are historical.
 
-## Camera and independent weapon hand revision â€” 2026-10-21
+## Camera and independent weapon hand revision — 2026-10-21
 
 Owner tested version 5 on iPhone 17 Pro Max with no technical issues. On
 feat/mobile-controls (base a487de38a96261dbeac74e701e69ce31762123f9, uncommitted),
@@ -41,7 +41,7 @@ See [MOBILE_CAMERA_AND_HANDEDNESS_UPDATE.md](../MOBILE_CAMERA_AND_HANDEDNESS_UPD
 for files, migration, screenshots, exact test scope, backup and publication state.
 Earlier sections below are historical.
 
-## Current mobile release note â€” 2026-10-21
+## Current mobile release note — 2026-10-21
 
 Private version 5 reuses all existing models, animations and UI glyphs; no new
 assets/IDs/uploads are required. Creator is supersnapstudios (11808586604), universe
@@ -100,9 +100,9 @@ Below, `PS/` means `DoublePump/Weapons/PumpShotgun/` on that branch.
 
 | File | Path | Exists | Asset type | Purpose | Destination | Asset ID handling |
 |---|---|---|---|---|---|---|
-| `PumpShotgun_FP.fbx` | `PS/exports/first_person/` | yes (19.1 MB) | Mesh (skinned, 13 bones) + 2 shell meshes | First-person viewmodel for both gun slots | Import 3D â†’ Model named `PumpShotgun_FP` â†’ **Save to File** `assets/roblox/Weapons/PumpShotgun_FP.rbxm` | Mesh IDs are created by the importer and stored inside the `.rbxm`; no code edit. Code finds it by name (`ReplicatedStorage.Assets.Weapons.PumpShotgun_FP`, `src/shared/Weapons/ShotgunModel.luau`). |
-| `PumpShotgun_TP.fbx` | `PS/exports/third_person/` | yes (3.8 MB) | Mesh (skinned, 7 bones) | Third-person world model other players see | Model `PumpShotgun_TP` â†’ `assets/roblox/Weapons/PumpShotgun_TP.rbxm` | Same as above. |
-| `Shell_Spent.fbx` | `PS/exports/props/` | yes (45 KB) | Mesh (static) | Ejected shell physics prop | MeshPart `Shell_Spent` â†’ `assets/roblox/Props/Shell_Spent.rbxm` | Same; looked up in `EffectsController.luau` as `Assets.Props.Shell_Spent`. |
+| `PumpShotgun_FP.fbx` | `PS/exports/first_person/` | yes (19.1 MB) | Mesh (skinned, 13 bones) + 2 shell meshes | First-person viewmodel for both gun slots | Import 3D → Model named `PumpShotgun_FP` → **Save to File** `assets/roblox/Weapons/PumpShotgun_FP.rbxm` | Mesh IDs are created by the importer and stored inside the `.rbxm`; no code edit. Code finds it by name (`ReplicatedStorage.Assets.Weapons.PumpShotgun_FP`, `src/shared/Weapons/ShotgunModel.luau`). |
+| `PumpShotgun_TP.fbx` | `PS/exports/third_person/` | yes (3.8 MB) | Mesh (skinned, 7 bones) | Third-person world model other players see | Model `PumpShotgun_TP` → `assets/roblox/Weapons/PumpShotgun_TP.rbxm` | Same as above. |
+| `Shell_Spent.fbx` | `PS/exports/props/` | yes (45 KB) | Mesh (static) | Ejected shell physics prop | MeshPart `Shell_Spent` → `assets/roblox/Props/Shell_Spent.rbxm` | Same; looked up in `EffectsController.luau` as `Assets.Props.Shell_Spent`. |
 
 Special requirements: Studio signed in as the owning account; importer Rig Type
 **Custom**, Scale Unit **Meter**; keep meshes un-merged. Original asset (made in Blender
@@ -113,24 +113,24 @@ for this project). Until imported, the game runs a parts stand-in flagged with t
 
 | File | Path | Exists | Type | Used on | Asset ID handling |
 |---|---|---|---|---|---|
-| `T_PumpShotgun_BaseColor.png` | `PS/textures/roblox_1024/` | yes | Image (1024Â²) | `FP_PumpShotgun` + FP shell meshes, `SurfaceAppearance.ColorMap` | Stored in the `.rbxm` |
+| `T_PumpShotgun_BaseColor.png` | `PS/textures/roblox_1024/` | yes | Image (1024²) | `FP_PumpShotgun` + FP shell meshes, `SurfaceAppearance.ColorMap` | Stored in the `.rbxm` |
 | `T_PumpShotgun_Normal.png` | same | yes | Image | `NormalMap` | Stored in the `.rbxm` |
 | `T_PumpShotgun_Roughness.png` | same | yes | Image | `RoughnessMap` | Stored in the `.rbxm` |
 | `T_PumpShotgun_Metalness.png` | same | yes | Image | `MetalnessMap` | Stored in the `.rbxm` |
-| `T_PumpShotgun_TP_BaseColor.png` | `PS/textures/third_person/` | yes | Image (1024Â²) | `TP_PumpShotgun` `ColorMap` | Stored in the `.rbxm` |
+| `T_PumpShotgun_TP_BaseColor.png` | `PS/textures/third_person/` | yes | Image (1024²) | `TP_PumpShotgun` `ColorMap` | Stored in the `.rbxm` |
 | `T_PumpShotgun_TP_Normal.png` | same | yes | Image | `NormalMap` | Stored in the `.rbxm` |
 | `T_PumpShotgun_TP_Roughness.png` | same | yes | Image | `RoughnessMap` | Stored in the `.rbxm` |
 | `T_PumpShotgun_TP_Metalness.png` | same | yes | Image | `MetalnessMap` | Stored in the `.rbxm` |
 
-The 2048Â² set in `PS/textures/first_person/` is source quality, not for upload (Roblox
-caps SurfaceAppearance at 1024Â²). Skins tint the SurfaceAppearance in code
+The 2048² set in `PS/textures/first_person/` is source quality, not for upload (Roblox
+caps SurfaceAppearance at 1024²). Skins tint the SurfaceAppearance in code
 (`ShotgunModel.applySkin`), so no per-skin textures exist or are needed.
 
 ### 3. Sounds (29 files, Audio assets)
 
 All in `assets/audio/` on the PR #2 branch, all exist (840 KB total), all original
 (synthesised by `tools/gen_audio.py`). Each ID goes into
-`src/shared/Config/AssetIds.luau` â†’ `AssetIds.Sounds.<Name>` (key = filename without
+`src/shared/Config/AssetIds.luau` → `AssetIds.Sounds.<Name>` (key = filename without
 `.ogg`). `tools/upload_assets.py` writes these automatically.
 
 | Key / file | Purpose |
@@ -197,7 +197,7 @@ set `Enabled = true`. This involves real money: **owner decision only.**
 
 | Item | Exists | Notes |
 |---|---|---|
-| Experience icon 512Ã—512 | **no** | Nothing made yet |
+| Experience icon 512×512 | **no** | Nothing made yet |
 | Thumbnails | partly | `docs/images/maps/*_overview.png` are Blender renders, not gameplay; take real screenshots once the shotgun is imported |
 | `AssetIds.Images.Logo` | **no file** | Slot exists, empty; no logo art |
 | Description text | no | `GAME_DESIGN.md` has material for it |
@@ -215,7 +215,7 @@ set `Enabled = true`. This involves real money: **owner decision only.**
 - `docs/images/maps/*`: documentation images.
 - Fonts and the HUD vignette are built-in `rbxasset://` content.
 
-## Mobile controls candidate â€” 2026-10-21
+## Mobile controls candidate — 2026-10-21
 
 The mobile update adds only locally drawn UI glyphs and reuses existing shotgun
 models/animations. It requires no new uploaded images, meshes, audio or asset IDs.
